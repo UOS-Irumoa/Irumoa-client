@@ -2,6 +2,7 @@
 
 import styled from '@emotion/styled';
 import { usePathname, useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const SidebarContainer = styled.aside`
   width: 100px;
@@ -67,24 +68,34 @@ const NavButton = styled.button<{ isActive: boolean }>`
   }
 `;
 
-const NavIcon = styled.span<{ isActive: boolean }>`
-  font-size: 24px;
+const NavIconWrapper = styled.div<{ isActive: boolean }>`
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: ${props => props.isActive ? 'grayscale(0%)' : 'grayscale(0%)'};
+  position: relative;
+  opacity: ${props => props.isActive ? 1 : 0.6};
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
   
   @media (max-width: 768px) {
-    font-size: 20px;
+    width: 18px;
+    height: 18px;
   }
 `;
 
 const NavLabel = styled.span<{ isActive: boolean }>`
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 11px;
-  font-weight: ${props => props.isActive ? 600 : 500};
+  font-weight: ${props => props.isActive ? 700 : 500};
   color: ${props => props.isActive ? '#FFFFFF' : '#5C5E66'};
-  letter-spacing: -0.01em;
+  letter-spacing: -0.04em;
+  line-height: 1.25em;
+  text-align: center;
   
   @media (max-width: 768px) {
     font-size: 10px;
@@ -92,11 +103,11 @@ const NavLabel = styled.span<{ isActive: boolean }>`
 `;
 
 const menuItems = [
-  { href: '/', icon: '🏠', label: '홈' },
-  { href: '/contests', icon: '🏆', label: '대회' },
-  { href: '/employment', icon: '🎓', label: '취업' },
-  { href: '/volunteer', icon: '📘', label: '봉사' },
-  { href: '/workshop', icon: '📚', label: '워크샵' },
+  { href: '/', icon: '/images/icon-home.svg', label: '전체' },
+  { href: '/contests', icon: '/images/icon-contest.svg', label: '대회/공모전' },
+  { href: '/employment', icon: '/images/icon-employment.svg', label: '취업 프로그램' },
+  { href: '/volunteer', icon: '/images/icon-volunteer.svg', label: '봉사활동/멘토링' },
+  { href: '/workshop', icon: '/images/icon-workshop.svg', label: '워크샵/특강' },
 ];
 
 export default function Sidebar() {
@@ -116,7 +127,17 @@ export default function Sidebar() {
             isActive={pathname === item.href}
             onClick={() => handleNavigation(item.href)}
           >
-            <NavIcon isActive={pathname === item.href}>{item.icon}</NavIcon>
+            <NavIconWrapper isActive={pathname === item.href}>
+              <Image 
+                src={item.icon} 
+                alt={item.label}
+                width={20}
+                height={20}
+                style={{ 
+                  filter: pathname === item.href ? 'brightness(0) invert(1)' : 'none'
+                }}
+              />
+            </NavIconWrapper>
             <NavLabel isActive={pathname === item.href}>{item.label}</NavLabel>
           </NavButton>
         ))}
