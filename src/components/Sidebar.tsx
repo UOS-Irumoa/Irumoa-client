@@ -4,105 +4,99 @@ import styled from '@emotion/styled';
 import { usePathname, useRouter } from 'next/navigation';
 
 const SidebarContainer = styled.aside`
-  width: 280px;
+  width: 100px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  border-right: 1px solid #e5e7eb;
-  padding: 2rem 0;
-  position: sticky;
+  background: #E3F2FD;
+  padding: 104px 0 40px 0;
+  position: fixed;
   top: 0;
   left: 0;
-  overflow-y: auto;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 50;
 
   @media (max-width: 768px) {
-    width: 240px;
-    padding: 1.5rem 0;
+    width: 80px;
+    padding: 80px 0 32px 0;
   }
-`;
-
-const Logo = styled.div`
-  padding: 0 1.5rem;
-  margin-bottom: 2rem;
-`;
-
-const LogoTitle = styled.h1`
-  font-size: 1.75rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #5b7fff 0%, #4a6fee 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.25rem;
-`;
-
-const LogoSubtitle = styled.p`
-  font-size: 0.875rem;
-  color: #6b7280;
 `;
 
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 0 1rem;
+  gap: 12px;
+  width: 100%;
+  padding: 0 0;
+  align-items: center;
 `;
 
 const NavButton = styled.button<{ isActive: boolean }>`
+  width: 106px;
+  height: 50px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1rem;
+  justify-content: center;
+  gap: 4px;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 12px;
   background: ${props => props.isActive 
-    ? 'linear-gradient(135deg, #5b7fff 0%, #4a6fee 100%)' 
-    : 'transparent'};
-  color: ${props => props.isActive ? '#ffffff' : '#374151'};
-  font-size: 0.9375rem;
-  font-weight: ${props => props.isActive ? 600 : 500};
+    ? 'linear-gradient(135deg, #408CFF 0%, #2563EB 100%)' 
+    : '#FFFFFF'};
+  box-shadow: ${props => props.isActive 
+    ? '0px 4px 12px 0px rgba(64, 140, 255, 0.3)' 
+    : '0px 2px 8px 0px rgba(0, 0, 0, 0.08)'};
   cursor: pointer;
   transition: all 0.2s ease;
-  text-align: left;
-  width: 100%;
 
   &:hover {
-    background: ${props => props.isActive 
-      ? 'linear-gradient(135deg, #5b7fff 0%, #4a6fee 100%)' 
-      : '#f3f4f6'};
-    transform: translateX(4px);
+    transform: translateY(-2px);
+    box-shadow: ${props => props.isActive 
+      ? '0px 6px 16px 0px rgba(64, 140, 255, 0.4)' 
+      : '0px 4px 12px 0px rgba(0, 0, 0, 0.12)'};
   }
 
   &:active {
-    transform: translateX(2px);
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    width: 64px;
+    height: 44px;
   }
 `;
 
-const NavIcon = styled.span`
-  font-size: 1.25rem;
+const NavIcon = styled.span<{ isActive: boolean }>`
+  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  filter: ${props => props.isActive ? 'grayscale(0%)' : 'grayscale(0%)'};
+  
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
-const NavLabel = styled.span`
-  flex: 1;
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: #e5e7eb;
-  margin: 1rem 1.5rem;
+const NavLabel = styled.span<{ isActive: boolean }>`
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  font-weight: ${props => props.isActive ? 600 : 500};
+  color: ${props => props.isActive ? '#FFFFFF' : '#5C5E66'};
+  letter-spacing: -0.01em;
+  
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 const menuItems = [
   { href: '/', icon: '🏠', label: '홈' },
-  { href: '/contests', icon: '🏆', label: '대회/공모전' },
-  { href: '/employment', icon: '🎓', label: '취업 프로그램' },
-  { href: '/volunteer', icon: '📘', label: '봉사활동/멘토링' },
-  { href: '/workshop', icon: '📚', label: '워크샵/특강' },
+  { href: '/contests', icon: '🏆', label: '대회' },
+  { href: '/employment', icon: '🎓', label: '취업' },
+  { href: '/volunteer', icon: '📘', label: '봉사' },
+  { href: '/workshop', icon: '📚', label: '워크샵' },
 ];
 
 export default function Sidebar() {
@@ -115,13 +109,6 @@ export default function Sidebar() {
 
   return (
     <SidebarContainer>
-      <Logo>
-        <LogoTitle>이루모아</LogoTitle>
-        <LogoSubtitle>대학생 활동 정보</LogoSubtitle>
-      </Logo>
-      
-      <Divider />
-      
       <Nav>
         {menuItems.map((item) => (
           <NavButton
@@ -129,8 +116,8 @@ export default function Sidebar() {
             isActive={pathname === item.href}
             onClick={() => handleNavigation(item.href)}
           >
-            <NavIcon>{item.icon}</NavIcon>
-            <NavLabel>{item.label}</NavLabel>
+            <NavIcon isActive={pathname === item.href}>{item.icon}</NavIcon>
+            <NavLabel isActive={pathname === item.href}>{item.label}</NavLabel>
           </NavButton>
         ))}
       </Nav>
