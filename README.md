@@ -11,14 +11,6 @@ This is a [Next.js](https://nextjs.org) project with Emotion CSS for styling and
 - **Styling**: Emotion CSS
 - **Package Manager**: pnpm
 
-## Features
-
-- ⚡ Next.js 16 with App Router
-- 🎨 Emotion CSS for styled components
-- 🌓 Dark mode support with theme persistence
-- 📱 Fully responsive design
-- 🔒 Type-safe with TypeScript
-
 ## Getting Started
 
 First, install dependencies:
@@ -37,13 +29,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-
 ## Theme System
 
 The project includes a custom theme system with light and dark modes. Use the `useTheme` hook to access theme values and toggle between modes:
 
 ```tsx
-import { useTheme } from '@/src/components/provider/ThemeProvider';
+import { useTheme } from "@/src/components/provider/ThemeProvider";
 
 const { theme, mode, toggleTheme } = useTheme();
 ```
