@@ -6,16 +6,22 @@ import Image from "next/image";
 
 const Nav = styled.nav`
   position: fixed;
-  top: 104px;
-  left: 20px;
+  top: calc(
+    ${({ theme }) => theme.layout.headerHeight} +
+      ${({ theme }) => theme.padding.md}
+  );
+  left: calc((${({ theme }) => theme.padding.container} - 106px) / 2);
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
   z-index: 50;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    top: ${({ theme }) => theme.padding.xl};
-    left: 12px;
+    top: calc(
+      ${({ theme }) => theme.layout.headerHeight} +
+        ${({ theme }) => theme.padding.md}
+    );
+    left: calc((${({ theme }) => theme.padding.xxl} - 64px) / 2);
     gap: ${({ theme }) => theme.spacing.sm};
   }
 `;

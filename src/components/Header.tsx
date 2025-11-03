@@ -8,7 +8,6 @@ const HeaderContainer = styled.header`
   width: 100%;
   background: ${({ theme }) => theme.colors.background.content};
   height: ${({ theme }) => theme.layout.headerHeight};
-  background: ${({ theme }) => theme.colors.background.content};
 
   box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.05);
   display: flex;
@@ -17,9 +16,7 @@ const HeaderContainer = styled.header`
   padding: 0 ${({ theme }) => theme.padding.xl};
   box-sizing: border-box;
   border-radius: 0 0 8px 8px;
-  margin-bottom: ${({ theme }) => theme.padding.xxl};
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 0 ${({ theme }) => theme.padding.lg};
+  margin-bottom: ${({ theme }) => theme.padding.sm};
   }
 `;
 
