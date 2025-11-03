@@ -26,13 +26,14 @@ const Description = styled.p`
   margin: 0;
 `;
 
-export default function EmploymentPage() {
+export default function MentoringPage() {
   return (
     <Container>
-      <Title>취업</Title>
+      <Title>멘토링</Title>
       <Description>
-        취업 프로그램 정보를 확인하고 참여할 수 있습니다.
+        멘토링 프로그램에 참여하여 경험을 쌓을 수 있습니다.
       </Description>
     </Container>
   );
 }
+

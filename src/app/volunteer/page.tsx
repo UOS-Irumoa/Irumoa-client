@@ -3,82 +3,36 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xl};
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.margin.sm};
-`;
-
-const Icon = styled.div`
-  width: 48px;
-  height: 48px;
-  background: ${({ theme }) => theme.colors.primary.gradient};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const Title = styled.h1`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize['3xl']};
+  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0;
-  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
 `;
 
 const Description = styled.p`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: ${({ theme }) => theme.typography.fontSize.md};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   color: ${({ theme }) => theme.colors.text.secondary};
-  margin: 0 0 ${({ theme }) => theme.margin.xl} 0;
-  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.normal};
-`;
-
-const ContentArea = styled.div`
-  background: ${({ theme }) => theme.colors.background.paper};
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: ${({ theme }) => theme.padding.xl};
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const EmptyMessage = styled.p`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.md};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  text-align: center;
+  line-height: ${({ theme }) => theme.typography.lineHeight.relaxed};
+  margin: 0;
 `;
 
 export default function VolunteerPage() {
   return (
     <Container>
-      <div>
-        <Header>
-          <Icon>📘</Icon>
-          <Title>봉사활동/멘토링</Title>
-        </Header>
-        <Description>
-          봉사활동과 멘토링 프로그램에 참여하세요.
-        </Description>
-      </div>
-      
-      <ContentArea>
-        <EmptyMessage>곧 다양한 봉사활동과 멘토링 프로그램 정보가 제공될 예정입니다.</EmptyMessage>
-      </ContentArea>
+      <Title>봉사</Title>
+      <Description>
+        봉사활동 정보를 확인하고 참여할 수 있습니다.
+      </Description>
     </Container>
   );
 }
-

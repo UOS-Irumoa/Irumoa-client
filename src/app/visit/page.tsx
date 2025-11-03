@@ -26,13 +26,14 @@ const Description = styled.p`
   margin: 0;
 `;
 
-export default function EmploymentPage() {
+export default function VisitPage() {
   return (
     <Container>
-      <Title>취업</Title>
+      <Title>탐방</Title>
       <Description>
-        취업 프로그램 정보를 확인하고 참여할 수 있습니다.
+        탐방 프로그램 정보를 확인하고 참여할 수 있습니다.
       </Description>
     </Container>
   );
 }
+

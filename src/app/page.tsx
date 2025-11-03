@@ -26,13 +26,14 @@ const Description = styled.p`
   margin: 0;
 `;
 
-export default function EmploymentPage() {
+export default function HomePage() {
   return (
     <Container>
-      <Title>취업</Title>
+      <Title>전체</Title>
       <Description>
-        취업 프로그램 정보를 확인하고 참여할 수 있습니다.
+        모든 카테고리의 활동을 한눈에 확인할 수 있습니다.
       </Description>
     </Container>
   );
 }
+

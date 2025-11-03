@@ -26,13 +26,14 @@ const Description = styled.p`
   margin: 0;
 `;
 
-export default function EmploymentPage() {
+export default function LecturePage() {
   return (
     <Container>
-      <Title>취업</Title>
+      <Title>특강</Title>
       <Description>
-        취업 프로그램 정보를 확인하고 참여할 수 있습니다.
+        특강 정보를 확인하고 참여할 수 있습니다.
       </Description>
     </Container>
   );
 }
+
