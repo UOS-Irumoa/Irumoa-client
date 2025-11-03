@@ -1,7 +1,8 @@
 "use client";
 
 import "../globals.css";
-import Providers from "@/components/provider/Providers";
+import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
+import { lightTheme } from "@/styles/theme";
 
 export default function ProfileLayout({
   children,
@@ -11,7 +12,9 @@ export default function ProfileLayout({
   return (
     <html lang="ko">
       <body>
-        <Providers>{children}</Providers>
+        <EmotionThemeProvider theme={lightTheme}>
+          {children}
+        </EmotionThemeProvider>
       </body>
     </html>
   );

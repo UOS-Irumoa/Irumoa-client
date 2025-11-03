@@ -177,8 +177,8 @@ const FormGroup = styled.div`
     bottom: -8px;
     left: 0;
     right: 0;
-    height: 1px;
-    background: ${({ theme }) => theme.colors.border.light};
+    height: 2px;
+    background: ${({ theme }) => theme.colors.border.main};
   }
 `;
 
@@ -321,6 +321,24 @@ const BadgeCloseIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 2px;
+    background: #ffffff;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -507,16 +525,7 @@ export default function ProfilePage() {
                   onClick={() => toggleInterest(interest)}
                 >
                   {interest}
-                  {selectedInterests.includes(interest) && (
-                    <BadgeCloseIcon>
-                      <Image
-                        src="/images/profile/close-icon.svg"
-                        alt="Remove"
-                        width={12}
-                        height={12}
-                      />
-                    </BadgeCloseIcon>
-                  )}
+                  {selectedInterests.includes(interest) && <BadgeCloseIcon />}
                 </Badge>
               ))}
             </BadgeContainer>
