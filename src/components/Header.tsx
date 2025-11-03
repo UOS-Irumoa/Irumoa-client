@@ -1,60 +1,61 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
-  left: 100px;
+  left: ${({ theme }) => theme.layout.sidebarWidth};
   right: 0;
-  height: 64px;
-  background: #F0F7FF;
-  box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.05);
-  border-radius: 0px 0px 8px 8px;
+  height: ${({ theme }) => theme.layout.headerHeight};
+  background: ${({ theme }) => theme.colors.background.content};
+  box-shadow: ${({ theme }) => theme.shadows.header};
+  border-radius: 0px 0px ${({ theme }) => theme.borderRadius.md}
+    ${({ theme }) => theme.borderRadius.md};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
+  padding: 0 ${({ theme }) => theme.padding.xl};
   z-index: 100;
 
-  @media (max-width: 768px) {
-    left: 80px;
-    padding: 0 20px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    left: ${({ theme }) => theme.layout.sidebarWidthMobile};
+    padding: 0 ${({ theme }) => theme.padding.lg};
   }
 `;
 
 const Logo = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const LogoText = styled.h1`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #408CFF 0%, #2563EB 100%);
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.xl};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  background: ${({ theme }) => theme.colors.primary.gradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-  letter-spacing: -0.02em;
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
 `;
 
 const ActionButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0px 20px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: 0px ${({ theme }) => theme.padding.lg};
   height: 37px;
-  background: linear-gradient(135deg, #408CFF 0%, #2563EB 100%);
+  background: ${({ theme }) => theme.colors.primary.gradient};
   border: none;
-  border-radius: 8px;
-  box-shadow: 0px 2px 8px 0px rgba(64, 140, 255, 0.25);
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #FFFFFF;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  box-shadow: ${({ theme }) => theme.shadows.buttonActive};
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
+  color: ${({ theme }) => theme.colors.text.white};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -82,4 +83,3 @@ export default function Header() {
     </HeaderContainer>
   );
 }
-

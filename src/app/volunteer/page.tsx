@@ -5,50 +5,50 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.margin.sm};
 `;
 
 const Icon = styled.div`
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #408CFF 0%, #2B7FFF 100%);
-  border-radius: 12px;
+  background: ${({ theme }) => theme.colors.primary.gradient};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
 `;
 
 const Title = styled.h1`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: #5C5E66;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize['3xl']};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.text.primary};
   margin: 0;
-  letter-spacing: -0.02em;
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
 `;
 
 const Description = styled.p`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: #A0A0A0;
-  margin: 0 0 32px 0;
-  letter-spacing: -0.01em;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.md};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  margin: 0 0 ${({ theme }) => theme.margin.xl} 0;
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.normal};
 `;
 
 const ContentArea = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #E5E6EC;
-  border-radius: 8px;
-  padding: 32px;
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: ${({ theme }) => theme.padding.xl};
   min-height: 400px;
   display: flex;
   align-items: center;
@@ -56,9 +56,9 @@ const ContentArea = styled.div`
 `;
 
 const EmptyMessage = styled.p`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 16px;
-  color: #A0A0A0;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.md};
+  color: ${({ theme }) => theme.colors.text.secondary};
   text-align: center;
 `;
 

@@ -10,27 +10,32 @@ import Header from "@/components/Header";
 const AppContainer = styled.div`
   display: flex;
   min-height: 100vh;
-  background: #e3f2fd;
+  background: ${({ theme }) => theme.colors.background.main};
 `;
 
 const MainContentArea = styled.main`
   flex: 1;
-  margin-left: 100px;
-  margin-top: 64px;
-  padding: 40px 116px 48px 116px;
+  margin-left: ${({ theme }) => theme.layout.sidebarWidth};
+  margin-top: ${({ theme }) => theme.layout.headerHeight};
+  padding: ${({ theme }) => theme.padding.xxl}
+    ${({ theme }) => theme.padding.container}
+    ${({ theme }) => theme.padding.section}
+    ${({ theme }) => theme.padding.container};
 
-  @media (max-width: 768px) {
-    margin-left: 80px;
-    margin-top: 64px;
-    padding: 32px 40px 40px 40px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin-left: ${({ theme }) => theme.layout.sidebarWidthMobile};
+    margin-top: ${({ theme }) => theme.layout.headerHeight};
+    padding: ${({ theme }) => theme.padding.xl}
+      ${({ theme }) => theme.padding.xxl} ${({ theme }) => theme.padding.xxl}
+      ${({ theme }) => theme.padding.xxl};
   }
 `;
 
 const ContentWrapper = styled.div`
-  background: #f0f7ff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.05);
-  padding: 32px;
+  background: ${({ theme }) => theme.colors.background.content};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  box-shadow: ${({ theme }) => theme.shadows.header};
+  padding: ${({ theme }) => theme.padding.xl};
   min-height: calc(100vh - 152px);
 `;
 

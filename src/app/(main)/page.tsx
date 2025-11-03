@@ -5,143 +5,143 @@ import styled from "@emotion/styled";
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
 const TopSection = styled.div`
   display: flex;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const ProfileCard = styled.div`
   flex: 1;
-  background: #FFFFFF;
-  border: 1px solid #E5E6EC;
-  border-radius: 8px;
-  padding: 25px;
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: ${({ theme }) => theme.padding.lg};
 `;
 
 const ProfileHeader = styled.div`
   display: flex;
-  gap: 16px;
-  margin-bottom: 12px;
+  gap: ${({ theme }) => theme.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.margin.md};
 `;
 
 const ProfileIcon = styled.div`
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #408CFF 0%, #98BFFA 100%);
-  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.primary.gradient};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 24px;
+  color: ${({ theme }) => theme.colors.text.white};
+  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
 `;
 
 const ProfileInfo = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const ProfileTitle = styled.h3`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1.5em;
-  letter-spacing: -0.08em;
-  color: #5C5E66;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  font-size: ${({ theme }) => theme.typography.fontSize.md};
+  line-height: ${({ theme }) => theme.typography.lineHeight.normal};
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
+  color: ${({ theme }) => theme.colors.text.primary};
   margin: 0;
 `;
 
 const TagsContainer = styled.div`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   flex-wrap: wrap;
 `;
 
 const Tag = styled.span<{ primary?: boolean }>`
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 1.33em;
-  background: ${props => props.primary ? '#FFFFFF' : '#FFFFFF'};
-  border: 1px solid ${props => props.primary ? '#408CFF' : '#E5E6EC'};
-  color: ${props => props.primary ? '#408CFF' : '#5C5E66'};
+  padding: ${({ theme }) => `${theme.padding.xs} ${theme.padding.sm}`};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  font-family: ${({ theme }) => theme.typography.fontFamily.secondary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  line-height: ${({ theme }) => theme.typography.lineHeight.tight};
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme, primary }) => primary ? theme.colors.primary.main : theme.colors.border.main};
+  color: ${({ theme, primary }) => primary ? theme.colors.primary.main : theme.colors.text.primary};
 `;
 
 const RecommendText = styled.p`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.5em;
-  letter-spacing: -0.08em;
-  color: #A0A0A0;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  line-height: ${({ theme }) => theme.typography.lineHeight.normal};
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
+  color: ${({ theme }) => theme.colors.text.secondary};
   margin: 0;
   
   strong {
-    font-weight: 700;
-    color: #408CFF;
+    font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+    color: ${({ theme }) => theme.colors.primary.main};
   }
 `;
 
 const SearchFilterCard = styled.div`
   flex: 1;
-  background: #FFFFFF;
-  border: 1px solid #E5E6EC;
-  border-radius: 8px;
-  padding: 25px;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: ${({ theme }) => theme.padding.lg};
+  box-shadow: ${({ theme }) => theme.shadows.card};
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const SearchRow = styled.div`
   display: flex;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
   align-items: center;
 `;
 
 const SearchInput = styled.input`
   flex: 1;
-  padding: 4px 12px;
+  padding: ${({ theme }) => `${theme.padding.xs} ${theme.padding.md}`};
   height: 36px;
-  background: #FFFFFF;
-  border: 1px solid #E5E6EC;
-  border-radius: 6px;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.2em;
-  color: #A0A0A0;
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  line-height: ${({ theme }) => theme.typography.lineHeight.tight};
+  color: ${({ theme }) => theme.colors.text.secondary};
   
   &::placeholder {
-    color: #A0A0A0;
+    color: ${({ theme }) => theme.colors.text.secondary};
   }
   
   &:focus {
     outline: none;
-    border-color: #408CFF;
+    border-color: ${({ theme }) => theme.colors.primary.main};
   }
 `;
 
 const SearchButton = styled.button`
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #408CFF 0%, #98BFFA 100%);
+  background: ${({ theme }) => theme.colors.primary.gradient};
   border: none;
-  border-radius: 50%;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: white;
-  font-size: 18px;
+  color: ${({ theme }) => theme.colors.text.white};
+  font-size: ${({ theme }) => theme.typography.fontSize.lg};
   
   &:hover {
     opacity: 0.9;
@@ -150,36 +150,36 @@ const SearchButton = styled.button`
 
 const FilterRow = styled.div`
   display: flex;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
   align-items: center;
 `;
 
 const FilterLabel = styled.label`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.5em;
-  color: #5C5E66;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  line-height: ${({ theme }) => theme.typography.lineHeight.normal};
+  color: ${({ theme }) => theme.colors.text.primary};
 `;
 
 const FilterSelect = styled.select`
   width: 180px;
   height: 36px;
-  padding: 0px 12px;
-  background: #FFFFFF;
-  border: 1px solid #E5E6EC;
-  border-radius: 6px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.43em;
-  letter-spacing: -0.01em;
-  color: #5C5E66;
+  padding: 0px ${({ theme }) => theme.padding.md};
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  font-family: ${({ theme }) => theme.typography.fontFamily.secondary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  line-height: ${({ theme }) => theme.typography.lineHeight.normal};
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.normal};
+  color: ${({ theme }) => theme.colors.text.primary};
   cursor: pointer;
   
   &:focus {
     outline: none;
-    border-color: #408CFF;
+    border-color: ${({ theme }) => theme.colors.primary.main};
   }
 `;
 

@@ -5,10 +5,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 const SidebarContainer = styled.aside`
-  width: 100px;
+  width: ${({ theme }) => theme.layout.sidebarWidth};
   min-height: 100vh;
-  background: #E3F2FD;
-  padding: 104px 0 40px 0;
+  background: ${({ theme }) => theme.colors.background.main};
+  padding: 104px 0 ${({ theme }) => theme.padding.xxl} 0;
   position: fixed;
   top: 0;
   left: 0;
@@ -17,16 +17,16 @@ const SidebarContainer = styled.aside`
   align-items: center;
   z-index: 50;
 
-  @media (max-width: 768px) {
-    width: 80px;
-    padding: 80px 0 32px 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: ${({ theme }) => theme.layout.sidebarWidthMobile};
+    padding: ${({ theme }) => theme.padding.xl} 0 ${({ theme }) => theme.padding.xl} 0;
   }
 `;
 
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
   width: 100%;
   padding: 0 0;
   align-items: center;
@@ -39,30 +39,30 @@ const NavButton = styled.button<{ isActive: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   border: none;
-  border-radius: 12px;
-  background: ${props => props.isActive 
-    ? 'linear-gradient(135deg, #408CFF 0%, #2563EB 100%)' 
-    : '#FFFFFF'};
-  box-shadow: ${props => props.isActive 
-    ? '0px 4px 12px 0px rgba(64, 140, 255, 0.3)' 
-    : '0px 2px 8px 0px rgba(0, 0, 0, 0.08)'};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  background: ${({ theme, isActive }) => isActive 
+    ? theme.colors.primary.gradient
+    : theme.colors.background.paper};
+  box-shadow: ${({ theme, isActive }) => isActive 
+    ? theme.shadows.buttonActive
+    : theme.shadows.button};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.isActive 
+    box-shadow: ${({ theme, isActive }) => isActive 
       ? '0px 6px 16px 0px rgba(64, 140, 255, 0.4)' 
-      : '0px 4px 12px 0px rgba(0, 0, 0, 0.12)'};
+      : theme.shadows.md};
   }
 
   &:active {
     transform: translateY(0);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 64px;
     height: 44px;
   }
@@ -82,23 +82,27 @@ const NavIconWrapper = styled.div<{ isActive: boolean }>`
     height: 100%;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 18px;
     height: 18px;
   }
 `;
 
 const NavLabel = styled.span<{ isActive: boolean }>`
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 11px;
-  font-weight: ${props => props.isActive ? 700 : 500};
-  color: ${props => props.isActive ? '#FFFFFF' : '#5C5E66'};
-  letter-spacing: -0.04em;
-  line-height: 1.25em;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  font-weight: ${({ theme, isActive }) => isActive 
+    ? theme.typography.fontWeight.bold 
+    : theme.typography.fontWeight.medium};
+  color: ${({ theme, isActive }) => isActive 
+    ? theme.colors.text.white 
+    : theme.colors.text.primary};
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
+  line-height: ${({ theme }) => theme.typography.lineHeight.tight};
   text-align: center;
   
-  @media (max-width: 768px) {
-    font-size: 10px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: ${({ theme }) => theme.typography.fontSize.xs};
   }
 `;
 
