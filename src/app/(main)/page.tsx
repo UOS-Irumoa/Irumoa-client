@@ -36,7 +36,7 @@ const ProfileIcon = styled.div`
   align-items: center;
   justify-content: center;
   color: ${({ theme }) => theme.colors.text.white};
-  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.typography.fontSize["2xl"]};
 `;
 
 const ProfileInfo = styled.div`
@@ -70,8 +70,11 @@ const Tag = styled.span<{ primary?: boolean }>`
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   line-height: ${({ theme }) => theme.typography.lineHeight.tight};
   background: ${({ theme }) => theme.colors.background.paper};
-  border: 1px solid ${({ theme, primary }) => primary ? theme.colors.primary.main : theme.colors.border.main};
-  color: ${({ theme, primary }) => primary ? theme.colors.primary.main : theme.colors.text.primary};
+  border: 1px solid
+    ${({ theme, primary }) =>
+      primary ? theme.colors.primary.main : theme.colors.border.main};
+  color: ${({ theme, primary }) =>
+    primary ? theme.colors.primary.main : theme.colors.text.primary};
 `;
 
 const RecommendText = styled.p`
@@ -82,7 +85,7 @@ const RecommendText = styled.p`
   letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
   color: ${({ theme }) => theme.colors.text.secondary};
   margin: 0;
-  
+
   strong {
     font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
     color: ${({ theme }) => theme.colors.primary.main};
@@ -119,11 +122,11 @@ const SearchInput = styled.input`
   font-size: ${({ theme }) => theme.typography.fontSize.base};
   line-height: ${({ theme }) => theme.typography.lineHeight.tight};
   color: ${({ theme }) => theme.colors.text.secondary};
-  
+
   &::placeholder {
     color: ${({ theme }) => theme.colors.text.secondary};
   }
-  
+
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary.main};
@@ -142,7 +145,7 @@ const SearchButton = styled.button`
   cursor: pointer;
   color: ${({ theme }) => theme.colors.text.white};
   font-size: ${({ theme }) => theme.typography.fontSize.lg};
-  
+
   &:hover {
     opacity: 0.9;
   }
@@ -176,7 +179,7 @@ const FilterSelect = styled.select`
   letter-spacing: ${({ theme }) => theme.typography.letterSpacing.normal};
   color: ${({ theme }) => theme.colors.text.primary};
   cursor: pointer;
-  
+
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary.main};
@@ -198,7 +201,7 @@ const SectionHeader = styled.div`
 const SectionIcon = styled.div`
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, #74D4FF 0%, #51A2FF 100%);
+  background: linear-gradient(135deg, #74d4ff 0%, #51a2ff 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -208,12 +211,12 @@ const SectionIcon = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 700;
   font-size: 18px;
   line-height: 1.5em;
   letter-spacing: -0.08em;
-  background: linear-gradient(90deg, #00BCFF 0%, #2B7FFF 100%);
+  background: linear-gradient(90deg, #00bcff 0%, #2b7fff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -228,7 +231,7 @@ const ProgramsGrid = styled.div`
 
 const ProgramCard = styled.div`
   position: relative;
-  background: #FFFFFF;
+  background: ${({ theme }) => theme.colors.background.paper};
   border-radius: 8px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
   overflow: hidden;
@@ -238,7 +241,7 @@ const RecommendBadge = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background: linear-gradient(135deg, #74D4FF 0%, #8EC5FF 100%);
+  background: linear-gradient(135deg, #74d4ff 0%, #8ec5ff 100%);
   border-radius: 8px 0px 8px 0px;
   padding: 4px 12px;
   display: flex;
@@ -253,11 +256,11 @@ const RecommendIcon = styled.span`
 `;
 
 const RecommendLabel = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 1.5em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 const ProgramContent = styled.div`
@@ -284,58 +287,58 @@ const ProgramMeta = styled.div`
 
 const CategoryBadge = styled.span`
   padding: 2px 8px;
-  background: #DBEAFE;
+  background: #dbeafe;
   border-radius: 6px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 1.33em;
-  color: #193CB8;
+  color: #193cb8;
 `;
 
 const StatusDot = styled.span`
   width: 8px;
   height: 8px;
-  background: #00BC7D;
+  background: #00bc7d;
   border-radius: 50%;
 `;
 
 const StatusText = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 1.5em;
-  color: #A0A0A0;
+  color: #a0a0a0;
 `;
 
 const DepartmentTag = styled.span`
   padding: 2px 8px;
-  border: 1px solid #408CFF;
+  border: 1px solid #408cff;
   border-radius: 6px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 1.5em;
-  color: #408CFF;
+  color: #408cff;
 `;
 
 const ProgramTitle = styled.h3`
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 700;
   font-size: 18px;
   line-height: 1.5em;
   letter-spacing: -0.08em;
-  color: #5C5E66;
+  color: #5c5e66;
   margin: 0;
 `;
 
 const ProgramDescription = styled.p`
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5em;
   letter-spacing: -0.08em;
-  color: #A0A0A0;
+  color: #a0a0a0;
   margin: 0;
 `;
 
@@ -352,33 +355,33 @@ const DetailItem = styled.div`
 `;
 
 const DetailIcon = styled.span`
-  color: #5C5E66;
+  color: #5c5e66;
   font-size: 14px;
 `;
 
 const DetailText = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 11px;
   line-height: 1.5em;
   letter-spacing: 0.006em;
-  color: #5C5E66;
+  color: #5c5e66;
 `;
 
 const ViewButton = styled.button`
   padding: 8px 15px;
-  background: #408CFF;
+  background: #408cff;
   border: none;
   border-radius: 8px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 1.43em;
   letter-spacing: -0.01em;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   white-space: nowrap;
-  
+
   &:hover {
     opacity: 0.9;
   }
@@ -505,4 +508,3 @@ export default function MainPage() {
     </MainContent>
   );
 }
-
