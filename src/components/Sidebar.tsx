@@ -19,7 +19,7 @@ const Nav = styled.nav`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     top: calc(
       ${({ theme }) => theme.layout.headerHeight} +
-        ${({ theme }) => theme.padding.md}
+        ${({ theme }) => theme.padding.xl}
     );
     left: calc((${({ theme }) => theme.padding.xxl} - 64px) / 2);
     gap: ${({ theme }) => theme.spacing.sm};
