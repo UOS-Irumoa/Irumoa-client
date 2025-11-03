@@ -2,7 +2,7 @@
 
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { ReactNode, createContext, useContext, useState, useEffect } from 'react';
-import { lightTheme, darkTheme, Theme } from '@/src/styles/theme';
+import { lightTheme, darkTheme, Theme } from '@/styles/theme';
 
 type ThemeMode = 'light' | 'dark';
 

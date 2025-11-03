@@ -1,7 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
-import { useTheme } from '@/src/components/provider/ThemeProvider';
+import { useTheme } from '@/components/provider/ThemeProvider';
 
 const Container = styled.div`
   min-height: 100vh;

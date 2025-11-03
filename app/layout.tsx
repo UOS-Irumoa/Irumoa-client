@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Providers from "@/src/components/provider/Providers";
+import Providers from "@/components/provider/Providers";
 
 export const metadata: Metadata = {
   title: "Irumoa Client",
