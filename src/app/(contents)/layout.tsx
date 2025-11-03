@@ -1,7 +1,7 @@
 "use client";
 
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 import Providers from "@/components/provider/Providers";
 import styled from "@emotion/styled";
 import Sidebar from "@/components/Sidebar";
