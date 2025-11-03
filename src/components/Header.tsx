@@ -2,6 +2,7 @@
 
 import styled from "@emotion/styled";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useTheme } from "@/components/provider/ThemeProvider";
 
 const HeaderContainer = styled.header`
@@ -112,7 +113,12 @@ const UserIcon = styled.div`
 `;
 
 export default function Header() {
+  const router = useRouter();
   const { mode, toggleTheme } = useTheme();
+
+  const handleProfileClick = () => {
+    router.push("/profile");
+  };
 
   return (
     <HeaderContainer>
@@ -130,7 +136,7 @@ export default function Header() {
           <IconWrapper>{mode === "light" ? "🌙" : "☀️"}</IconWrapper>
           <span>{mode === "light" ? "다크 모드" : "라이트 모드"}</span>
         </ThemeButton>
-        <ActionButton>
+        <ActionButton onClick={handleProfileClick}>
           <UserIcon>
             <Image
               src="/images/user-icon-1.svg"
