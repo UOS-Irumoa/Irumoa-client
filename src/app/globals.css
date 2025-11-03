@@ -30,3 +30,28 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* 스크롤바 스타일 - Webkit 브라우저 (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f0f0f0;
+}
+
+/* 스크롤바 스타일 - Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff transparent;
+}
