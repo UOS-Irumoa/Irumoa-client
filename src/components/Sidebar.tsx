@@ -98,13 +98,29 @@ const NavLabel = styled.span<{ isActive: boolean }>`
 `;
 
 const menuItems = [
-  { href: "/", icon: "/images/icon-all.svg", label: "전체" },
-  { href: "/contest", icon: "/images/icon-contest.svg", label: "공모전" },
-  { href: "/mentoring", icon: "/images/icon-mentoring.svg", label: "멘토링" },
-  { href: "/volunteer", icon: "/images/icon-volunteer.svg", label: "봉사" },
-  { href: "/employment", icon: "/images/icon-employment.svg", label: "취업" },
-  { href: "/visit", icon: "/images/icon-visit.svg", label: "탐방" },
-  { href: "/lecture", icon: "/images/icon-lecture.svg", label: "특강" },
+  { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
+  {
+    href: "/contest",
+    icon: "/images/sidebar/icon-contest.svg",
+    label: "공모전",
+  },
+  {
+    href: "/mentoring",
+    icon: "/images/sidebar/icon-mentoring.svg",
+    label: "멘토링",
+  },
+  {
+    href: "/volunteer",
+    icon: "/images/sidebar/icon-volunteer.svg",
+    label: "봉사",
+  },
+  {
+    href: "/employment",
+    icon: "/images/sidebar/icon-employment.svg",
+    label: "취업",
+  },
+  { href: "/visit", icon: "/images/sidebar/icon-visit.svg", label: "탐방" },
+  { href: "/lecture", icon: "/images/sidebar/icon-lecture.svg", label: "특강" },
 ];
 
 export default function Sidebar() {

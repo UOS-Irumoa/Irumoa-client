@@ -124,7 +124,7 @@ export default function Header() {
     <HeaderContainer>
       <Logo>
         <Image
-          src="/images/logo.png"
+          src="/images/header/logo.png"
           alt="이루모아"
           fill
           style={{ objectFit: "contain" }}
@@ -139,7 +139,7 @@ export default function Header() {
         <ActionButton onClick={handleProfileClick}>
           <UserIcon>
             <Image
-              src="/images/user-icon-1.svg"
+              src="/images/header/user-icon-1.svg"
               alt="User"
               width={16}
               height={16}

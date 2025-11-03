@@ -14,7 +14,7 @@ const FullScreenContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: ${({ theme }) => theme.colors.background.main};
-  background-image: url("/images/profile-background.svg");
+  background-image: url("/images/profile/profile-background-combined.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -428,7 +428,7 @@ export default function ProfilePage() {
       <ProfileSection>
         <ProfileIconWrapper>
           <Image
-            src="/images/profile-icon.svg"
+            src="/images/profile/profile-icon.svg"
             alt="Profile"
             width={18}
             height={22}
@@ -510,7 +510,7 @@ export default function ProfilePage() {
                   {selectedInterests.includes(interest) && (
                     <BadgeCloseIcon>
                       <Image
-                        src="/images/close-icon.svg"
+                        src="/images/profile/close-icon.svg"
                         alt="Remove"
                         width={12}
                         height={12}
