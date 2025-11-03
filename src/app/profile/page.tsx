@@ -14,8 +14,15 @@ const FullScreenContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: ${({ theme }) => theme.colors.background.main};
-  overflow-y: auto;
+  background-image: url("/images/profile-background.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const CloseButton = styled.button`
@@ -89,41 +96,50 @@ const CloseIconWrapper = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 60px;
+  width: 100%;
+  max-width: 500px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-sizing: border-box;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 60px 24px;
+    padding: 20px;
+    max-width: 100%;
   }
 `;
 
 const ProfileSection = styled.div`
+  position: fixed;
+  top: 40px;
+  left: 40px;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.xl};
-  margin-bottom: 60px;
+  gap: ${({ theme }) => theme.spacing.md};
+  z-index: 101;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    top: 20px;
+    left: 20px;
     flex-direction: column;
-    text-align: center;
-    margin-bottom: 40px;
+    align-items: flex-start;
   }
 `;
 
 const ProfileIconWrapper = styled.div`
-  width: 83px;
-  height: 83px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.primary.gradient};
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 5px;
   box-shadow: ${({ theme }) => theme.shadows.md};
+  flex-shrink: 0;
 `;
 
 const ProfileInfo = styled.div`
@@ -134,7 +150,7 @@ const ProfileInfo = styled.div`
 
 const Title = styled.h1`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 30px;
+  font-size: 20px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   line-height: 1.2em;
   color: ${({ theme }) => theme.colors.text.primary};
@@ -143,7 +159,7 @@ const Title = styled.h1`
 
 const Description = styled.p`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 18px;
+  font-size: 13px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   line-height: 1.4em;
   color: ${({ theme }) => theme.colors.text.secondary};
@@ -152,31 +168,31 @@ const Description = styled.p`
 
 const FormContainer = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.background.content};
-  border-radius: 20px;
-  padding: 60px;
+  border-radius: 12px;
+  padding: ${({ theme }) => theme.padding.lg};
   box-shadow: ${({ theme }) => theme.shadows.card};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 40px 24px;
-    gap: 32px;
+    padding: ${({ theme }) => theme.padding.md};
+    gap: ${({ theme }) => theme.spacing.sm};
   }
 `;
 
 const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: 8px;
   position: relative;
 
   &:not(:last-of-type)::after {
     content: "";
     position: absolute;
-    bottom: -20px;
+    bottom: -8px;
     left: 0;
     right: 0;
     height: 1px;
@@ -186,7 +202,7 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 20px;
+  font-size: 14px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   line-height: 1.2em;
   color: ${({ theme }) => theme.colors.text.primary};
@@ -199,16 +215,16 @@ const SelectWrapper = styled.div`
 
 const Select = styled.select`
   width: 100%;
-  height: 50px;
-  padding: 0 40px 0 12px;
+  height: 38px;
+  padding: 0 36px 0 10px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 17px;
+  font-size: 13px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   line-height: 1.18em;
   color: ${({ theme }) => theme.colors.text.primary};
   background: ${({ theme }) => theme.colors.background.main};
   border: 1px solid ${({ theme }) => theme.colors.border.main};
-  border-radius: 10px;
+  border-radius: 6px;
   appearance: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -267,32 +283,32 @@ const SelectIcon = styled.div`
 const InterestSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: 8px;
 `;
 
 const BadgeContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: 10px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: repeat(2, 1fr);
-    gap: ${({ theme }) => theme.spacing.md};
+    gap: 8px;
   }
 `;
 
 const Badge = styled.button<{ selected: boolean }>`
-  height: 50px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ selected }) => (selected ? "18px" : "17px")};
+  font-size: 13px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  line-height: ${({ selected }) => (selected ? "0.89em" : "0.94em")};
+  line-height: 1em;
   cursor: pointer;
   transition: all 0.2s ease;
   border: ${({ selected, theme }) =>
@@ -305,7 +321,7 @@ const Badge = styled.button<{ selected: boolean }>`
     selected ? theme.shadows.buttonActive : "none"};
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     box-shadow: ${({ theme, selected }) =>
       selected ? theme.shadows.buttonActive : theme.shadows.sm};
   }
@@ -324,30 +340,33 @@ const BadgeCloseIcon = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
   display: flex;
-  gap: ${({ theme }) => theme.spacing.lg};
-  justify-content: center;
-  margin-top: 40px;
+  gap: 12px;
+  z-index: 101;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    flex-direction: column-reverse;
-    width: 100%;
+    bottom: 20px;
+    right: 20px;
+    flex-direction: row;
   }
 `;
 
 const Button = styled.button<{ variant?: "primary" | "secondary" }>`
-  min-width: 180px;
-  height: 60px;
+  min-width: 100px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0 32px;
-  border-radius: 10px;
+  padding: 0 20px;
+  border-radius: 8px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 23px;
+  font-size: 14px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  line-height: 0.87em;
+  line-height: 1em;
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -422,24 +441,24 @@ export default function ProfilePage() {
         <CloseIconWrapper />
       </CloseButton>
 
-      <ContentContainer>
-        <ProfileSection>
-          <ProfileIconWrapper>
-            <Image
-              src="/images/profile-icon.svg"
-              alt="Profile"
-              width={28}
-              height={35}
-            />
-          </ProfileIconWrapper>
-          <ProfileInfo>
-            <Title>내 정보 입력</Title>
-            <Description>
-              입력한 정보를 통해 맞춤형 비교과 프로그램을 추천받을 수 있습니다.
-            </Description>
-          </ProfileInfo>
-        </ProfileSection>
+      <ProfileSection>
+        <ProfileIconWrapper>
+          <Image
+            src="/images/profile-icon.svg"
+            alt="Profile"
+            width={18}
+            height={22}
+          />
+        </ProfileIconWrapper>
+        <ProfileInfo>
+          <Title>내 정보 입력</Title>
+          <Description>
+            입력한 정보를 통해 맞춤형 비교과 프로그램을 추천받을 수 있습니다.
+          </Description>
+        </ProfileInfo>
+      </ProfileSection>
 
+      <ContentContainer>
         <FormContainer>
           <FormGroup>
             <Label>단과대학</Label>
@@ -519,16 +538,16 @@ export default function ProfilePage() {
             </BadgeContainer>
           </InterestSection>
         </FormContainer>
-
-        <ButtonContainer>
-          <Button variant="secondary" onClick={handleCancel}>
-            취소
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            저장
-          </Button>
-        </ButtonContainer>
       </ContentContainer>
+
+      <ButtonContainer>
+        <Button variant="secondary" onClick={handleCancel}>
+          취소
+        </Button>
+        <Button variant="primary" onClick={handleSave}>
+          저장
+        </Button>
+      </ButtonContainer>
     </FullScreenContainer>
   );
 }
