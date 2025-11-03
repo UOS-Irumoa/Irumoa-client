@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "@emotion/styled";
+import { useTheme } from "@/components/provider/ThemeProvider";
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -42,6 +43,37 @@ const LogoText = styled.h1`
   letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
 `;
 
+const ActionsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+`;
+
+const ThemeToggleButton = styled.button`
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-size: ${({ theme }) => theme.typography.fontSize.lg};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: ${({ theme }) => theme.shadows.button};
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.md};
+    border-color: ${({ theme }) => theme.colors.primary.main};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
 const ActionButton = styled.button`
   display: flex;
   align-items: center;
@@ -71,15 +103,22 @@ const ActionButton = styled.button`
 `;
 
 export default function Header() {
+  const { mode, toggleTheme } = useTheme();
+
   return (
     <HeaderContainer>
       <Logo>
         <LogoText>이루모아</LogoText>
       </Logo>
-      <ActionButton>
-        <span>👤</span>
-        <span>내 프로필</span>
-      </ActionButton>
+      <ActionsContainer>
+        <ThemeToggleButton onClick={toggleTheme} title="테마 변경">
+          {mode === "light" ? "🌙" : "☀️"}
+        </ThemeToggleButton>
+        <ActionButton>
+          <span>👤</span>
+          <span>내 정보 수정</span>
+        </ActionButton>
+      </ActionsContainer>
     </HeaderContainer>
   );
 }
