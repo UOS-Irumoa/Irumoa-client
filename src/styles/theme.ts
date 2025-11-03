@@ -41,9 +41,9 @@ export interface Theme {
     lg: string;
     xl: string;
     xxl: string;
-    '2xl': string;
-    '3xl': string;
-    '4xl': string;
+    "2xl": string;
+    "3xl": string;
+    "4xl": string;
   };
   padding: {
     xs: string;
@@ -96,10 +96,10 @@ export interface Theme {
       md: string;
       lg: string;
       xl: string;
-      '2xl': string;
-      '3xl': string;
-      '4xl': string;
-      '5xl': string;
+      "2xl": string;
+      "3xl": string;
+      "4xl": string;
+      "5xl": string;
     };
     fontWeight: {
       light: number;
@@ -137,105 +137,107 @@ export interface Theme {
 export const lightTheme: Theme = {
   colors: {
     primary: {
-      main: '#408CFF',
-      light: '#98BFFA',
-      dark: '#2563EB',
-      gradient: 'linear-gradient(135deg, #408CFF 0%, #2563EB 100%)',
+      main: "#408CFF",
+      light: "#98BFFA",
+      dark: "#2563EB",
+      gradient: "linear-gradient(135deg, #408CFF 0%, #2563EB 100%)",
     },
     secondary: {
-      main: '#74D4FF',
-      light: '#8EC5FF',
-      dark: '#51A2FF',
+      main: "#74D4FF",
+      light: "#8EC5FF",
+      dark: "#51A2FF",
     },
     background: {
-      main: '#E3F2FD',
-      paper: '#FFFFFF',
-      content: '#F0F7FF',
+      main: "#E3F2FD",
+      paper: "#FFFFFF",
+      content: "#F0F7FF",
     },
     text: {
-      primary: '#5C5E66',
-      secondary: '#A0A0A0',
-      disabled: '#C0C0C0',
-      white: '#FFFFFF',
+      primary: "#5C5E66",
+      secondary: "#A0A0A0",
+      disabled: "#C0C0C0",
+      white: "#FFFFFF",
     },
     border: {
-      main: '#E5E6EC',
-      light: '#F0F1F5',
+      main: "#E5E6EC",
+      light: "#F0F1F5",
     },
     status: {
-      error: '#EF4444',
-      success: '#00BC7D',
-      warning: '#F59E0B',
-      info: '#408CFF',
+      error: "#EF4444",
+      success: "#00BC7D",
+      warning: "#F59E0B",
+      info: "#408CFF",
     },
-    white: '#FFFFFF',
+    white: "#FFFFFF",
   },
   spacing: {
-    xs: '4px',
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
-    xl: '24px',
-    xxl: '32px',
-    '2xl': '40px',
-    '3xl': '48px',
-    '4xl': '64px',
+    xs: "4px",
+    sm: "8px",
+    md: "12px",
+    lg: "16px",
+    xl: "24px",
+    xxl: "32px",
+    "2xl": "40px",
+    "3xl": "48px",
+    "4xl": "64px",
   },
   padding: {
-    xs: '4px',
-    sm: '8px',
-    md: '16px',
-    lg: '24px',
-    xl: '32px',
-    xxl: '40px',
-    section: '48px',
-    container: '116px',
+    xs: "4px",
+    sm: "8px",
+    md: "16px",
+    lg: "24px",
+    xl: "32px",
+    xxl: "40px",
+    section: "48px",
+    container: "156px",
   },
   margin: {
-    xs: '4px',
-    sm: '8px',
-    md: '16px',
-    lg: '24px',
-    xl: '32px',
-    xxl: '40px',
-    section: '64px',
+    xs: "4px",
+    sm: "8px",
+    md: "16px",
+    lg: "24px",
+    xl: "32px",
+    xxl: "40px",
+    section: "64px",
   },
   borderRadius: {
-    xs: '4px',
-    sm: '6px',
-    md: '8px',
-    lg: '12px',
-    xl: '16px',
-    full: '9999px',
+    xs: "4px",
+    sm: "6px",
+    md: "8px",
+    lg: "12px",
+    xl: "16px",
+    full: "9999px",
   },
   shadows: {
-    xs: '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
-    sm: '0px 2px 4px 0px rgba(0, 0, 0, 0.06)',
-    md: '0px 2px 8px 0px rgba(0, 0, 0, 0.08)',
-    lg: '0px 4px 16px 0px rgba(0, 0, 0, 0.1)',
-    xl: '0px 8px 32px 0px rgba(0, 0, 0, 0.12)',
-    button: '0px 2px 8px 0px rgba(0, 0, 0, 0.08)',
-    buttonActive: '0px 4px 12px 0px rgba(64, 140, 255, 0.3)',
-    card: '0px 2px 8px 0px rgba(0, 0, 0, 0.08)',
-    header: '0px 4px 32px 0px rgba(0, 0, 0, 0.05)',
+    xs: "0px 1px 2px 0px rgba(0, 0, 0, 0.05)",
+    sm: "0px 2px 4px 0px rgba(0, 0, 0, 0.06)",
+    md: "0px 2px 8px 0px rgba(0, 0, 0, 0.08)",
+    lg: "0px 4px 16px 0px rgba(0, 0, 0, 0.1)",
+    xl: "0px 8px 32px 0px rgba(0, 0, 0, 0.12)",
+    button: "0px 2px 8px 0px rgba(0, 0, 0, 0.08)",
+    buttonActive: "0px 4px 12px 0px rgba(64, 140, 255, 0.3)",
+    card: "0px 2px 8px 0px rgba(0, 0, 0, 0.08)",
+    header: "0px 4px 32px 0px rgba(0, 0, 0, 0.05)",
   },
   typography: {
     fontFamily: {
-      primary: "'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      secondary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      primary:
+        "'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      secondary:
+        "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       mono: "'Courier New', Courier, monospace",
     },
     fontSize: {
-      xs: '10px',
-      sm: '11px',
-      base: '14px',
-      md: '16px',
-      lg: '18px',
-      xl: '20px',
-      '2xl': '24px',
-      '3xl': '28px',
-      '4xl': '32px',
-      '5xl': '40px',
+      xs: "10px",
+      sm: "11px",
+      base: "14px",
+      md: "16px",
+      lg: "18px",
+      xl: "20px",
+      "2xl": "24px",
+      "3xl": "28px",
+      "4xl": "32px",
+      "5xl": "40px",
     },
     fontWeight: {
       light: 300,
@@ -251,22 +253,22 @@ export const lightTheme: Theme = {
       relaxed: 1.75,
     },
     letterSpacing: {
-      tight: '-0.04em',
-      normal: '0',
-      wide: '0.02em',
+      tight: "-0.04em",
+      normal: "0",
+      wide: "0.02em",
     },
   },
   breakpoints: {
-    mobile: '640px',
-    tablet: '768px',
-    desktop: '1024px',
-    wide: '1440px',
+    mobile: "640px",
+    tablet: "768px",
+    desktop: "1024px",
+    wide: "1440px",
   },
   layout: {
-    sidebarWidth: '100px',
-    sidebarWidthMobile: '80px',
-    headerHeight: '64px',
-    contentMaxWidth: '1200px',
+    sidebarWidth: "100px",
+    sidebarWidthMobile: "80px",
+    headerHeight: "64px",
+    contentMaxWidth: "1200px",
   },
 };
 
@@ -274,38 +276,37 @@ export const darkTheme: Theme = {
   ...lightTheme,
   colors: {
     primary: {
-      main: '#60A5FA',
-      light: '#93C5FD',
-      dark: '#3B82F6',
-      gradient: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%)',
+      main: "#60A5FA",
+      light: "#93C5FD",
+      dark: "#3B82F6",
+      gradient: "linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%)",
     },
     secondary: {
-      main: '#7DD3FC',
-      light: '#A5F3FC',
-      dark: '#38BDF8',
+      main: "#7DD3FC",
+      light: "#A5F3FC",
+      dark: "#38BDF8",
     },
     background: {
-      main: '#0F172A',
-      paper: '#1E293B',
-      content: '#1E293B',
+      main: "#0F172A",
+      paper: "#1E293B",
+      content: "#1E293B",
     },
     text: {
-      primary: '#F1F5F9',
-      secondary: '#94A3B8',
-      disabled: '#64748B',
-      white: '#FFFFFF',
+      primary: "#F1F5F9",
+      secondary: "#94A3B8",
+      disabled: "#64748B",
+      white: "#FFFFFF",
     },
     border: {
-      main: '#334155',
-      light: '#475569',
+      main: "#334155",
+      light: "#475569",
     },
     status: {
-      error: '#F87171',
-      success: '#34D399',
-      warning: '#FBBF24',
-      info: '#60A5FA',
+      error: "#F87171",
+      success: "#34D399",
+      warning: "#FBBF24",
+      info: "#60A5FA",
     },
-    white: '#FFFFFF',
+    white: "#FFFFFF",
   },
 };
-

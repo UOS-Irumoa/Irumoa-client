@@ -4,23 +4,20 @@ import styled from "@emotion/styled";
 import { useTheme } from "@/components/provider/ThemeProvider";
 
 const HeaderContainer = styled.header`
-  position: fixed;
-  top: 0;
-  left: ${({ theme }) => theme.layout.sidebarWidth};
-  right: 0;
+  width: 100%;
   height: ${({ theme }) => theme.layout.headerHeight};
   background: ${({ theme }) => theme.colors.background.content};
   box-shadow: ${({ theme }) => theme.shadows.header};
-  border-radius: 0px 0px ${({ theme }) => theme.borderRadius.md}
-    ${({ theme }) => theme.borderRadius.md};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 ${({ theme }) => theme.padding.xl};
-  z-index: 100;
+  box-sizing: border-box;
+  border-radius: 0 0 ${({ theme }) => theme.borderRadius.md}
+    ${({ theme }) => theme.borderRadius.md};
+  margin-bottom: ${({ theme }) => theme.padding.xxl};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    left: ${({ theme }) => theme.layout.sidebarWidthMobile};
     padding: 0 ${({ theme }) => theme.padding.lg};
   }
 `;
