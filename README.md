@@ -37,22 +37,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## Project Structure
-
-```
-├── app/                  # Next.js app directory
-│   ├── layout.tsx       # Root layout
-│   ├── page.tsx         # Home page
-│   └── globals.css      # Global styles
-├── src/
-│   ├── components/
-│   │   └── provider/    # Context providers
-│   │       ├── Providers.tsx
-│   │       └── ThemeProvider.tsx
-│   └── styles/
-│       └── theme.ts     # Theme configuration
-└── public/              # Static assets
-```
 
 ## Theme System
 
@@ -63,17 +47,3 @@ import { useTheme } from '@/src/components/provider/ThemeProvider';
 
 const { theme, mode, toggleTheme } = useTheme();
 ```
-
-## Learn More
-
-To learn more about the technologies used:
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Emotion Documentation](https://emotion.sh/docs/introduction)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
