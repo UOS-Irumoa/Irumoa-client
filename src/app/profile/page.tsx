@@ -105,11 +105,6 @@ const ContentContainer = styled.div`
   justify-content: center;
   padding: 40px;
   box-sizing: border-box;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 20px;
-    max-width: 100%;
-  }
 `;
 
 const ProfileSection = styled.div`
@@ -120,13 +115,6 @@ const ProfileSection = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.md};
   z-index: 101;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    top: 20px;
-    left: 20px;
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `;
 
 const ProfileIconWrapper = styled.div`
@@ -172,15 +160,9 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
-  background: ${({ theme }) => theme.colors.background.content};
+  background: transparent;
   border-radius: 12px;
   padding: ${({ theme }) => theme.padding.lg};
-  box-shadow: ${({ theme }) => theme.shadows.card};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: ${({ theme }) => theme.padding.md};
-    gap: ${({ theme }) => theme.spacing.sm};
-  }
 `;
 
 const FormGroup = styled.div`
@@ -222,7 +204,7 @@ const Select = styled.select`
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   line-height: 1.18em;
   color: ${({ theme }) => theme.colors.text.primary};
-  background: ${({ theme }) => theme.colors.background.main};
+  background: #ffffff;
   border: 1px solid ${({ theme }) => theme.colors.border.main};
   border-radius: 6px;
   appearance: none;
@@ -253,8 +235,8 @@ const SelectIcon = styled.div`
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 17px;
-  height: 11px;
+  width: 13px;
+  height: 13px;
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -289,10 +271,12 @@ const InterestSection = styled.div`
 const BadgeContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 10px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
     gap: 8px;
   }
 `;
@@ -314,7 +298,7 @@ const Badge = styled.button<{ selected: boolean }>`
   border: ${({ selected, theme }) =>
     selected ? "none" : `1px solid ${theme.colors.border.main}`};
   background: ${({ theme, selected }) =>
-    selected ? theme.colors.primary.gradient : theme.colors.background.main};
+    selected ? theme.colors.primary.gradient : "#FFFFFF"};
   color: ${({ theme, selected }) =>
     selected ? theme.colors.text.white : theme.colors.text.primary};
   box-shadow: ${({ theme, selected }) =>
@@ -332,8 +316,8 @@ const Badge = styled.button<{ selected: boolean }>`
 `;
 
 const BadgeCloseIcon = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -379,7 +363,7 @@ const Button = styled.button<{ variant?: "primary" | "secondary" }>`
     box-shadow: ${theme.shadows.button};
   `
       : `
-    background: ${theme.colors.background.main};
+    background: #FFFFFF;
     border: 1px solid ${theme.colors.border.main};
     color: ${theme.colors.text.primary};
   `}
@@ -528,8 +512,8 @@ export default function ProfilePage() {
                       <Image
                         src="/images/close-icon.svg"
                         alt="Remove"
-                        width={10}
-                        height={10}
+                        width={12}
+                        height={12}
                       />
                     </BadgeCloseIcon>
                   )}
