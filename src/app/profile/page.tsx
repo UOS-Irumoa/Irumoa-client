@@ -40,11 +40,20 @@ const ContentContainer = styled.div`
 const ProfileSection = styled.div`
   position: fixed;
   top: 40px;
-  left: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  right: 0;
+  width: 80vw;
+  height: 12vh;
   display: flex;
   align-items: center;
+  background-color: ${({ theme }) => theme.colors.background.paper};
   gap: ${({ theme }) => theme.spacing.md};
+  padding-left: 30px;
   z-index: 101;
+  border-radius: 10px;
+  opacity: 0.8;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
 `;
 
 const ProfileIconWrapper = styled.div`
@@ -63,7 +72,7 @@ const ProfileIconWrapper = styled.div`
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Title = styled.h1`
@@ -95,21 +104,39 @@ const FormContainer = styled.div`
   padding: ${({ theme }) => theme.padding.lg};
 `;
 
-const FormGroup = styled.div`
+const FormRow = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 20px;
   position: relative;
+  padding-bottom: 10px;
 
   &:not(:last-of-type)::after {
     content: "";
     position: absolute;
-    bottom: -8px;
+    bottom: 0;
     left: 0;
     right: 0;
     height: 2px;
     background: ${({ theme }) => theme.colors.border.main};
   }
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  position: relative;
+
+  &.full-width {
+    flex: 1;
+  }
+`;
+
+const LabelRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;
 
 const Label = styled.label`
@@ -118,6 +145,14 @@ const Label = styled.label`
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   line-height: 1.2em;
   color: ${({ theme }) => theme.colors.text.primary};
+`;
+
+const RequiredBadge = styled.span`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2em;
+  color: rgba(255, 0, 0, 0.6);
 `;
 
 const SelectWrapper = styled.div`
@@ -337,6 +372,8 @@ export default function ProfilePage() {
   const router = useRouter();
   const [college, setCollege] = useState("");
   const [department, setDepartment] = useState("");
+  const [doubleCollege, setDoubleCollege] = useState("");
+  const [doubleDepartment, setDoubleDepartment] = useState("");
   const [grade, setGrade] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
@@ -353,6 +390,8 @@ export default function ProfilePage() {
     console.log({
       college,
       department,
+      doubleCollege,
+      doubleDepartment,
       grade,
       interests: selectedInterests,
     });
@@ -384,61 +423,125 @@ export default function ProfilePage() {
 
       <ContentContainer>
         <FormContainer>
-          <FormGroup>
-            <Label>단과대학</Label>
-            <SelectWrapper>
-              <Select
-                value={college}
-                onChange={(e) => setCollege(e.target.value)}
-              >
-                <option value="">단과대학을 선택하세요</option>
-                <option value="인문대학">인문대학</option>
-                <option value="자연과학대학">자연과학대학</option>
-                <option value="공과대학">공과대학</option>
-                <option value="사회과학대학">사회과학대학</option>
-                <option value="경영대학">경영대학</option>
-                <option value="예술체육대학">예술체육대학</option>
-              </Select>
-              <SelectIcon />
-            </SelectWrapper>
-          </FormGroup>
+          {/* 단과대학, 학과 */}
+          <FormRow>
+            <FormGroup>
+              <LabelRow>
+                <Label>단과대학</Label>
+                <RequiredBadge>*필수</RequiredBadge>
+              </LabelRow>
+              <SelectWrapper>
+                <Select
+                  value={college}
+                  onChange={(e) => setCollege(e.target.value)}
+                >
+                  <option value="">단과대학을 선택하세요</option>
+                  <option value="인문대학">인문대학</option>
+                  <option value="자연과학대학">자연과학대학</option>
+                  <option value="공과대학">공과대학</option>
+                  <option value="사회과학대학">사회과학대학</option>
+                  <option value="경영대학">경영대학</option>
+                  <option value="예술체육대학">예술체육대학</option>
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
 
-          <FormGroup>
-            <Label>학과</Label>
-            <SelectWrapper>
-              <Select
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-              >
-                <option value="">학과를 선택하세요</option>
-                <option value="컴퓨터과학부">컴퓨터과학부</option>
-                <option value="전자전기컴퓨터공학부">
-                  전자전기컴퓨터공학부
-                </option>
-                <option value="기계공학부">기계공학부</option>
-                <option value="경영학부">경영학부</option>
-                <option value="경제학부">경제학부</option>
-              </Select>
-              <SelectIcon />
-            </SelectWrapper>
-          </FormGroup>
+            <FormGroup>
+              <LabelRow>
+                <Label>학과</Label>
+                <RequiredBadge>*필수</RequiredBadge>
+              </LabelRow>
+              <SelectWrapper>
+                <Select
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                >
+                  <option value="">학과를 선택하세요</option>
+                  <option value="컴퓨터과학부">컴퓨터과학부</option>
+                  <option value="전자전기컴퓨터공학부">
+                    전자전기컴퓨터공학부
+                  </option>
+                  <option value="기계공학부">기계공학부</option>
+                  <option value="경영학부">경영학부</option>
+                  <option value="경제학부">경제학부</option>
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
+          </FormRow>
 
-          <FormGroup>
-            <Label>학년</Label>
-            <SelectWrapper>
-              <Select value={grade} onChange={(e) => setGrade(e.target.value)}>
-                <option value="">학년을 선택하세요</option>
-                <option value="1">1학년</option>
-                <option value="2">2학년</option>
-                <option value="3">3학년</option>
-                <option value="4">4학년</option>
-              </Select>
-              <SelectIcon />
-            </SelectWrapper>
-          </FormGroup>
+          {/* 복수전공 단과대학, 복수전공 학과 */}
+          <FormRow>
+            <FormGroup>
+              <Label>복수전공 단과대학</Label>
+              <SelectWrapper>
+                <Select
+                  value={doubleCollege}
+                  onChange={(e) => setDoubleCollege(e.target.value)}
+                >
+                  <option value="">단과대학을 선택하세요</option>
+                  <option value="인문대학">인문대학</option>
+                  <option value="자연과학대학">자연과학대학</option>
+                  <option value="공과대학">공과대학</option>
+                  <option value="사회과학대학">사회과학대학</option>
+                  <option value="경영대학">경영대학</option>
+                  <option value="예술체육대학">예술체육대학</option>
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
 
+            <FormGroup>
+              <Label>복수전공 학과</Label>
+              <SelectWrapper>
+                <Select
+                  value={doubleDepartment}
+                  onChange={(e) => setDoubleDepartment(e.target.value)}
+                >
+                  <option value="">학과를 선택하세요</option>
+                  <option value="컴퓨터과학부">컴퓨터과학부</option>
+                  <option value="전자전기컴퓨터공학부">
+                    전자전기컴퓨터공학부
+                  </option>
+                  <option value="기계공학부">기계공학부</option>
+                  <option value="경영학부">경영학부</option>
+                  <option value="경제학부">경제학부</option>
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
+          </FormRow>
+
+          {/* 학년 */}
+          <FormRow>
+            <FormGroup>
+              <LabelRow>
+                <Label>학년</Label>
+                <RequiredBadge>*필수</RequiredBadge>
+              </LabelRow>
+              <SelectWrapper>
+                <Select
+                  value={grade}
+                  onChange={(e) => setGrade(e.target.value)}
+                >
+                  <option value="">학년을 선택하세요</option>
+                  <option value="1">1학년</option>
+                  <option value="2">2학년</option>
+                  <option value="3">3학년</option>
+                  <option value="4">4학년</option>
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
+          </FormRow>
+
+          {/* 관심사 */}
           <InterestSection>
-            <Label>관심사</Label>
+            <LabelRow>
+              <Label>관심사</Label>
+              <RequiredBadge>*필수</RequiredBadge>
+            </LabelRow>
             <BadgeContainer>
               {interests.map((interest) => (
                 <Badge
