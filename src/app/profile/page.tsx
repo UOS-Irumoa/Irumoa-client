@@ -25,76 +25,6 @@ const FullScreenContainer = styled.div`
   justify-content: center;
 `;
 
-const CloseButton = styled.button`
-  position: fixed;
-  top: 40px;
-  right: 40px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.background.content};
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 101;
-  box-shadow: ${({ theme }) => theme.shadows.sm};
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: ${({ theme }) => theme.shadows.md};
-    border-color: ${({ theme }) => theme.colors.primary.main};
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-  }
-`;
-
-const CloseIconWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-  position: relative;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 2px;
-    background: ${({ theme }) => theme.colors.text.primary};
-  }
-
-  &::before {
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
-
-  &::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 20px;
-    height: 20px;
-
-    &::before,
-    &::after {
-      width: 16px;
-    }
-  }
-`;
-
 const ContentContainer = styled.div`
   width: 100%;
   max-width: 500px;
@@ -433,16 +363,8 @@ export default function ProfilePage() {
     router.back();
   };
 
-  const handleClose = () => {
-    router.back();
-  };
-
   return (
     <FullScreenContainer>
-      <CloseButton onClick={handleClose} aria-label="닫기">
-        <CloseIconWrapper />
-      </CloseButton>
-
       <ProfileSection>
         <ProfileIconWrapper>
           <Image
