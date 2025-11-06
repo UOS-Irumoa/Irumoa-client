@@ -7,9 +7,9 @@ import RecommendCard from "./RecommendCard";
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.main};
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   flex-shrink: 0;
 `;
 
