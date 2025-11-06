@@ -3,6 +3,7 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const HeaderContainer = styled.header`
   width: 50%;
@@ -12,7 +13,7 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 ${({ theme }) => theme.padding.xl};
+  padding: 0 ${({ theme }) => theme.padding.md};
   box-sizing: border-box;
   border-radius: 8px 8px 8px 8px;
   margin-bottom: ${({ theme }) => theme.padding.sm};
@@ -51,7 +52,30 @@ const ActionButton = styled.button`
 const ActionsContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+`;
+
+const UserInfoLabel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+`;
+
+const UserName = styled.span`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 16px;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
+  color: ${({ theme }) => theme.colors.text.primary};
+  line-height: 1;
+`;
+
+const UserDetails = styled.span`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 13px;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  line-height: 1;
 `;
 
 const UserIcon = styled.div`
@@ -63,16 +87,75 @@ const UserIcon = styled.div`
   position: relative;
 `;
 
+interface UserProfile {
+  college: string;
+  department: string;
+  doubleCollege: string;
+  doubleDepartment: string;
+  grade: string;
+  interests: string[];
+}
+
 export default function Header() {
   const router = useRouter();
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
+  const loadUserProfile = () => {
+    if (typeof window !== "undefined") {
+      const savedProfile = localStorage.getItem("userProfile");
+      if (savedProfile) {
+        try {
+          const profile = JSON.parse(savedProfile);
+          setUserProfile(profile);
+        } catch (error) {
+          console.error("Failed to parse user profile:", error);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    // 초기 로드
+    loadUserProfile();
+
+    // profileUpdated 이벤트 리스너 추가
+    const handleProfileUpdate = () => {
+      loadUserProfile();
+    };
+
+    window.addEventListener("profileUpdated", handleProfileUpdate);
+
+    return () => {
+      window.removeEventListener("profileUpdated", handleProfileUpdate);
+    };
+  }, []);
 
   const handleProfileClick = () => {
     router.push("/profile");
   };
 
+  const getUserDisplayText = () => {
+    if (!userProfile || !userProfile.department || !userProfile.grade) {
+      return null;
+    }
+
+    return {
+      department: userProfile.department,
+      grade: `${userProfile.grade}학년`,
+    };
+  };
+
+  const displayInfo = getUserDisplayText();
+
   return (
     <HeaderContainer>
       <ActionsContainer>
+        {displayInfo && (
+          <UserInfoLabel>
+            <UserName>{displayInfo.department}</UserName>
+            <UserDetails>{displayInfo.grade}</UserDetails>
+          </UserInfoLabel>
+        )}
         <ActionButton onClick={handleProfileClick}>
           <UserIcon>
             <Image

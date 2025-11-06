@@ -89,7 +89,7 @@ const ContentWrapper = styled.div`
   background: ${({ theme }) => theme.colors.background.content};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.header};
-  padding: ${({ theme }) => theme.padding.xl};
+  padding: ${({ theme }) => theme.padding.md};
   height: 100%;
   max-width: 100%;
   overflow-y: auto;

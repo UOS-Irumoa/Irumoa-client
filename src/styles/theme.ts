@@ -267,7 +267,7 @@ export const lightTheme: Theme = {
   layout: {
     sidebarWidth: "100px",
     sidebarWidthMobile: "80px",
-    headerHeight: "64px",
+    headerHeight: "55px",
     contentMaxWidth: "1200px",
   },
 };

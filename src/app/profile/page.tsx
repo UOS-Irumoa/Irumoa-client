@@ -2,7 +2,7 @@
 
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const FullScreenContainer = styled.div`
@@ -377,6 +377,26 @@ export default function ProfilePage() {
   const [grade, setGrade] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
+  // localStorage에서 저장된 정보 불러오기
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedProfile = localStorage.getItem("userProfile");
+      if (savedProfile) {
+        try {
+          const profile = JSON.parse(savedProfile);
+          setCollege(profile.college || "");
+          setDepartment(profile.department || "");
+          setDoubleCollege(profile.doubleCollege || "");
+          setDoubleDepartment(profile.doubleDepartment || "");
+          setGrade(profile.grade || "");
+          setSelectedInterests(profile.interests || []);
+        } catch (error) {
+          console.error("Failed to parse user profile:", error);
+        }
+      }
+    }
+  }, []);
+
   const toggleInterest = (interest: string) => {
     setSelectedInterests((prev) =>
       prev.includes(interest)
@@ -386,15 +406,24 @@ export default function ProfilePage() {
   };
 
   const handleSave = () => {
-    // TODO: 저장 로직 구현
-    console.log({
+    const userProfile = {
       college,
       department,
       doubleCollege,
       doubleDepartment,
       grade,
       interests: selectedInterests,
-    });
+    };
+
+    // localStorage에 저장
+    if (typeof window !== "undefined") {
+      localStorage.setItem("userProfile", JSON.stringify(userProfile));
+      
+      // 커스텀 이벤트 발생시켜서 Header에서 즉시 업데이트되도록
+      window.dispatchEvent(new Event("profileUpdated"));
+    }
+
+    console.log("User profile saved:", userProfile);
     router.back();
   };
 
