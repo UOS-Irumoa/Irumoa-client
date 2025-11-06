@@ -10,6 +10,7 @@ const Section = styled.section`
   gap: 10px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.main};
   padding-bottom: 10px;
+  flex-shrink: 0;
 `;
 
 const SectionHeader = styled.div`

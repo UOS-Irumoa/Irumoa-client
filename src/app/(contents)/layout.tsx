@@ -10,9 +10,9 @@ import Header from "@/components/Header";
 
 const AppContainer = styled.div`
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden;
   background: ${({ theme }) => theme.colors.background.main};
   display: flex;
   flex-direction: column;
@@ -64,9 +64,9 @@ const MainContentArea = styled.main`
   padding-right: ${({ theme }) => theme.padding.xl};
   padding-bottom: ${({ theme }) => theme.padding.xl};
   box-sizing: border-box;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding-left: ${({ theme }) => theme.padding.xxl};
@@ -78,11 +78,13 @@ const ContentWrapper = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.header};
   padding: ${({ theme }) => theme.padding.md};
-  flex: 1;
   max-width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
   box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default function RootLayout({

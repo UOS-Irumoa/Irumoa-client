@@ -4,13 +4,16 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import SearchBar from "@/components/main/SearchBar";
 import FilterBar from "@/components/main/FilterBar";
-import ProgramCard from "@/components/main/ProgramCard";
+import ProgramListItem from "@/components/main/ProgramListItem";
 import RecommendSection from "@/components/main/RecommendSection";
 
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 `;
 
 const SearchSection = styled.div`
@@ -20,6 +23,7 @@ const SearchSection = styled.div`
   gap: 24px;
   padding-bottom: 10px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.main};
+  flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     flex-direction: column;
@@ -29,11 +33,32 @@ const SearchSection = styled.div`
   }
 `;
 
-const ProgramGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+const ProgramList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.border.main};
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.text.secondary};
+  }
 `;
 
 const Divider = styled.div`
@@ -151,11 +176,11 @@ export default function MainPage() {
 
       <RecommendSection programs={recommendedPrograms} />
 
-      <ProgramGrid>
+      <ProgramList>
         {mockPrograms.map((program) => (
-          <ProgramCard key={program.id} {...program} />
+          <ProgramListItem key={program.id} {...program} />
         ))}
-      </ProgramGrid>
+      </ProgramList>
     </MainContent>
   );
 }
