@@ -33,7 +33,7 @@ const NavButton = styled.button<{ isActive: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.xs};
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   background: ${({ theme, isActive }) =>
@@ -82,7 +82,7 @@ const NavIconWrapper = styled.div<{ isActive: boolean }>`
 
 const NavLabel = styled.span<{ isActive: boolean }>`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  font-size: ${({ theme }) => theme.typography.fontSize.md};
   font-weight: ${({ theme, isActive }) =>
     isActive
       ? theme.typography.fontWeight.bold

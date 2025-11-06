@@ -4,8 +4,10 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 
 const SearchWrapper = styled.div`
-  position: relative;
-  width: 40%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 33%;
   flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -14,9 +16,9 @@ const SearchWrapper = styled.div`
 `;
 
 const SearchInput = styled.input`
-  width: 100%;
-  height: 50px;
-  padding: 0 50px 0 16px;
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 17px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
@@ -38,12 +40,8 @@ const SearchInput = styled.input`
 `;
 
 const SearchIconButton = styled.button`
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.primary.gradient};
   border: none;
@@ -52,13 +50,14 @@ const SearchIconButton = styled.button`
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 
   &:hover {
-    transform: translateY(-50%) scale(1.05);
+    transform: scale(1.05);
   }
 
   &:active {
-    transform: translateY(-50%) scale(0.95);
+    transform: scale(0.95);
   }
 `;
 
@@ -80,11 +79,10 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
         <Image
           src="/images/main/search-icon.svg"
           alt="Search"
-          width={18}
-          height={18}
+          width={23}
+          height={23}
         />
       </SearchIconButton>
     </SearchWrapper>
   );
 }
-

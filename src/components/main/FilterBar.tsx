@@ -4,14 +4,14 @@ import styled from "@emotion/styled";
 
 const FilterSection = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
-  gap: 16px;
+  gap: 20px;
   flex: 1;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
   }
 `;
 
@@ -33,13 +33,13 @@ const FilterLabel = styled.label`
 
 const SelectWrapper = styled.div`
   position: relative;
-  width: 200px;
+  width: 140px;
 `;
 
 const Select = styled.select`
   width: 100%;
-  height: 42px;
-  padding: 0 40px 0 13px;
+  height: 35px;
+  padding: 0 30px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 16px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
@@ -50,6 +50,7 @@ const Select = styled.select`
   appearance: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: center;
 
   &:focus {
     outline: none;
@@ -59,12 +60,13 @@ const Select = styled.select`
 
   option {
     color: ${({ theme }) => theme.colors.text.primary};
+    text-align: center;
   }
 `;
 
 const SelectIcon = styled.div`
   position: absolute;
-  right: 13px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   width: 13px;
@@ -97,14 +99,9 @@ const SelectIcon = styled.div`
 const CheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  align-self: flex-end;
+  justify-content: center;
+  gap: 4px;
   margin-bottom: 4px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin-bottom: 0;
-    align-self: flex-start;
-  }
 `;
 
 const Checkbox = styled.input`
@@ -144,15 +141,15 @@ export default function FilterBar({
   return (
     <FilterSection>
       <CheckboxWrapper>
+        <CheckboxLabel htmlFor="qualified-only">
+          지원 자격 해당 항목만 표시
+        </CheckboxLabel>
         <Checkbox
           type="checkbox"
           id="qualified-only"
           checked={showOnlyQualified}
           onChange={(e) => onShowOnlyQualifiedChange(e.target.checked)}
         />
-        <CheckboxLabel htmlFor="qualified-only">
-          지원 자격 해당 항목만 표시
-        </CheckboxLabel>
       </CheckboxWrapper>
 
       <FilterGroup>
@@ -172,4 +169,3 @@ export default function FilterBar({
     </FilterSection>
   );
 }
-

@@ -9,11 +9,7 @@ import ProgramCard from "@/components/main/ProgramCard";
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
-`;
-
-const ContentWrapper = styled.div`
-  padding: 24px;
+  gap: 10px;
 `;
 
 const SearchSection = styled.div`
@@ -21,7 +17,7 @@ const SearchSection = styled.div`
   flex-direction: row;
   align-items: flex-end;
   gap: 24px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.main};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -104,25 +100,23 @@ export default function MainPage() {
 
   return (
     <MainContent>
-      <ContentWrapper>
-        <SearchSection>
-          <SearchBar value={searchTerm} onChange={setSearchTerm} />
-          <FilterBar
-            recruitStatus={recruitStatus}
-            onRecruitStatusChange={setRecruitStatus}
-            showOnlyQualified={showOnlyQualified}
-            onShowOnlyQualifiedChange={setShowOnlyQualified}
-          />
-        </SearchSection>
+      <SearchSection>
+        <SearchBar value={searchTerm} onChange={setSearchTerm} />
+        <FilterBar
+          recruitStatus={recruitStatus}
+          onRecruitStatusChange={setRecruitStatus}
+          showOnlyQualified={showOnlyQualified}
+          onShowOnlyQualifiedChange={setShowOnlyQualified}
+        />
+      </SearchSection>
 
-        <Divider />
+      <Divider />
 
-        <ProgramGrid>
-          {mockPrograms.map((program) => (
-            <ProgramCard key={program.id} {...program} />
-          ))}
-        </ProgramGrid>
-      </ContentWrapper>
+      <ProgramGrid>
+        {mockPrograms.map((program) => (
+          <ProgramCard key={program.id} {...program} />
+        ))}
+      </ProgramGrid>
     </MainContent>
   );
 }

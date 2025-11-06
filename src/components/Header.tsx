@@ -98,7 +98,7 @@ const CategoryTag = styled.span<{
     border: 1px solid ${theme.colors.primary.main};
   `
       : `
-    background: transparent;
+    background: ${theme.colors.white};
     color: ${theme.colors.text.primary};
     border: 1px solid ${theme.colors.border.main};
   `}
