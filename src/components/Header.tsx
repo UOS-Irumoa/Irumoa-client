@@ -5,27 +5,17 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const HeaderContainer = styled.header`
-  width: 100%;
+  width: 50%;
   background: ${({ theme }) => theme.colors.background.content};
   height: ${({ theme }) => theme.layout.headerHeight};
-
   box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 ${({ theme }) => theme.padding.xl};
   box-sizing: border-box;
-  border-radius: 0 0 8px 8px;
+  border-radius: 8px 8px 8px 8px;
   margin-bottom: ${({ theme }) => theme.padding.sm};
-  }
-`;
-
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  height: 32px;
-  position: relative;
-  width: 91.24px;
 `;
 
 const ActionButton = styled.button`
@@ -82,15 +72,6 @@ export default function Header() {
 
   return (
     <HeaderContainer>
-      <Logo>
-        <Image
-          src="/images/header/logo.png"
-          alt="이루모아"
-          fill
-          style={{ objectFit: "contain" }}
-          priority
-        />
-      </Logo>
       <ActionsContainer>
         <ActionButton onClick={handleProfileClick}>
           <UserIcon>

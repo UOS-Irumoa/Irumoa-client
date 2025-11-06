@@ -8,7 +8,7 @@ const Nav = styled.nav`
   position: fixed;
   top: calc(
     ${({ theme }) => theme.layout.headerHeight} +
-      ${({ theme }) => theme.padding.md}
+      ${({ theme }) => theme.padding.xxl}
   );
   left: calc((${({ theme }) => theme.padding.container} - 106px) / 2);
   display: flex;
