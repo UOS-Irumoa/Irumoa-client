@@ -11,7 +11,7 @@ const Card = styled.div`
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 5px;
   flex-shrink: 0;
   width: calc((100% - 40px) / 5); /* 5개 카드, gap 10px × 4 = 40px */
   min-width: 180px;

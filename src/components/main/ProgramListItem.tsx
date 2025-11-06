@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 const ListItem = styled.div`
   background: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: 14 px 16px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all 0.2s ease;

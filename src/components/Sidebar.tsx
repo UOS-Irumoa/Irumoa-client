@@ -82,7 +82,7 @@ const NavIconWrapper = styled.div<{ isActive: boolean }>`
 
 const NavLabel = styled.span<{ isActive: boolean }>`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.md};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
   font-weight: ${({ theme, isActive }) =>
     isActive
       ? theme.typography.fontWeight.bold

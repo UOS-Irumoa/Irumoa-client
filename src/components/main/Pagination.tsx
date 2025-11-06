@@ -6,8 +6,7 @@ const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
-  padding: 12px 0;
+  gap: 3px;
   flex-shrink: 0;
 `;
 
