@@ -272,48 +272,4 @@ export const lightTheme: Theme = {
   },
 };
 
-export const darkTheme: Theme = {
-  ...lightTheme,
-  colors: {
-    primary: {
-      main: "#408CFF",
-      light: "#5B7FFF",
-      dark: "#2563EB",
-      gradient: "linear-gradient(180deg, #408CFF 0%, #2563EB 100%)",
-    },
-    secondary: {
-      main: "#5B7FFF",
-      light: "#93C5FD",
-      dark: "#408CFF",
-    },
-    background: {
-      main: "#0A0A0F",
-      paper: "#27273A",
-      content: "#1A1A24",
-    },
-    text: {
-      primary: "#E5E7EB",
-      secondary: "#9CA3AF",
-      disabled: "#6B7280",
-      white: "#FFFFFF",
-    },
-    border: {
-      main: "rgba(255, 255, 255, 0.1)",
-      light: "rgba(255, 255, 255, 0.2)",
-    },
-    status: {
-      error: "#EF4444",
-      success: "#00BC7D",
-      warning: "#F59E0B",
-      info: "#408CFF",
-    },
-    white: "#FFFFFF",
-  },
-  shadows: {
-    ...lightTheme.shadows,
-    button: "0px 2px 8px 0px rgba(0, 0, 0, 0.3)",
-    buttonActive: "0px 4px 12px 0px rgba(64, 140, 255, 0.3)",
-    card: "0px 2px 8px 0px rgba(0, 0, 0, 0.3)",
-    header: "0px 4px 32px 0px rgba(0, 0, 0, 0.3)",
-  },
-};
+export const theme = lightTheme;

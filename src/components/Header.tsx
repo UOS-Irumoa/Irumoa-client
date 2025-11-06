@@ -3,7 +3,6 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useTheme } from "@/components/provider/ThemeProvider";
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -65,44 +64,6 @@ const ActionsContainer = styled.div`
   gap: 12px;
 `;
 
-const ThemeButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0 16px;
-  height: 37px;
-  background: ${({ theme }) => theme.colors.background.paper};
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
-  border-radius: 8px;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5em;
-  letter-spacing: -0.04em;
-  color: ${({ theme }) => theme.colors.text.primary};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: #408cff;
-    transform: translateY(-1px);
-    box-shadow: 0px 4px 12px 0px rgba(64, 140, 255, 0.15);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const IconWrapper = styled.span`
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const UserIcon = styled.div`
   width: 16px;
   height: 16px;
@@ -114,7 +75,6 @@ const UserIcon = styled.div`
 
 export default function Header() {
   const router = useRouter();
-  const { mode, toggleTheme } = useTheme();
 
   const handleProfileClick = () => {
     router.push("/profile");
@@ -132,10 +92,6 @@ export default function Header() {
         />
       </Logo>
       <ActionsContainer>
-        <ThemeButton onClick={toggleTheme} title="테마 변경">
-          <IconWrapper>{mode === "light" ? "🌙" : "☀️"}</IconWrapper>
-          <span>{mode === "light" ? "다크 모드" : "라이트 모드"}</span>
-        </ThemeButton>
         <ActionButton onClick={handleProfileClick}>
           <UserIcon>
             <Image
