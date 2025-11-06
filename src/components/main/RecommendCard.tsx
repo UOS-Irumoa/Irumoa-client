@@ -111,15 +111,14 @@ const QualificationBadge = styled.span<{ restricted?: boolean }>`
 
 const ProgramTitle = styled.h3`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0;
   line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 interface RecommendCardProps {
