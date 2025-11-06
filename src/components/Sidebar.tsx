@@ -28,12 +28,12 @@ const Nav = styled.nav`
 
 const NavButton = styled.button<{ isActive: boolean }>`
   width: 106px;
-  height: 50px;
+  height: 63.6px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.sm};
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   background: ${({ theme, isActive }) =>
@@ -54,14 +54,15 @@ const NavButton = styled.button<{ isActive: boolean }>`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 64px;
-    height: 44px;
+    width: 62px;
+    height: 54px;
+    gap: ${({ theme }) => theme.spacing.xs};
   }
 `;
 
 const NavIconWrapper = styled.div<{ isActive: boolean }>`
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,8 +75,8 @@ const NavIconWrapper = styled.div<{ isActive: boolean }>`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 18px;
-    height: 18px;
+    width: 26px;
+    height: 26px;
   }
 `;
 
@@ -143,8 +144,8 @@ export default function Sidebar() {
             <Image
               src={item.icon}
               alt={item.label}
-              width={20}
-              height={20}
+              width={32}
+              height={32}
               style={{
                 filter:
                   pathname === item.href ? "brightness(0) invert(1)" : "none",
