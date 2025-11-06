@@ -1,455 +1,412 @@
 "use client";
 
 import styled from "@emotion/styled";
+import Image from "next/image";
+import { useState } from "react";
 
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xl};
+  gap: 24px;
 `;
 
-const TopSection = styled.div`
+const ContentWrapper = styled.div`
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
+`;
+
+const SearchSection = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.lg};
+  flex-direction: column;
+  gap: 10px;
 `;
 
-const ProfileCard = styled.div`
-  flex: 1;
-  background: ${({ theme }) => theme.colors.background.paper};
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: ${({ theme }) => theme.padding.lg};
+const SearchWrapper = styled.div`
+  position: relative;
+  width: 100%;
 `;
 
-const ProfileHeader = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.lg};
-  margin-bottom: ${({ theme }) => theme.margin.md};
+const SearchInput = styled.input`
+  width: 100%;
+  height: 50px;
+  padding: 0 50px 0 16px;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 17px;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  color: ${({ theme }) => theme.colors.text.primary};
+  background: #ffffff;
+  border: 0.5px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: 6px;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: #a0a0a0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary.main};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary.main}20;
+  }
 `;
 
-const ProfileIcon = styled.div`
-  width: 48px;
-  height: 48px;
+const SearchIconButton = styled.button`
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   background: ${({ theme }) => theme.colors.primary.gradient};
-  border-radius: ${({ theme }) => theme.borderRadius.full};
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.colors.text.white};
-  font-size: ${({ theme }) => theme.typography.fontSize["2xl"]};
-`;
-
-const ProfileInfo = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const ProfileTitle = styled.h3`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.xl};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.text.primary};
-  margin: 0;
-`;
-
-const ProfileSubtitle = styled.p`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.md};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  margin: 0;
-`;
-
-const InterestTags = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const InterestTag = styled.span`
-  padding: ${({ theme }) => theme.padding.xs} ${({ theme }) => theme.padding.sm};
-  background: ${({ theme }) => theme.colors.primary.light}20;
-  color: ${({ theme }) => theme.colors.primary.main};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-`;
-
-const StatsCard = styled.div`
-  flex: 1;
-  background: ${({ theme }) => theme.colors.background.paper};
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: ${({ theme }) => theme.padding.lg};
-`;
-
-const StatsTitle = styled.h3`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.lg};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.text.primary};
-  margin: 0 0 ${({ theme }) => theme.margin.md} 0;
-`;
-
-const StatsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const StatItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${({ theme }) => theme.padding.sm};
-  background: ${({ theme }) => theme.colors.background.main};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-`;
-
-const StatLabel = styled.span`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.md};
-  color: ${({ theme }) => theme.colors.text.secondary};
-`;
-
-const StatValue = styled.span`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.lg};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.primary.main};
-`;
-
-const RecommendedSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const SectionTitle = styled.h2`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize["2xl"]};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.text.primary};
-  margin: 0;
-`;
-
-const ProgramGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ProgramCard = styled.div`
-  background: ${({ theme }) => theme.colors.background.paper};
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: ${({ theme }) => theme.padding.lg};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${({ theme }) => theme.shadows.md};
-    border-color: ${({ theme }) => theme.colors.primary.main};
+    transform: translateY(-50%) scale(1.05);
   }
-`;
 
-const ProgramHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: ${({ theme }) => theme.margin.md};
-`;
-
-const ProgramCategory = styled.span`
-  padding: ${({ theme }) => theme.padding.xs} ${({ theme }) => theme.padding.sm};
-  background: ${({ theme }) => theme.colors.primary.gradient};
-  color: ${({ theme }) => theme.colors.text.white};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  text-transform: uppercase;
-`;
-
-const ProgramStatus = styled.span<{ status: "open" | "closed" | "upcoming" }>`
-  padding: ${({ theme }) => theme.padding.xs} ${({ theme }) => theme.padding.sm};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  background: ${({ theme, status }) => {
-    switch (status) {
-      case "open":
-        return theme.colors.status.success + "20";
-      case "closed":
-        return theme.colors.status.error + "20";
-      case "upcoming":
-        return theme.colors.status.warning + "20";
-    }
-  }};
-  color: ${({ theme, status }) => {
-    switch (status) {
-      case "open":
-        return theme.colors.status.success;
-      case "closed":
-        return theme.colors.status.error;
-      case "upcoming":
-        return theme.colors.status.warning;
-    }
-  }};
-`;
-
-const ProgramTitle = styled.h3`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.lg};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.text.primary};
-  margin: 0 0 ${({ theme }) => theme.margin.sm} 0;
-`;
-
-const ProgramDescription = styled.p`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  line-height: ${({ theme }) => theme.typography.lineHeight.relaxed};
-  margin: 0 0 ${({ theme }) => theme.margin.md} 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-`;
-
-const ProgramFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: ${({ theme }) => theme.padding.sm};
-  border-top: 1px solid ${({ theme }) => theme.colors.border.light};
-`;
-
-const ProgramDate = styled.span`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: ${({ theme }) => theme.colors.text.disabled};
-`;
-
-const ProgramParticipants = styled.span`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: ${({ theme }) => theme.colors.text.secondary};
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
 `;
 
 const FilterSection = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.md};
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 `;
 
-const FilterButton = styled.button<{ active?: boolean }>`
-  padding: ${({ theme }) => theme.padding.sm} ${({ theme }) => theme.padding.md};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+const FilterGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const FilterLabel = styled.label`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.text.primary};
+`;
+
+const SelectWrapper = styled.div`
+  position: relative;
+  width: 200px;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  height: 42px;
+  padding: 0 40px 0 13px;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 16px;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  color: ${({ theme }) => theme.colors.text.primary};
+  background: #ffffff;
+  border: 0.5px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: 6px;
+  appearance: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
-  background: ${({ theme, active }) =>
-    active ? theme.colors.primary.gradient : theme.colors.background.paper};
-  color: ${({ theme, active }) =>
-    active ? theme.colors.text.white : theme.colors.text.primary};
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${({ theme }) => theme.shadows.sm};
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary.main};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary.main}20;
+  }
+
+  option {
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 `;
 
-const QuickStats = styled.div`
+const SelectIcon = styled.div`
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 11px;
+  pointer-events: none;
   display: flex;
-  gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.padding.md};
-  background: ${({ theme }) => theme.colors.background.paper};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  align-items: center;
+  justify-content: center;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 2px;
+    background: #a0a0a0;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+    left: 0;
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+    right: 0;
+  }
 `;
 
-const QuickStatItem = styled.div`
-  flex: 1;
+const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+`;
+
+const Checkbox = styled.input`
+  width: 18px;
+  height: 18px;
+  border: 0.5px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:checked {
+    accent-color: ${({ theme }) => theme.colors.primary.main};
+  }
+`;
+
+const CheckboxLabel = styled.label`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.text.primary};
+  cursor: pointer;
+  user-select: none;
+`;
+
+const ProgramGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+`;
+
+const ProgramCard = styled.div`
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: 12px;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
+  }
 `;
 
-const QuickStatValue = styled.div`
+const StatusBadge = styled.div<{ status: "open" | "closed" }>`
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px 16px;
+  border-radius: 8px 0px 8px 0px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize["2xl"]};
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  background: ${({ status }) =>
+    status === "open"
+      ? "linear-gradient(180deg, #408CFF 0%, #2563EB 100%)"
+      : "#A0A0A0"};
+  box-shadow: ${({ status }) =>
+    status === "open"
+      ? "0px 2px 4px 0px rgba(64, 140, 255, 0.2)"
+      : "0px 2px 4px 0px rgba(0, 0, 0, 0.1)"};
+`;
+
+const ProgramTitle = styled.h3`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 18px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.primary.main};
+  color: ${({ theme }) => theme.colors.text.primary};
+  margin: 24px 0 0 0;
+  line-height: 1.4;
 `;
 
-const QuickStatLabel = styled.div`
+const BadgeContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+const CategoryBadge = styled.span`
+  padding: 6px 12px;
+  background: rgba(64, 140, 255, 0.1);
+  border: 1px solid rgba(64, 140, 255, 0.3);
+  border-radius: 6px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  text-align: center;
-  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: #408cff;
+`;
+
+const QualificationBadge = styled.span<{ restricted?: boolean }>`
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid ${({ restricted }) => (restricted ? "#FF6B6B" : "#E5E6EC")};
+  border-radius: 6px;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 13px;
+  font-weight: 500;
+  color: ${({ restricted, theme }) =>
+    restricted ? "#FF6B6B" : theme.colors.text.secondary};
+`;
+
+const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  background: #f0f0f0;
+  margin: 12px 0;
 `;
 
 export default function MainPage() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [recruitStatus, setRecruitStatus] = useState("전체");
+  const [showOnlyQualified, setShowOnlyQualified] = useState(false);
+
   const mockPrograms = [
     {
       id: 1,
+      title: "2024 캡스톤 디자인 경진대회",
       category: "공모전",
-      title: "2024 SW 창업 아이디어 공모전",
-      description:
-        "혁신적인 소프트웨어 아이디어로 미래를 만들어가는 창업 공모전입니다.",
       status: "open" as const,
-      date: "2024.03.15 - 2024.04.30",
-      participants: 156,
+      departmentRestricted: false,
+      gradeRestricted: false,
     },
     {
       id: 2,
-      category: "멘토링",
-      title: "시니어 개발자와 함께하는 코드 리뷰",
-      description: "실무 경험이 풍부한 시니어 개발자의 1:1 멘토링 프로그램",
+      title: "(4회차) DX 실무 워크플로우 마스터 교육",
+      category: "특강",
       status: "open" as const,
-      date: "2024.03.20 - 2024.05.20",
-      participants: 42,
+      departmentRestricted: false,
+      gradeRestricted: false,
     },
     {
       id: 3,
-      category: "취업",
-      title: "IT 기업 취업 준비 특강",
-      description: "대기업 인사담당자가 알려주는 취업 성공 전략",
-      status: "upcoming" as const,
-      date: "2024.04.01 - 2024.04.15",
-      participants: 89,
+      title: "1차 BizTalk English 취업준비&커뮤니케이션 트레이닝",
+      category: "특강",
+      status: "closed" as const,
+      departmentRestricted: true,
+      gradeRestricted: false,
     },
     {
       id: 4,
+      title: "안심캠퍼스 순찰대 봉사활동(11.28.)",
       category: "봉사",
-      title: "코딩 교육 봉사 활동",
-      description: "초중등학생 대상 코딩 교육 봉사 프로그램",
-      status: "open" as const,
-      date: "2024.03.10 - 2024.12.20",
-      participants: 67,
+      status: "closed" as const,
+      departmentRestricted: false,
+      gradeRestricted: false,
     },
     {
       id: 5,
-      category: "특강",
-      title: "AI와 미래 기술 트렌드",
-      description: "최신 AI 기술 동향과 실무 적용 사례 특강",
+      title: "안심캠퍼스 순찰대 봉사활동(11.27.)",
+      category: "봉사",
       status: "closed" as const,
-      date: "2024.02.15 - 2024.03.01",
-      participants: 234,
+      departmentRestricted: false,
+      gradeRestricted: false,
     },
     {
       id: 6,
-      category: "탐방",
-      title: "스타트업 캠퍼스 탐방",
-      description: "성공한 스타트업 기업의 사무실 방문 및 인터뷰",
-      status: "upcoming" as const,
-      date: "2024.04.10",
-      participants: 28,
+      title: "안심캠퍼스 순찰대 봉사활동(11.26.)",
+      category: "봉사",
+      status: "closed" as const,
+      departmentRestricted: false,
+      gradeRestricted: false,
     },
   ];
 
   return (
     <MainContent>
-      <TopSection>
-        <ProfileCard>
-          <ProfileHeader>
-            <ProfileIcon>👤</ProfileIcon>
-            <ProfileInfo>
-              <ProfileTitle>홍길동 님</ProfileTitle>
-              <ProfileSubtitle>컴퓨터과학부 3학년</ProfileSubtitle>
-            </ProfileInfo>
-          </ProfileHeader>
-          <InterestTags>
-            <InterestTag>공모전</InterestTag>
-            <InterestTag>취업</InterestTag>
-            <InterestTag>멘토링</InterestTag>
-          </InterestTags>
-        </ProfileCard>
+      <ContentWrapper>
+        <SearchSection>
+          <SearchWrapper>
+            <SearchInput
+              type="text"
+              placeholder="프로그램 이름이나 내용 키워드로 검색..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <SearchIconButton>
+              <Image
+                src="/images/main/search-icon.svg"
+                alt="Search"
+                width={18}
+                height={18}
+              />
+            </SearchIconButton>
+          </SearchWrapper>
 
-        <StatsCard>
-          <StatsTitle>나의 활동</StatsTitle>
-          <StatsList>
-            <StatItem>
-              <StatLabel>참여 중인 프로그램</StatLabel>
-              <StatValue>3</StatValue>
-            </StatItem>
-            <StatItem>
-              <StatLabel>완료한 프로그램</StatLabel>
-              <StatValue>12</StatValue>
-            </StatItem>
-            <StatItem>
-              <StatLabel>획득 포인트</StatLabel>
-              <StatValue>850</StatValue>
-            </StatItem>
-          </StatsList>
-        </StatsCard>
-      </TopSection>
-
-      <QuickStats>
-        <QuickStatItem>
-          <QuickStatValue>42</QuickStatValue>
-          <QuickStatLabel>진행 중인 프로그램</QuickStatLabel>
-        </QuickStatItem>
-        <QuickStatItem>
-          <QuickStatValue>128</QuickStatValue>
-          <QuickStatLabel>이번 달 신규</QuickStatLabel>
-        </QuickStatItem>
-        <QuickStatItem>
-          <QuickStatValue>1,234</QuickStatValue>
-          <QuickStatLabel>총 참여자</QuickStatLabel>
-        </QuickStatItem>
-      </QuickStats>
-
-      <RecommendedSection>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <SectionTitle>추천 프로그램</SectionTitle>
           <FilterSection>
-            <FilterButton active>전체</FilterButton>
-            <FilterButton>공모전</FilterButton>
-            <FilterButton>멘토링</FilterButton>
-            <FilterButton>취업</FilterButton>
+            <FilterGroup>
+              <FilterLabel>모집 상태</FilterLabel>
+              <SelectWrapper>
+                <Select
+                  value={recruitStatus}
+                  onChange={(e) => setRecruitStatus(e.target.value)}
+                >
+                  <option value="전체">전체</option>
+                  <option value="모집 중">모집 중</option>
+                  <option value="모집 완료">모집 완료</option>
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FilterGroup>
+
+            <CheckboxWrapper>
+              <Checkbox
+                type="checkbox"
+                id="qualified-only"
+                checked={showOnlyQualified}
+                onChange={(e) => setShowOnlyQualified(e.target.checked)}
+              />
+              <CheckboxLabel htmlFor="qualified-only">
+                지원 자격 해당 항목만 표시
+              </CheckboxLabel>
+            </CheckboxWrapper>
           </FilterSection>
-        </div>
+        </SearchSection>
+
+        <Divider />
 
         <ProgramGrid>
           {mockPrograms.map((program) => (
             <ProgramCard key={program.id}>
-              <ProgramHeader>
-                <ProgramCategory>{program.category}</ProgramCategory>
-                <ProgramStatus status={program.status}>
-                  {program.status === "open"
-                    ? "모집중"
-                    : program.status === "closed"
-                    ? "마감"
-                    : "예정"}
-                </ProgramStatus>
-              </ProgramHeader>
+              <StatusBadge status={program.status}>
+                {program.status === "open" ? "모집 중" : "모집 완료"}
+              </StatusBadge>
               <ProgramTitle>{program.title}</ProgramTitle>
-              <ProgramDescription>{program.description}</ProgramDescription>
-              <ProgramFooter>
-                <ProgramDate>{program.date}</ProgramDate>
-                <ProgramParticipants>
-                  참여자 {program.participants}명
-                </ProgramParticipants>
-              </ProgramFooter>
+              <BadgeContainer>
+                <CategoryBadge>{program.category}</CategoryBadge>
+                <QualificationBadge restricted={program.departmentRestricted}>
+                  {program.departmentRestricted ? "학과 제한" : "학과 무관"}
+                </QualificationBadge>
+                <QualificationBadge restricted={program.gradeRestricted}>
+                  {program.gradeRestricted ? "학년 제한" : "학년 무관"}
+                </QualificationBadge>
+              </BadgeContainer>
             </ProgramCard>
           ))}
         </ProgramGrid>
-      </RecommendedSection>
+      </ContentWrapper>
     </MainContent>
   );
 }
