@@ -5,6 +5,7 @@ import { useState } from "react";
 import SearchBar from "@/components/main/SearchBar";
 import FilterBar from "@/components/main/FilterBar";
 import ProgramCard from "@/components/main/ProgramCard";
+import RecommendSection from "@/components/main/RecommendSection";
 
 const MainContent = styled.div`
   display: flex;
@@ -46,6 +47,44 @@ export default function MainPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [recruitStatus, setRecruitStatus] = useState("전체");
   const [showOnlyQualified, setShowOnlyQualified] = useState(false);
+
+  const recommendedPrograms = [
+    {
+      id: 1,
+      title: "2025 제1회 SEOUL:ution 해커톤",
+      category: "공모전",
+      status: "upcoming" as const,
+      departmentRestricted: false,
+    },
+    {
+      id: 2,
+      title: "AI 융합 창업 아이디어 경진대회",
+      category: "공모전",
+      status: "open" as const,
+      departmentRestricted: false,
+    },
+    {
+      id: 3,
+      title: "캡스톤 디자인 발표회",
+      category: "공모전",
+      status: "upcoming" as const,
+      departmentRestricted: false,
+    },
+    {
+      id: 4,
+      title: "SW 마에스트로 멘토링",
+      category: "멘토링",
+      status: "open" as const,
+      departmentRestricted: true,
+    },
+    {
+      id: 5,
+      title: "스타트업 CEO 특강",
+      category: "특강",
+      status: "open" as const,
+      departmentRestricted: false,
+    },
+  ];
 
   const mockPrograms = [
     {
@@ -109,6 +148,10 @@ export default function MainPage() {
           onShowOnlyQualifiedChange={setShowOnlyQualified}
         />
       </SearchSection>
+
+      <Divider />
+
+      <RecommendSection programs={recommendedPrograms} />
 
       <Divider />
 
