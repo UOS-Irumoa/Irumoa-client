@@ -10,9 +10,9 @@ interface ThemeProviderProps {
 
 export default function ThemeProvider({ children }: ThemeProviderProps) {
   return (
-    <EmotionThemeProvider theme={theme}>
-      {children}
-    </EmotionThemeProvider>
+      <EmotionThemeProvider theme={theme}>
+        {children}
+      </EmotionThemeProvider>
   );
 }
 

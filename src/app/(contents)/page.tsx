@@ -11,21 +11,31 @@ const MainContent = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  background: #ffffff;
-  border-radius: 8px;
   padding: 24px;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
 `;
 
 const SearchSection = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 24px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border.main};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
 `;
 
 const SearchWrapper = styled.div`
   position: relative;
-  width: 100%;
+  width: 40%;
+  flex-shrink: 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 100%;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -79,9 +89,14 @@ const SearchIconButton = styled.button`
 
 const FilterSection = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-end;
   gap: 16px;
+  flex: 1;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const FilterGroup = styled.div`
@@ -164,7 +179,11 @@ const CheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 20px;
+  margin-bottom: 4px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin-bottom: 0;
+  }
 `;
 
 const Checkbox = styled.input`
@@ -354,6 +373,17 @@ export default function MainPage() {
               />
             </SearchIconButton>
           </SearchWrapper>
+          <CheckboxWrapper>
+            <Checkbox
+              type="checkbox"
+              id="qualified-only"
+              checked={showOnlyQualified}
+              onChange={(e) => setShowOnlyQualified(e.target.checked)}
+            />
+            <CheckboxLabel htmlFor="qualified-only">
+              지원 자격 해당 항목만 표시
+            </CheckboxLabel>
+          </CheckboxWrapper>
 
           <FilterSection>
             <FilterGroup>
@@ -370,18 +400,6 @@ export default function MainPage() {
                 <SelectIcon />
               </SelectWrapper>
             </FilterGroup>
-
-            <CheckboxWrapper>
-              <Checkbox
-                type="checkbox"
-                id="qualified-only"
-                checked={showOnlyQualified}
-                onChange={(e) => setShowOnlyQualified(e.target.checked)}
-              />
-              <CheckboxLabel htmlFor="qualified-only">
-                지원 자격 해당 항목만 표시
-              </CheckboxLabel>
-            </CheckboxWrapper>
           </FilterSection>
         </SearchSection>
 
