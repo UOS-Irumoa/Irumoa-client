@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.background.paper};
   border-radius: 10px;
-  padding: 16px;
+  padding: 10px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -47,7 +47,8 @@ const CardHeader = styled.div`
 const StatusWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
+  white-space: nowrap;
 `;
 
 const StatusDot = styled.div<{ status: "upcoming" | "open" | "closed" }>`
@@ -69,7 +70,7 @@ const StatusDot = styled.div<{ status: "upcoming" | "open" | "closed" }>`
 
 const StatusText = styled.span`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 13px;
+  font-size: 12px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   color: ${({ theme }) => theme.colors.text.secondary};
   white-space: nowrap;

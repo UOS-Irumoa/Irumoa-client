@@ -107,7 +107,6 @@ const CheckboxWrapper = styled.div`
 const Checkbox = styled.input`
   width: 18px;
   height: 18px;
-  border: 0.5px solid ${({ theme }) => theme.colors.border.main};
   border-radius: 3px;
   cursor: pointer;
 
