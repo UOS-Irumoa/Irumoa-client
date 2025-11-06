@@ -225,10 +225,10 @@ export default function Header() {
         <ActionButton onClick={handleProfileClick}>
           <UserIcon>
             <Image
-              src="/images/header/user-icon-1.svg"
+              src="/images/header/profile-circle.svg"
               alt="User"
-              width={16}
-              height={16}
+              width={22}
+              height={22}
             />
           </UserIcon>
           <span>내 정보 수정</span>
