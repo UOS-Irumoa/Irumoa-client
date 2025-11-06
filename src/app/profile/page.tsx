@@ -14,7 +14,7 @@ const FullScreenContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: ${({ theme }) => theme.colors.background.main};
-  background-image: url("/images/profile/profile-background-combined.svg");
+  background-image: url("/images/profile/profile-background.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
