@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const HeaderContainer = styled.header`
-  width: 50%;
+  width: auto;
+  max-width: 70%;
   background: ${({ theme }) => theme.colors.background.content};
   height: ${({ theme }) => theme.layout.headerHeight};
   box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.05);
@@ -17,6 +18,10 @@ const HeaderContainer = styled.header`
   box-sizing: border-box;
   border-radius: 8px 8px 8px 8px;
   margin-bottom: ${({ theme }) => theme.padding.sm};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    max-width: 90%;
+  }
 `;
 
 const ActionButton = styled.button`
@@ -53,29 +58,55 @@ const ActionsContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
+  width: 100%;
+  padding: 4px 0;
 `;
 
-const UserInfoLabel = styled.div`
+const CategoryWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 6px;
+  padding: 4px 0;
+  flex: 1;
+  max-height: 60px; /* 최대 2줄 정도만 보이도록 제한 */
+  overflow: hidden;
+  margin: ${({ theme }) => theme.padding.sm};
 `;
 
-const UserName = styled.span`
+const CategoryTag = styled.span<{
+  variant?: "primary" | "secondary";
+  kind?: "major" | "double" | "interest";
+}>`
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 5px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 16px;
-  font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
-  color: ${({ theme }) => theme.colors.text.primary};
-  line-height: 1;
-`;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
 
-const UserDetails = styled.span`
-  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 13px;
-  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  line-height: 1;
+  ${({ variant, theme }) =>
+    variant === "primary"
+      ? `
+    background: transparent;
+    color: ${theme.colors.primary.main};
+    border: 1px solid ${theme.colors.primary.main};
+  `
+      : `
+    background: transparent;
+    color: ${theme.colors.text.primary};
+    border: 1px solid ${theme.colors.border.main};
+  `}
+
+  /* 반응형: 작은 화면에서는 학과/복수전공만 표시하고 관심사는 숨김 */
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    ${({ kind }) => (kind === "interest" ? `display: none;` : "")}
+  }
 `;
 
 const UserIcon = styled.div`
@@ -134,27 +165,62 @@ export default function Header() {
     router.push("/profile");
   };
 
-  const getUserDisplayText = () => {
-    if (!userProfile || !userProfile.department || !userProfile.grade) {
+  const getUserCategories = () => {
+    if (!userProfile) {
       return null;
     }
 
-    return {
-      department: userProfile.department,
-      grade: `${userProfile.grade}학년`,
-    };
+    const categories = [];
+
+    // 학과 추가
+    if (userProfile.department) {
+      categories.push({
+        label: userProfile.department,
+        variant: "primary" as const,
+        kind: "major" as const,
+      });
+    }
+
+    // 복수전공 학과 추가
+    if (userProfile.doubleDepartment) {
+      categories.push({
+        label: userProfile.doubleDepartment,
+        variant: "primary" as const,
+        kind: "double" as const,
+      });
+    }
+
+    // 관심사 추가
+    if (userProfile.interests && userProfile.interests.length > 0) {
+      userProfile.interests.forEach((interest) => {
+        categories.push({
+          label: interest,
+          variant: "secondary" as const,
+          kind: "interest" as const,
+        });
+      });
+    }
+
+    return categories.length > 0 ? categories : null;
   };
 
-  const displayInfo = getUserDisplayText();
+  const categories = getUserCategories();
 
   return (
     <HeaderContainer>
       <ActionsContainer>
-        {displayInfo && (
-          <UserInfoLabel>
-            <UserName>{displayInfo.department}</UserName>
-            <UserDetails>{displayInfo.grade}</UserDetails>
-          </UserInfoLabel>
+        {categories && (
+          <CategoryWrapper>
+            {categories.map((category, index) => (
+              <CategoryTag
+                key={index}
+                variant={category.variant}
+                kind={category.kind}
+              >
+                {category.label}
+              </CategoryTag>
+            ))}
+          </CategoryWrapper>
         )}
         <ActionButton onClick={handleProfileClick}>
           <UserIcon>

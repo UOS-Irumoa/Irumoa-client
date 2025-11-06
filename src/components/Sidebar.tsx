@@ -10,7 +10,7 @@ const Nav = styled.nav`
     ${({ theme }) => theme.layout.headerHeight} +
       ${({ theme }) => theme.padding.xxl}
   );
-  left: calc((${({ theme }) => theme.padding.container} - 106px) / 2);
+  left: ${({ theme }) => theme.padding.xl};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};

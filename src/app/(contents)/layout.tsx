@@ -14,12 +14,14 @@ const AppContainer = styled.div`
   max-width: 100vw;
   overflow-x: hidden;
   background: ${({ theme }) => theme.colors.background.main};
+  display: flex;
+  flex-direction: column;
 `;
 
 const LogoWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: ${({ theme }) => theme.padding.md};
-  left: ${({ theme }) => theme.padding.xxl};
+  left: ${({ theme }) => theme.padding.xl};
   display: flex;
   align-items: center;
   height: 64px;
@@ -38,50 +40,36 @@ const Logo = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   width: 100%;
-  max-width: 100vw;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: ${({ theme }) => theme.padding.md}
-    ${({ theme }) => theme.padding.container};
+  padding: ${({ theme }) => theme.padding.md} ${({ theme }) => theme.padding.xl};
   box-sizing: border-box;
   background: ${({ theme }) => theme.colors.background.main};
   z-index: 40;
+  flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: ${({ theme }) => theme.padding.md}
-      ${({ theme }) => theme.padding.xxl};
+      ${({ theme }) => theme.padding.xl};
   }
 `;
 
 const MainContentArea = styled.main`
-  position: fixed;
-  top: calc(
-    ${({ theme }) => theme.layout.headerHeight} +
-      ${({ theme }) => theme.padding.md}
-  );
-  left: 0;
-  right: 0;
-  bottom: 0;
+  flex: 1;
+  width: 100%;
   padding-left: ${({ theme }) => theme.padding.container};
-  padding-right: ${({ theme }) => theme.padding.container};
-  padding-bottom: ${({ theme }) => theme.padding.md};
+  padding-right: ${({ theme }) => theme.padding.xl};
+  padding-bottom: ${({ theme }) => theme.padding.xl};
   box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    top: calc(
-      ${({ theme }) => theme.layout.headerHeight} +
-        ${({ theme }) => theme.padding.xl}
-    );
     padding-left: ${({ theme }) => theme.padding.xxl};
-    padding-right: ${({ theme }) => theme.padding.xxl};
-    padding-bottom: ${({ theme }) => theme.padding.xxl};
   }
 `;
 
@@ -90,7 +78,7 @@ const ContentWrapper = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.header};
   padding: ${({ theme }) => theme.padding.md};
-  height: 100%;
+  flex: 1;
   max-width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
