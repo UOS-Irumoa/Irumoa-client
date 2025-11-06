@@ -30,16 +30,16 @@ const ActionButton = styled.button`
   gap: 8px;
   padding: 0 20px;
   height: 37px;
-  background: linear-gradient(180deg, #408cff 0%, #2563eb 100%);
+  background: ${({ theme }) => theme.colors.primary.gradient};
   border: none;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   box-shadow: 0px 2px 8px 0px rgba(64, 140, 255, 0.25);
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 14px;
   font-weight: 500;
   line-height: 1.5em;
   letter-spacing: -0.04em;
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.text.white};
   cursor: pointer;
   transition: all 0.2s ease;
 

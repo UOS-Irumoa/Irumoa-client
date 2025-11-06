@@ -3,7 +3,7 @@
 import styled from "@emotion/styled";
 
 const Card = styled.div`
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.background.paper};
   border-radius: 10px;
   padding: 16px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
@@ -12,11 +12,28 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-width: 0;
+  flex-shrink: 0;
+  width: calc((100% - 40px) / 5); /* 5개 카드, gap 10px × 4 = 40px */
+  min-width: 180px;
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    width: calc((100% - 30px) / 4); /* 4개 카드 */
+    min-width: 160px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: calc((100% - 20px) / 3); /* 3개 카드 */
+    min-width: 140px;
+  }
+
+  @media (max-width: 640px) {
+    width: calc((100% - 10px) / 2); /* 2개 카드 */
+    min-width: 120px;
   }
 `;
 
@@ -38,14 +55,14 @@ const StatusDot = styled.div<{ status: "upcoming" | "open" | "closed" }>`
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  background: ${({ status }) => {
+  background: ${({ status, theme }) => {
     switch (status) {
       case "upcoming":
-        return "#F59E0B";
+        return theme.colors.status.warning;
       case "open":
-        return "#00BC7D";
+        return theme.colors.status.success;
       case "closed":
-        return "#A0A0A0";
+        return theme.colors.text.secondary;
     }
   }};
 `;
@@ -72,20 +89,23 @@ const CategoryBadge = styled.span`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 12px;
   font-weight: 500;
-  color: #408cff;
+  color: ${({ theme }) => theme.colors.primary.main};
   white-space: nowrap;
 `;
 
 const QualificationBadge = styled.span<{ restricted?: boolean }>`
   padding: 4px 10px;
-  background: ${({ restricted }) => (restricted ? "transparent" : "#ffffff")};
+  background: ${({ restricted, theme }) =>
+    restricted ? "transparent" : theme.colors.white};
   border: 1px solid
-    ${({ restricted }) => (restricted ? "#FF6B6B" : "#408cff")};
+    ${({ restricted, theme }) =>
+      restricted ? theme.colors.status.errorLight : theme.colors.primary.main};
   border-radius: 6px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 12px;
   font-weight: 500;
-  color: ${({ restricted }) => (restricted ? "#FF6B6B" : "#408cff")};
+  color: ${({ restricted, theme }) =>
+    restricted ? theme.colors.status.errorLight : theme.colors.primary.main};
   white-space: nowrap;
 `;
 
@@ -145,4 +165,3 @@ export default function RecommendCard({
     </Card>
   );
 }
-

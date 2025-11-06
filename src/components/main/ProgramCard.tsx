@@ -3,7 +3,7 @@
 import styled from "@emotion/styled";
 
 const Card = styled.div`
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
@@ -29,11 +29,11 @@ const StatusBadge = styled.div<{ status: "open" | "closed" }>`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 13px;
   font-weight: 700;
-  color: #ffffff;
-  background: ${({ status }) =>
+  color: ${({ theme }) => theme.colors.text.white};
+  background: ${({ status, theme }) =>
     status === "open"
-      ? "linear-gradient(180deg, #408CFF 0%, #2563EB 100%)"
-      : "#A0A0A0"};
+      ? theme.colors.primary.gradient
+      : theme.colors.text.secondary};
   box-shadow: ${({ status }) =>
     status === "open"
       ? "0px 2px 4px 0px rgba(64, 140, 255, 0.2)"
@@ -63,19 +63,20 @@ const CategoryBadge = styled.span`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 13px;
   font-weight: 500;
-  color: #408cff;
+  color: ${({ theme }) => theme.colors.primary.main};
 `;
 
 const QualificationBadge = styled.span<{ restricted?: boolean }>`
   padding: 6px 12px;
   background: transparent;
-  border: 1px solid ${({ restricted }) => (restricted ? "#FF6B6B" : "#E5E6EC")};
+  border: 1px solid ${({ restricted, theme }) =>
+    restricted ? theme.colors.status.errorLight : theme.colors.border.main};
   border-radius: 6px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 13px;
   font-weight: 500;
   color: ${({ restricted, theme }) =>
-    restricted ? "#FF6B6B" : theme.colors.text.secondary};
+    restricted ? theme.colors.status.errorLight : theme.colors.text.secondary};
 `;
 
 interface ProgramCardProps {

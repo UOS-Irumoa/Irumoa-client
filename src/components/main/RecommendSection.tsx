@@ -7,7 +7,9 @@ import RecommendCard from "./RecommendCard";
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border.main};
+  padding-bottom: 10px;
 `;
 
 const SectionHeader = styled.div`
@@ -32,7 +34,7 @@ const SectionTitle = styled.h2`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 18px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  background: linear-gradient(135deg, #408cff 0%, #2563eb 100%);
+  background: ${({ theme }) => theme.colors.primary.gradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -41,24 +43,14 @@ const SectionTitle = styled.h2`
 `;
 
 const CardContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.wide}) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -80,11 +72,10 @@ export default function RecommendSection({ programs }: RecommendSectionProps) {
       <SectionHeader>
         <IconWrapper>
           <Image
-            src="/images/main/star-icon.svg"
+            src="/images/main/recommend.svg"
             alt="추천"
-            width={20}
-            height={20}
-            style={{ filter: "brightness(0) invert(1)" }}
+            width={32}
+            height={32}
           />
         </IconWrapper>
         <SectionTitle>당신을 위한 추천 프로그램</SectionTitle>
@@ -97,4 +88,3 @@ export default function RecommendSection({ programs }: RecommendSectionProps) {
     </Section>
   );
 }
-

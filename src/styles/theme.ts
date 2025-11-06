@@ -25,9 +25,11 @@ export interface Theme {
     border: {
       main: string;
       light: string;
+      divider: string;
     };
     status: {
       error: string;
+      errorLight: string;
       success: string;
       warning: string;
       info: string;
@@ -161,9 +163,11 @@ export const lightTheme: Theme = {
     border: {
       main: "#E5E6EC",
       light: "#F0F1F5",
+      divider: "#F0F0F0",
     },
     status: {
       error: "#EF4444",
+      errorLight: "#FF6B6B",
       success: "#00BC7D",
       warning: "#F59E0B",
       info: "#408CFF",

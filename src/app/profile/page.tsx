@@ -169,7 +169,7 @@ const Select = styled.select`
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   line-height: 1.18em;
   color: ${({ theme }) => theme.colors.text.primary};
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border.main};
   border-radius: 6px;
   appearance: none;
@@ -294,7 +294,7 @@ const BadgeCloseIcon = styled.div`
     position: absolute;
     width: 12px;
     height: 2px;
-    background: #ffffff;
+    background: ${({ theme }) => theme.colors.white};
   }
 
   &::before {

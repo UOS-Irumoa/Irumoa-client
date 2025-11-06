@@ -23,13 +23,13 @@ const SearchInput = styled.input`
   font-size: 17px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   color: ${({ theme }) => theme.colors.text.primary};
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
   border: 0.5px solid ${({ theme }) => theme.colors.border.main};
   border-radius: 6px;
   transition: all 0.2s ease;
 
   &::placeholder {
-    color: #a0a0a0;
+    color: ${({ theme }) => theme.colors.text.secondary};
   }
 
   &:focus {

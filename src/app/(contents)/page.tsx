@@ -39,7 +39,7 @@ const ProgramGrid = styled.div`
 const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background: #f0f0f0;
+  background: ${({ theme }) => theme.colors.border.divider};
   margin: 12px 0;
 `;
 
@@ -149,11 +149,7 @@ export default function MainPage() {
         />
       </SearchSection>
 
-      <Divider />
-
       <RecommendSection programs={recommendedPrograms} />
-
-      <Divider />
 
       <ProgramGrid>
         {mockPrograms.map((program) => (
