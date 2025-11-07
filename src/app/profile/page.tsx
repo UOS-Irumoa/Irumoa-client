@@ -2,8 +2,9 @@
 
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { universities, getDepartmentsByUniversity } from "@/data/universities";
 
 const FullScreenContainer = styled.div`
   position: fixed;
@@ -184,6 +185,12 @@ const Select = styled.select`
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary.main};
     box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary.main}20;
+  }
+
+  &:disabled {
+    background: ${({ theme }) => theme.colors.background.secondary};
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 
   option {
@@ -377,6 +384,34 @@ export default function ProfilePage() {
   const [grade, setGrade] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
+  // 선택된 단과대학에 따른 학과 목록
+  const availableDepartments = useMemo(() => {
+    return getDepartmentsByUniversity(college);
+  }, [college]);
+
+  const availableDoubleDepartments = useMemo(() => {
+    return getDepartmentsByUniversity(doubleCollege);
+  }, [doubleCollege]);
+
+  // 단과대학 변경 시 학과 초기화
+  useEffect(() => {
+    if (college) {
+      const depts = getDepartmentsByUniversity(college);
+      if (!depts.includes(department)) {
+        setDepartment("");
+      }
+    }
+  }, [college]);
+
+  useEffect(() => {
+    if (doubleCollege) {
+      const depts = getDepartmentsByUniversity(doubleCollege);
+      if (!depts.includes(doubleDepartment)) {
+        setDoubleDepartment("");
+      }
+    }
+  }, [doubleCollege]);
+
   // localStorage에서 저장된 정보 불러오기
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -418,7 +453,7 @@ export default function ProfilePage() {
     // localStorage에 저장
     if (typeof window !== "undefined") {
       localStorage.setItem("userProfile", JSON.stringify(userProfile));
-      
+
       // 커스텀 이벤트 발생시켜서 Header에서 즉시 업데이트되도록
       window.dispatchEvent(new Event("profileUpdated"));
     }
@@ -454,50 +489,48 @@ export default function ProfilePage() {
         <FormContainer>
           {/* 단과대학, 학과 */}
           <FormRow>
-          <FormGroup>
+            <FormGroup>
               <LabelRow>
-            <Label>단과대학</Label>
+                <Label>단과대학</Label>
                 <RequiredBadge>*필수</RequiredBadge>
               </LabelRow>
-            <SelectWrapper>
-              <Select
-                value={college}
-                onChange={(e) => setCollege(e.target.value)}
-              >
-                <option value="">단과대학을 선택하세요</option>
-                <option value="인문대학">인문대학</option>
-                <option value="자연과학대학">자연과학대학</option>
-                <option value="공과대학">공과대학</option>
-                <option value="사회과학대학">사회과학대학</option>
-                <option value="경영대학">경영대학</option>
-                <option value="예술체육대학">예술체육대학</option>
-              </Select>
-              <SelectIcon />
-            </SelectWrapper>
-          </FormGroup>
+              <SelectWrapper>
+                <Select
+                  value={college}
+                  onChange={(e) => setCollege(e.target.value)}
+                >
+                  <option value="">단과대학을 선택하세요</option>
+                  {universities.map((uni) => (
+                    <option key={uni.university} value={uni.university}>
+                      {uni.university}
+                    </option>
+                  ))}
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
 
-          <FormGroup>
+            <FormGroup>
               <LabelRow>
-            <Label>학과</Label>
+                <Label>학과</Label>
                 <RequiredBadge>*필수</RequiredBadge>
               </LabelRow>
-            <SelectWrapper>
-              <Select
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-              >
-                <option value="">학과를 선택하세요</option>
-                <option value="컴퓨터과학부">컴퓨터과학부</option>
-                <option value="전자전기컴퓨터공학부">
-                  전자전기컴퓨터공학부
-                </option>
-                <option value="기계공학부">기계공학부</option>
-                <option value="경영학부">경영학부</option>
-                <option value="경제학부">경제학부</option>
-              </Select>
-              <SelectIcon />
-            </SelectWrapper>
-          </FormGroup>
+              <SelectWrapper>
+                <Select
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  disabled={!college}
+                >
+                  <option value="">학과를 선택하세요</option>
+                  {availableDepartments.map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
           </FormRow>
 
           {/* 복수전공 단과대학, 복수전공 학과 */}
@@ -510,32 +543,30 @@ export default function ProfilePage() {
                   onChange={(e) => setDoubleCollege(e.target.value)}
                 >
                   <option value="">단과대학을 선택하세요</option>
-                  <option value="인문대학">인문대학</option>
-                  <option value="자연과학대학">자연과학대학</option>
-                  <option value="공과대학">공과대학</option>
-                  <option value="사회과학대학">사회과학대학</option>
-                  <option value="경영대학">경영대학</option>
-                  <option value="예술체육대학">예술체육대학</option>
+                  {universities.map((uni) => (
+                    <option key={uni.university} value={uni.university}>
+                      {uni.university}
+                    </option>
+                  ))}
                 </Select>
                 <SelectIcon />
               </SelectWrapper>
             </FormGroup>
 
-          <FormGroup>
+            <FormGroup>
               <Label>복수전공 학과</Label>
               <SelectWrapper>
                 <Select
                   value={doubleDepartment}
                   onChange={(e) => setDoubleDepartment(e.target.value)}
+                  disabled={!doubleCollege}
                 >
                   <option value="">학과를 선택하세요</option>
-                  <option value="컴퓨터과학부">컴퓨터과학부</option>
-                  <option value="전자전기컴퓨터공학부">
-                    전자전기컴퓨터공학부
-                  </option>
-                  <option value="기계공학부">기계공학부</option>
-                  <option value="경영학부">경영학부</option>
-                  <option value="경제학부">경제학부</option>
+                  {availableDoubleDepartments.map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
                 </Select>
                 <SelectIcon />
               </SelectWrapper>
@@ -546,29 +577,29 @@ export default function ProfilePage() {
           <FormRow>
             <FormGroup>
               <LabelRow>
-            <Label>학년</Label>
+                <Label>학년</Label>
                 <RequiredBadge>*필수</RequiredBadge>
               </LabelRow>
-            <SelectWrapper>
+              <SelectWrapper>
                 <Select
                   value={grade}
                   onChange={(e) => setGrade(e.target.value)}
                 >
-                <option value="">학년을 선택하세요</option>
-                <option value="1">1학년</option>
-                <option value="2">2학년</option>
-                <option value="3">3학년</option>
-                <option value="4">4학년</option>
-              </Select>
-              <SelectIcon />
-            </SelectWrapper>
-          </FormGroup>
+                  <option value="">학년을 선택하세요</option>
+                  <option value="1">1학년</option>
+                  <option value="2">2학년</option>
+                  <option value="3">3학년</option>
+                  <option value="4">4학년</option>
+                </Select>
+                <SelectIcon />
+              </SelectWrapper>
+            </FormGroup>
           </FormRow>
 
           {/* 관심사 */}
           <InterestSection>
             <LabelRow>
-            <Label>관심사</Label>
+              <Label>관심사</Label>
               <RequiredBadge>*필수</RequiredBadge>
             </LabelRow>
             <BadgeContainer>

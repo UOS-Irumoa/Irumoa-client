@@ -42,5 +42,40 @@ export const recommendedPrograms: RecommendedProgram[] = [
     status: "open",
     departmentRestricted: false,
   },
+  {
+    id: 6,
+    title: "글로벌 기업 탐방 프로그램",
+    category: "취업",
+    status: "upcoming",
+    departmentRestricted: false,
+  },
+  {
+    id: 7,
+    title: "지역사회 재능기부 봉사",
+    category: "봉사",
+    status: "open",
+    departmentRestricted: false,
+  },
+  {
+    id: 8,
+    title: "데이터 사이언스 경진대회",
+    category: "공모전",
+    status: "open",
+    departmentRestricted: true,
+  },
+  {
+    id: 9,
+    title: "취업 멘토링 프로그램",
+    category: "멘토링",
+    status: "upcoming",
+    departmentRestricted: false,
+  },
+  {
+    id: 10,
+    title: "UX/UI 디자인 워크샵",
+    category: "특강",
+    status: "open",
+    departmentRestricted: false,
+  },
 ];
 
