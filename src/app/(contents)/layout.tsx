@@ -131,8 +131,8 @@ const ProgramListWrapper = styled.div`
 `;
 
 const ProgramList = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
   flex: 1;
   min-height: 0;
   gap: 8px;
@@ -171,6 +171,19 @@ export default function RootLayout({
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentPrograms = filteredPrograms.slice(startIndex, endIndex);
+
+  // 6개로 맞추기 위한 빈 아이템 추가
+  const displayPrograms = useMemo(() => {
+    const emptyCount = ITEMS_PER_PAGE - currentPrograms.length;
+    if (emptyCount > 0) {
+      const emptyItems = Array.from({ length: emptyCount }, (_, i) => ({
+        id: `empty-${i}`,
+        isEmpty: true,
+      }));
+      return [...currentPrograms, ...emptyItems];
+    }
+    return currentPrograms;
+  }, [currentPrograms]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -218,9 +231,12 @@ export default function RootLayout({
 
                   <ProgramListWrapper>
                     <ProgramList>
-                      {currentPrograms.map((program) => (
-                        <ProgramListItem key={program.id} {...program} />
-                      ))}
+                      {displayPrograms.map((program: any) => {
+                        if (program.isEmpty) {
+                          return <div key={program.id} style={{ visibility: "hidden" }} />;
+                        }
+                        return <ProgramListItem key={program.id} {...program} />;
+                      })}
                     </ProgramList>
                     <PageButtons
                       currentPage={currentPage}
