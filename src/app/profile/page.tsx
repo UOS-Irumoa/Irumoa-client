@@ -6,7 +6,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { universities, getDepartmentsByUniversity } from "@/data/universities";
 
-const FullScreenContainer = styled.div`
+const FullScreenContainer = styled.div<{ isExiting?: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -24,6 +24,26 @@ const FullScreenContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: ${({ isExiting }) =>
+    isExiting ? "fadeOut 0.3s ease-in-out" : "fadeIn 0.3s ease-in-out"};
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -36,6 +56,18 @@ const ContentContainer = styled.div`
   justify-content: center;
   padding: 40px;
   box-sizing: border-box;
+  animation: slideUp 0.4s ease-out 0.1s both;
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const ProfileSection = styled.div`
@@ -55,6 +87,18 @@ const ProfileSection = styled.div`
   border-radius: 10px;
   opacity: 0.8;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+  animation: slideDown 0.4s ease-out both;
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+      opacity: 0.8;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
 `;
 
 const ProfileIconWrapper = styled.div`
@@ -188,7 +232,7 @@ const Select = styled.select`
   }
 
   &:disabled {
-    background: ${({ theme }) => theme.colors.background.secondary};
+    background: ${({ theme }) => theme.colors.background.paper};
     cursor: not-allowed;
     opacity: 0.6;
   }
@@ -320,11 +364,23 @@ const ButtonContainer = styled.div`
   display: flex;
   gap: 12px;
   z-index: 101;
+  animation: slideUp 0.4s ease-out 0.2s both;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     bottom: 20px;
     right: 20px;
     flex-direction: row;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
@@ -383,6 +439,7 @@ export default function ProfilePage() {
   const [doubleDepartment, setDoubleDepartment] = useState("");
   const [grade, setGrade] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [isExiting, setIsExiting] = useState(false);
 
   // 선택된 단과대학에 따른 학과 목록
   const availableDepartments = useMemo(() => {
@@ -459,15 +516,24 @@ export default function ProfilePage() {
     }
 
     console.log("User profile saved:", userProfile);
-    router.back();
+
+    // 애니메이션 후 나가기
+    setIsExiting(true);
+    setTimeout(() => {
+      router.back();
+    }, 300);
   };
 
   const handleCancel = () => {
-    router.back();
+    // 애니메이션 후 나가기
+    setIsExiting(true);
+    setTimeout(() => {
+      router.back();
+    }, 300);
   };
 
   return (
-    <FullScreenContainer>
+    <FullScreenContainer isExiting={isExiting}>
       <ProfileSection>
         <ProfileIconWrapper>
           <Image

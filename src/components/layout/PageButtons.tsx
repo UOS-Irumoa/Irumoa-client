@@ -37,7 +37,7 @@ const PageButton = styled.button<{ active?: boolean }>`
   }
 `;
 
-const NavButton = styled.button`
+const NavButton = styled.button<{ invisible?: boolean }>`
   min-width: 32px;
   height: 32px;
   padding: 0 8px;
@@ -50,6 +50,7 @@ const NavButton = styled.button`
   transition: all 0.2s ease;
   background: transparent;
   color: ${({ theme }) => theme.colors.text.secondary};
+  visibility: ${({ invisible }) => (invisible ? "hidden" : "visible")};
 
   &:hover:not(:disabled) {
     background: rgba(0, 0, 0, 0.05);
@@ -89,8 +90,20 @@ export default function PageButtons({
     return pages;
   };
 
+  const showPrevButtons = currentPage >= 2;
+  const showNextButtons = currentPage < totalPages;
+
   return (
     <PaginationWrapper>
+      <NavButton onClick={() => onPageChange(1)} invisible={!showPrevButtons}>
+        &lt;&lt;
+      </NavButton>
+      <NavButton
+        onClick={() => onPageChange(currentPage - 1)}
+        invisible={!showPrevButtons}
+      >
+        &lt;
+      </NavButton>
       {getPageNumbers().map((page) => (
         <PageButton
           key={page}
@@ -102,17 +115,16 @@ export default function PageButtons({
       ))}
       <NavButton
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage >= totalPages}
+        invisible={!showNextButtons}
       >
         &gt;
       </NavButton>
       <NavButton
         onClick={() => onPageChange(totalPages)}
-        disabled={currentPage >= totalPages}
+        invisible={!showNextButtons}
       >
         &gt;&gt;
       </NavButton>
     </PaginationWrapper>
   );
 }
-

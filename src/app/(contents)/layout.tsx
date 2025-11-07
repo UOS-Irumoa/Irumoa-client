@@ -125,9 +125,24 @@ const ProgramListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: 18px;
+  gap: 15px;
   margin-top: 8px;
   overflow: hidden;
+`;
+
+const ChildrenWrapper = styled.div`
+  animation: fadeIn 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const ProgramList = styled.div`
@@ -135,7 +150,19 @@ const ProgramList = styled.div`
   grid-template-rows: repeat(6, 1fr);
   flex: 1;
   min-height: 0;
-  gap: 8px;
+  gap: 6px;
+  animation: fadeIn 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 export default function RootLayout({
@@ -227,15 +254,22 @@ export default function RootLayout({
                     />
                   </SearchSection>
 
-                  {children}
+                  <ChildrenWrapper key={pathname}>{children}</ChildrenWrapper>
 
                   <ProgramListWrapper>
-                    <ProgramList>
+                    <ProgramList key={`${currentCategory}-${currentPage}`}>
                       {displayPrograms.map((program: any) => {
                         if (program.isEmpty) {
-                          return <div key={program.id} style={{ visibility: "hidden" }} />;
+                          return (
+                            <div
+                              key={program.id}
+                              style={{ visibility: "hidden" }}
+                            />
+                          );
                         }
-                        return <ProgramListItem key={program.id} {...program} />;
+                        return (
+                          <ProgramListItem key={program.id} {...program} />
+                        );
                       })}
                     </ProgramList>
                     <PageButtons
