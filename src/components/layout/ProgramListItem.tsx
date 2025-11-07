@@ -9,9 +9,10 @@ const ListItem = styled.div`
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   flex: 1;
   min-height: 0;
+  gap: 16px;
 
   &:hover {
     box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
@@ -20,18 +21,30 @@ const ListItem = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+`;
+
+const LeftSection = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 100%;
   }
 `;
 
 const StatusBadge = styled.div<{ status: "upcoming" | "open" | "closed" }>`
   padding: 4px 8px;
-  margin: 14px 0 14px 16px;
   border-radius: 4px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
-  flex-shrink: 0;
+  align-self: flex-start;
   background: ${({ status, theme }) => {
     switch (status) {
       case "upcoming":
@@ -52,23 +65,13 @@ const StatusBadge = styled.div<{ status: "upcoming" | "open" | "closed" }>`
         return theme.colors.text.secondary;
     }
   }};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin: 14px 16px 0 16px;
-  }
 `;
 
 const ContentWrapper = styled.div`
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin: 14px 12px;
+  gap: 4px;
   min-width: 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin: 12px 16px;
-  }
 `;
 
 const ProgramTitle = styled.h3`
@@ -76,8 +79,12 @@ const ProgramTitle = styled.h3`
   font-size: 15px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   color: ${({ theme }) => theme.colors.text.primary};
-  margin: 0;
   line-height: 1.3;
+  margin: auto 0 auto 20px;
+  padding: 0 10px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const ProgramDescription = styled.p`
@@ -93,7 +100,7 @@ const BadgeContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  align-items: center;
+  align-self: flex-start;
   margin: 14px 16px 14px 0;
   flex-shrink: 0;
 
@@ -113,6 +120,7 @@ const CategoryBadge = styled.span`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.primary.main};
   white-space: nowrap;
+  align-self: flex-end;
 `;
 
 const QualificationBadge = styled.span<{ restricted?: boolean }>`
@@ -162,11 +170,15 @@ export default function ProgramListItem({
 
   return (
     <ListItem>
-      <StatusBadge status={status}>{getStatusText(status)}</StatusBadge>
-      <ContentWrapper>
+      <LeftSection>
+        <StatusBadge status={status}>{getStatusText(status)}</StatusBadge>
         <ProgramTitle>{title}</ProgramTitle>
-        {description && <ProgramDescription>{description}</ProgramDescription>}
-      </ContentWrapper>
+        {description && (
+          <ContentWrapper>
+            <ProgramDescription>{description}</ProgramDescription>
+          </ContentWrapper>
+        )}
+      </LeftSection>
       <BadgeContainer>
         <CategoryBadge>{category}</CategoryBadge>
         <QualificationBadge restricted={departmentRestricted}>

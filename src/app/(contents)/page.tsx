@@ -17,7 +17,6 @@ const MainContent = styled.div`
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  justify-content: space-between;
 `;
 
 const SearchSection = styled.div`
@@ -41,15 +40,16 @@ const ProgramListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: 8px;
+  gap: 18px;
   margin-top: 8px;
   overflow: hidden;
-  justify-content: space-between;
 `;
 
 const ProgramList = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
   gap: 8px;
 `;
 
