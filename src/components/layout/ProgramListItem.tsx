@@ -10,8 +10,7 @@ const ListItem = styled.div`
   transition: all 0.2s ease;
   display: flex;
   align-items: stretch;
-  flex: 1;
-  min-height: 0;
+  flex: 0 0 auto;
   gap: 16px;
 
   &:hover {
@@ -72,6 +71,12 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   gap: 4px;
   min-width: 0;
+  padding: 14px 12px;
+  flex: 1;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 12px 16px;
+  }
 `;
 
 const ProgramTitle = styled.h3`
@@ -100,13 +105,13 @@ const BadgeContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  align-self: flex-start;
-  margin: 14px 16px 14px 0;
+  align-items: flex-start;
+  padding: 14px 16px 14px 0;
   flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 100%;
-    margin: 0 16px 14px 16px;
+    padding: 0 16px 14px 16px;
   }
 `;
 
@@ -120,7 +125,6 @@ const CategoryBadge = styled.span`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.primary.main};
   white-space: nowrap;
-  align-self: flex-end;
 `;
 
 const QualificationBadge = styled.span<{ restricted?: boolean }>`
