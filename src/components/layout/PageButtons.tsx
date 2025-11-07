@@ -61,17 +61,17 @@ const NavButton = styled.button`
   }
 `;
 
-interface PaginationProps {
+interface PageButtonsProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
 }
 
-export default function Pagination({
+export default function PageButtons({
   currentPage,
   totalPages,
   onPageChange,
-}: PaginationProps) {
+}: PageButtonsProps) {
   const getPageNumbers = () => {
     const pages: number[] = [];
     const maxVisible = 10;
@@ -115,3 +115,4 @@ export default function Pagination({
     </PaginationWrapper>
   );
 }
+

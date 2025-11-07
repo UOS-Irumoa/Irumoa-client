@@ -5,13 +5,13 @@ import styled from "@emotion/styled";
 const ListItem = styled.div`
   background: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
-  padding: 14 px 16px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex: 1;
+  min-height: 0;
 
   &:hover {
     box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
@@ -25,6 +25,7 @@ const ListItem = styled.div`
 
 const StatusBadge = styled.div<{ status: "upcoming" | "open" | "closed" }>`
   padding: 4px 8px;
+  margin: 14px 0 14px 16px;
   border-radius: 4px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 12px;
@@ -51,6 +52,10 @@ const StatusBadge = styled.div<{ status: "upcoming" | "open" | "closed" }>`
         return theme.colors.text.secondary;
     }
   }};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin: 14px 16px 0 16px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -58,7 +63,12 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
+  margin: 14px 12px;
   min-width: 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin: 12px 16px;
+  }
 `;
 
 const ProgramTitle = styled.h3`
@@ -84,10 +94,12 @@ const BadgeContainer = styled.div`
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+  margin: 14px 16px 14px 0;
   flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 100%;
+    margin: 0 16px 14px 16px;
   }
 `;
 
