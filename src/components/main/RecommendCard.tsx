@@ -78,7 +78,7 @@ const StatusText = styled.span`
 
 const BadgeContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  overflow: hidden;
   gap: 6px;
 `;
 

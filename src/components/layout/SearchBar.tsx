@@ -7,7 +7,7 @@ const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 33%;
+  width: 40%;
   flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
