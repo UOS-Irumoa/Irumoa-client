@@ -59,11 +59,21 @@ const StatusDot = styled.div<{ status: "upcoming" | "open" | "closed" }>`
   background: ${({ status, theme }) => {
     switch (status) {
       case "upcoming":
-        return theme.colors.status.warning;
+        return "linear-gradient(135deg, #87CEEB 0%, #4A9FE8 100%)";
       case "open":
-        return theme.colors.status.success;
+        return theme.colors.primary.gradient;
       case "closed":
-        return theme.colors.text.secondary;
+        return "linear-gradient(135deg, #E0E0E0 0%, #B0B0B0 100%)";
+    }
+  }};
+  box-shadow: ${({ status }) => {
+    switch (status) {
+      case "upcoming":
+        return "0px 0px 4px 0px rgba(135, 206, 235, 0.5)";
+      case "open":
+        return "0px 0px 4px 0px rgba(64, 140, 255, 0.5)";
+      case "closed":
+        return "none";
     }
   }};
 `;

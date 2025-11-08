@@ -20,7 +20,7 @@ const Card = styled.div`
   }
 `;
 
-const StatusBadge = styled.div<{ status: "open" | "closed" }>`
+const StatusBadge = styled.div<{ status: "upcoming" | "open" | "closed" }>`
   position: absolute;
   top: 0;
   right: 0;
@@ -30,14 +30,26 @@ const StatusBadge = styled.div<{ status: "open" | "closed" }>`
   font-size: 13px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text.white};
-  background: ${({ status, theme }) =>
-    status === "open"
-      ? theme.colors.primary.gradient
-      : theme.colors.text.secondary};
-  box-shadow: ${({ status }) =>
-    status === "open"
-      ? "0px 2px 4px 0px rgba(64, 140, 255, 0.2)"
-      : "0px 2px 4px 0px rgba(0, 0, 0, 0.1)"};
+  background: ${({ status, theme }) => {
+    switch (status) {
+      case "upcoming":
+        return "linear-gradient(135deg, #87CEEB 0%, #4A9FE8 100%)";
+      case "open":
+        return theme.colors.primary.gradient;
+      case "closed":
+        return "linear-gradient(135deg, #E0E0E0 0%, #B0B0B0 100%)";
+    }
+  }};
+  box-shadow: ${({ status }) => {
+    switch (status) {
+      case "upcoming":
+        return "0px 2px 4px 0px rgba(135, 206, 235, 0.3)";
+      case "open":
+        return "0px 2px 4px 0px rgba(64, 140, 255, 0.2)";
+      case "closed":
+        return "0px 2px 4px 0px rgba(0, 0, 0, 0.1)";
+    }
+  }};
 `;
 
 const ProgramTitle = styled.h3`
@@ -69,8 +81,9 @@ const CategoryBadge = styled.span`
 const QualificationBadge = styled.span<{ restricted?: boolean }>`
   padding: 6px 12px;
   background: transparent;
-  border: 1px solid ${({ restricted, theme }) =>
-    restricted ? theme.colors.status.errorLight : theme.colors.border.main};
+  border: 1px solid
+    ${({ restricted, theme }) =>
+      restricted ? theme.colors.status.errorLight : theme.colors.border.main};
   border-radius: 6px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 13px;
@@ -83,7 +96,7 @@ interface ProgramCardProps {
   id: number;
   title: string;
   category: string;
-  status: "open" | "closed";
+  status: "upcoming" | "open" | "closed";
   departmentRestricted: boolean;
   gradeRestricted: boolean;
 }
@@ -95,11 +108,20 @@ export default function ProgramCard({
   departmentRestricted,
   gradeRestricted,
 }: ProgramCardProps) {
+  const getStatusText = (status: "upcoming" | "open" | "closed") => {
+    switch (status) {
+      case "upcoming":
+        return "모집 예정";
+      case "open":
+        return "모집 중";
+      case "closed":
+        return "모집 완료";
+    }
+  };
+
   return (
     <Card>
-      <StatusBadge status={status}>
-        {status === "open" ? "모집 중" : "모집 완료"}
-      </StatusBadge>
+      <StatusBadge status={status}>{getStatusText(status)}</StatusBadge>
       <ProgramTitle>{title}</ProgramTitle>
       <BadgeContainer>
         <CategoryBadge>{category}</CategoryBadge>
@@ -113,4 +135,3 @@ export default function ProgramCard({
     </Card>
   );
 }
-

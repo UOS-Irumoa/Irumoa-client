@@ -47,21 +47,31 @@ const StatusBadge = styled.div<{ status: "upcoming" | "open" | "closed" }>`
   background: ${({ status, theme }) => {
     switch (status) {
       case "upcoming":
-        return "rgba(64, 140, 255, 0.1)";
+        return "linear-gradient(135deg, #87CEEB 0%, #4A9FE8 100%)";
       case "open":
-        return theme.colors.primary.main;
+        return theme.colors.primary.gradient;
       case "closed":
-        return theme.colors.background.content;
+        return "linear-gradient(135deg, #E0E0E0 0%, #B0B0B0 100%)";
     }
   }};
   color: ${({ status, theme }) => {
     switch (status) {
       case "upcoming":
-        return theme.colors.primary.main;
+        return theme.colors.white;
       case "open":
         return theme.colors.white;
       case "closed":
-        return theme.colors.text.secondary;
+        return theme.colors.white;
+    }
+  }};
+  box-shadow: ${({ status }) => {
+    switch (status) {
+      case "upcoming":
+        return "0px 2px 8px 0px rgba(135, 206, 235, 0.3)";
+      case "open":
+        return "0px 2px 8px 0px rgba(64, 140, 255, 0.3)";
+      case "closed":
+        return "0px 2px 8px 0px rgba(0, 0, 0, 0.1)";
     }
   }};
 `;
