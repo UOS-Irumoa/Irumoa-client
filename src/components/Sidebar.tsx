@@ -2,6 +2,7 @@
 
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const Nav = styled.nav`
@@ -127,20 +128,28 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleNavigation = (href: string) => {
     router.push(href);
   };
+
+  // 서버/클라이언트 일치를 위해 마운트 전에는 기본 상태로 렌더링
+  const currentPath = isMounted ? pathname : "/";
 
   return (
     <Nav>
       {menuItems.map((item) => (
         <NavButton
           key={item.href}
-          isActive={pathname === item.href}
+          isActive={currentPath === item.href}
           onClick={() => handleNavigation(item.href)}
         >
-          <NavIconWrapper isActive={pathname === item.href}>
+          <NavIconWrapper isActive={currentPath === item.href}>
             <Image
               src={item.icon}
               alt={item.label}
@@ -148,11 +157,11 @@ export default function Sidebar() {
               height={32}
               style={{
                 filter:
-                  pathname === item.href ? "brightness(0) invert(1)" : "none",
+                  currentPath === item.href ? "brightness(0) invert(1)" : "none",
               }}
             />
           </NavIconWrapper>
-          <NavLabel isActive={pathname === item.href}>{item.label}</NavLabel>
+          <NavLabel isActive={currentPath === item.href}>{item.label}</NavLabel>
         </NavButton>
       ))}
     </Nav>

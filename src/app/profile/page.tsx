@@ -357,6 +357,48 @@ const BadgeCloseIcon = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 24px;
+  background: rgba(255, 82, 82, 0.95);
+  color: white;
+  border-radius: 8px;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0px 4px 16px 0px rgba(255, 82, 82, 0.3);
+  z-index: 102;
+  animation: shake 0.4s ease-in-out;
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translate(-50%, -50%);
+    }
+    5%,
+    15%,
+    25%,
+    35%,
+    45%,
+    55%,
+    65% {
+      transform: translate(-50%, -50%) translateX(-10px);
+    }
+    10%,
+    20%,
+    30%,
+    40%,
+    50%,
+    60%,
+    70% {
+      transform: translate(-50%, -50%) translateX(10px);
+    }
+  }
+`;
+
 const ButtonContainer = styled.div`
   position: fixed;
   bottom: 40px;
@@ -440,6 +482,8 @@ export default function ProfilePage() {
   const [grade, setGrade] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [isExiting, setIsExiting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [initialProfile, setInitialProfile] = useState<any>(null);
 
   // 선택된 단과대학에 따른 학과 목록
   const availableDepartments = useMemo(() => {
@@ -482,6 +526,9 @@ export default function ProfilePage() {
           setDoubleDepartment(profile.doubleDepartment || "");
           setGrade(profile.grade || "");
           setSelectedInterests(profile.interests || []);
+
+          // 초기 프로필 저장 (취소 시 복원용)
+          setInitialProfile(profile);
         } catch (error) {
           console.error("Failed to parse user profile:", error);
         }
@@ -498,6 +545,31 @@ export default function ProfilePage() {
   };
 
   const handleSave = () => {
+    // 필수 항목 검증
+    if (!college || college.trim() === "") {
+      setErrorMessage("단과대학을 선택해주세요");
+      setTimeout(() => setErrorMessage(""), 2000);
+      return;
+    }
+
+    if (!department || department.trim() === "") {
+      setErrorMessage("학과를 선택해주세요");
+      setTimeout(() => setErrorMessage(""), 2000);
+      return;
+    }
+
+    if (!grade || grade.trim() === "") {
+      setErrorMessage("학년을 선택해주세요");
+      setTimeout(() => setErrorMessage(""), 2000);
+      return;
+    }
+
+    if (!selectedInterests || selectedInterests.length === 0) {
+      setErrorMessage("관심사를 최소 1개 이상 선택해주세요");
+      setTimeout(() => setErrorMessage(""), 2000);
+      return;
+    }
+
     const userProfile = {
       college,
       department,
@@ -525,6 +597,24 @@ export default function ProfilePage() {
   };
 
   const handleCancel = () => {
+    // 초기 프로필로 복원
+    if (initialProfile) {
+      setCollege(initialProfile.college || "");
+      setDepartment(initialProfile.department || "");
+      setDoubleCollege(initialProfile.doubleCollege || "");
+      setDoubleDepartment(initialProfile.doubleDepartment || "");
+      setGrade(initialProfile.grade || "");
+      setSelectedInterests(initialProfile.interests || []);
+    } else {
+      // 저장된 프로필이 없으면 모두 초기화
+      setCollege("");
+      setDepartment("");
+      setDoubleCollege("");
+      setDoubleDepartment("");
+      setGrade("");
+      setSelectedInterests([]);
+    }
+
     // 애니메이션 후 나가기
     setIsExiting(true);
     setTimeout(() => {
@@ -692,6 +782,8 @@ export default function ProfilePage() {
           저장
         </Button>
       </ButtonContainer>
+
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </FullScreenContainer>
   );
 }

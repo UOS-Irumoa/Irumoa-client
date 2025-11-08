@@ -130,6 +130,7 @@ interface UserProfile {
 export default function Header() {
   const router = useRouter();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   const loadUserProfile = () => {
     if (typeof window !== "undefined") {
@@ -146,6 +147,8 @@ export default function Header() {
   };
 
   useEffect(() => {
+    setIsMounted(true);
+
     // 초기 로드
     loadUserProfile();
 
@@ -172,8 +175,8 @@ export default function Header() {
 
     const categories = [];
 
-    // 학과 추가
-    if (userProfile.department) {
+    // 학과 추가 (빈 문자열이 아닌 경우만)
+    if (userProfile.department && userProfile.department.trim() !== "") {
       categories.push({
         label: userProfile.department,
         variant: "primary" as const,
@@ -181,8 +184,11 @@ export default function Header() {
       });
     }
 
-    // 복수전공 학과 추가
-    if (userProfile.doubleDepartment) {
+    // 복수전공 학과 추가 (빈 문자열이 아닌 경우만)
+    if (
+      userProfile.doubleDepartment &&
+      userProfile.doubleDepartment.trim() !== ""
+    ) {
       categories.push({
         label: userProfile.doubleDepartment,
         variant: "primary" as const,
@@ -193,11 +199,13 @@ export default function Header() {
     // 관심사 추가
     if (userProfile.interests && userProfile.interests.length > 0) {
       userProfile.interests.forEach((interest) => {
-        categories.push({
-          label: interest,
-          variant: "secondary" as const,
-          kind: "interest" as const,
-        });
+        if (interest && interest.trim() !== "") {
+          categories.push({
+            label: interest,
+            variant: "secondary" as const,
+            kind: "interest" as const,
+          });
+        }
       });
     }
 
@@ -205,6 +213,27 @@ export default function Header() {
   };
 
   const categories = getUserCategories();
+
+  // 서버/클라이언트 일치를 위해 마운트 전에는 로딩 상태 표시
+  if (!isMounted) {
+    return (
+      <HeaderContainer>
+        <ActionsContainer>
+          <ActionButton onClick={handleProfileClick}>
+            <UserIcon>
+              <Image
+                src="/images/header/profile-circle.svg"
+                alt="User"
+                width={22}
+                height={22}
+              />
+            </UserIcon>
+            <span>내 정보 수정</span>
+          </ActionButton>
+        </ActionsContainer>
+      </HeaderContainer>
+    );
+  }
 
   return (
     <HeaderContainer>

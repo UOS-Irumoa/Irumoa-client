@@ -90,17 +90,23 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   const [recruitStatus, setRecruitStatus] = useState("전체");
   const [showOnlyQualified, setShowOnlyQualified] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isMounted, setIsMounted] = useState(false);
 
   const ITEMS_PER_PAGE = 6;
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // 현재 경로에서 카테고리 추출
   const currentCategory = useMemo(() => {
+    if (!isMounted) return null;
     const segments = pathname?.split("/").filter(Boolean) || [];
     if (segments.length > 0 && segments[0] !== "contents") {
       return getCategoryName(segments[0]);
     }
     return null;
-  }, [pathname]);
+  }, [pathname, isMounted]);
 
   // 카테고리별 필터링된 프로그램
   const filteredPrograms = useMemo(() => {
@@ -148,10 +154,14 @@ export default function LayoutContent({ children }: LayoutContentProps) {
         />
       </SearchSection>
 
-      <ChildrenWrapper key={pathname}>{children}</ChildrenWrapper>
+      <ChildrenWrapper key={isMounted ? pathname : "default"}>
+        {children}
+      </ChildrenWrapper>
 
       <ProgramListWrapper>
-        <ProgramList key={`${currentCategory}-${currentPage}`}>
+        <ProgramList
+          key={isMounted ? `${currentCategory}-${currentPage}` : "default"}
+        >
           {displayPrograms.map((program: any) => {
             if (program.isEmpty) {
               return <div key={program.id} style={{ visibility: "hidden" }} />;
@@ -168,4 +178,3 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     </MainContent>
   );
 }
-
