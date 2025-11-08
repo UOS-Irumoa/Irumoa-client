@@ -491,8 +491,10 @@ export default function ProfilePage() {
   }, [college]);
 
   const availableDoubleDepartments = useMemo(() => {
-    return getDepartmentsByUniversity(doubleCollege);
-  }, [doubleCollege]);
+    const allDepts = getDepartmentsByUniversity(doubleCollege);
+    // 전공 학과로 선택된 학과는 제외
+    return allDepts.filter((dept) => dept !== department);
+  }, [doubleCollege, department]);
 
   // 단과대학 변경 시 학과 초기화
   useEffect(() => {
@@ -512,6 +514,13 @@ export default function ProfilePage() {
       }
     }
   }, [doubleCollege]);
+
+  // 전공 학과 변경 시 복수전공이 같은 학과면 초기화
+  useEffect(() => {
+    if (department && doubleDepartment && department === doubleDepartment) {
+      setDoubleDepartment("");
+    }
+  }, [department]);
 
   // localStorage에서 저장된 정보 불러오기
   useEffect(() => {
