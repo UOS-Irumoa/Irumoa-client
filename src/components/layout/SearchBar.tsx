@@ -9,6 +9,7 @@ const SearchWrapper = styled.div`
   gap: 12px;
   width: 40%;
   flex-shrink: 0;
+  flex-wrap: nowrap;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 100%;

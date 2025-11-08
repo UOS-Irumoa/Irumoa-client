@@ -113,7 +113,7 @@ const ProgramDescription = styled.p`
 
 const BadgeContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px;
   align-items: flex-start;
   padding: 14px 16px 14px 0;
