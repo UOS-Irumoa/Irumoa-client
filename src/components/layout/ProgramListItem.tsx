@@ -130,6 +130,9 @@ const QualificationBadge = styled.span<{ restricted?: boolean }>`
   color: ${({ restricted, theme }) =>
     restricted ? theme.colors.status.errorLight : theme.colors.text.secondary};
   white-space: nowrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 interface ProgramListItemProps {
