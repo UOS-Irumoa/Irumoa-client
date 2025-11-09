@@ -186,6 +186,7 @@ export default function FilterBar({
             onChange={(e) => onRecruitStatusChange(e.target.value)}
           >
             <option value="전체">전체</option>
+            <option value="모집 예정">모집 예정</option>
             <option value="모집 중">모집 중</option>
             <option value="모집 완료">모집 완료</option>
           </Select>

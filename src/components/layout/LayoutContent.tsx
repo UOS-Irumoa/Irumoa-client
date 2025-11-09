@@ -110,9 +110,46 @@ export default function LayoutContent({ children }: LayoutContentProps) {
 
   // 카테고리별 필터링된 프로그램
   const filteredPrograms = useMemo(() => {
-    if (!currentCategory) return programs;
-    return programs.filter((program) => program.category === currentCategory);
-  }, [currentCategory]);
+    let filtered = programs;
+
+    // 카테고리 필터링
+    if (currentCategory) {
+      filtered = filtered.filter(
+        (program) => program.category === currentCategory
+      );
+    }
+
+    // 검색어 필터링
+    if (searchTerm.trim() !== "") {
+      filtered = filtered.filter((program) =>
+        program.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // 모집 상태 필터링
+    if (recruitStatus !== "전체") {
+      const statusMap: Record<string, "upcoming" | "open" | "closed"> = {
+        "모집 예정": "upcoming",
+        "모집 중": "open",
+        "모집 완료": "closed",
+      };
+      const targetStatus = statusMap[recruitStatus];
+      if (targetStatus) {
+        filtered = filtered.filter(
+          (program) => program.status === targetStatus
+        );
+      }
+    }
+
+    // 지원 가능 항목만 표시 (학과/학년 제한 없는 것만)
+    if (showOnlyQualified) {
+      filtered = filtered.filter(
+        (program) => !program.departmentRestricted && !program.gradeRestricted
+      );
+    }
+
+    return filtered;
+  }, [currentCategory, searchTerm, recruitStatus, showOnlyQualified]);
 
   // 페이지네이션 계산
   const totalPages = Math.ceil(filteredPrograms.length / ITEMS_PER_PAGE);
@@ -137,10 +174,10 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     setCurrentPage(page);
   };
 
-  // 카테고리 변경 시 페이지를 1로 리셋
+  // 필터 조건 변경 시 페이지를 1로 리셋
   useEffect(() => {
     setCurrentPage(1);
-  }, [currentCategory]);
+  }, [currentCategory, searchTerm, recruitStatus, showOnlyQualified]);
 
   return (
     <MainContent>
