@@ -10,17 +10,10 @@ const ListItem = styled.div`
   transition: all 0.2s ease;
   display: flex;
   align-items: stretch;
-  gap: 16px;
   min-height: 0;
 
   &:hover {
     box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
   }
 `;
 
@@ -29,11 +22,6 @@ const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-width: 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 100%;
-  }
 `;
 
 const StatusBadge = styled.div<{ status: "upcoming" | "open" | "closed" }>`
@@ -83,10 +71,6 @@ const ContentWrapper = styled.div`
   min-width: 0;
   padding: 14px 12px;
   flex: 1;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 12px 16px;
-  }
 `;
 
 const ProgramTitle = styled.h3`
@@ -118,11 +102,6 @@ const BadgeContainer = styled.div`
   align-items: flex-start;
   padding: 14px 16px 14px 0;
   flex-shrink: 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 100%;
-    padding: 0 16px 14px 16px;
-  }
 `;
 
 const CategoryBadge = styled.span`

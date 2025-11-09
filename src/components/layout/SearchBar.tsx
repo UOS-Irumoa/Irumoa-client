@@ -2,17 +2,17 @@
 
 import styled from "@emotion/styled";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 40%;
+  width: 45%;
   flex-shrink: 0;
   flex-wrap: nowrap;
-
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 100%;
+    width: 55%;
   }
 `;
 
@@ -21,7 +21,7 @@ const SearchInput = styled.input`
   height: 40px;
   padding: 0 12px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 17px;
+  font-size: 16px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   color: ${({ theme }) => theme.colors.text.primary};
   background: ${({ theme }) => theme.colors.white};
@@ -68,11 +68,35 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ value, onChange }: SearchBarProps) {
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+    const handleResize = () => {
+      setIsTablet(mediaQuery.matches);
+    };
+
+    // 초기값 설정
+    handleResize();
+
+    // 리스너 추가
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  }, []);
+
   return (
     <SearchWrapper>
       <SearchInput
         type="text"
-        placeholder="프로그램 이름이나 내용 키워드로 검색..."
+        placeholder={
+          isTablet
+            ? "프로그램 검색..."
+            : "프로그램 이름이나 내용 키워드로 검색..."
+        }
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />

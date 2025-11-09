@@ -22,14 +22,14 @@ const MainContent = styled.div`
 const SearchSection = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: space-between;
   gap: 24px;
   padding-bottom: 8px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.main};
   flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    flex-direction: column;
     align-items: stretch;
     gap: 16px;
     padding-bottom: 16px;

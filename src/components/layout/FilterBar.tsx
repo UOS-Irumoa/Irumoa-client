@@ -7,11 +7,9 @@ const FilterSection = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 20px;
-  flex: 1;
-
+  flex-wrap: nowrap;
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    flex-direction: column;
-    align-items: flex-end;
+    gap: 4px;
   }
 `;
 
@@ -29,11 +27,19 @@ const FilterLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.text.primary};
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 const SelectWrapper = styled.div`
   position: relative;
   width: 140px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 100px;
+  }
 `;
 
 const Select = styled.select`
@@ -123,6 +129,23 @@ const CheckboxLabel = styled.label`
   color: ${({ theme }) => theme.colors.text.primary};
   cursor: pointer;
   user-select: none;
+  flex-shrink: 10;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const CheckboxLabelDesktop = styled(CheckboxLabel)`
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const CheckboxLabelTablet = styled(CheckboxLabel)`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: block;
+  }
 `;
 
 interface FilterBarProps {
@@ -141,9 +164,12 @@ export default function FilterBar({
   return (
     <FilterSection>
       <CheckboxWrapper>
-        <CheckboxLabel htmlFor="qualified-only">
+        <CheckboxLabelDesktop htmlFor="qualified-only">
           지원 자격 해당 항목만 표시
-        </CheckboxLabel>
+        </CheckboxLabelDesktop>
+        <CheckboxLabelTablet htmlFor="qualified-only">
+          지원 가능
+        </CheckboxLabelTablet>
         <Checkbox
           type="checkbox"
           id="qualified-only"

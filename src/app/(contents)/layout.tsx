@@ -31,7 +31,7 @@ const LogoWrapper = styled.div`
   z-index: 41;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    left: ${({ theme }) => theme.padding.xxl};
+    left: ${({ theme }) => theme.padding.xl};
   }
 `;
 
