@@ -26,4 +26,5 @@ export interface NoticeSearchParams {
   filter?: boolean;
   keyword?: string;
   state?: string;
+  category?: string;
 }

@@ -82,6 +82,41 @@ const ProgramList = styled.div`
   }
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 400px;
+  gap: ${({ theme }) => theme.spacing.md};
+`;
+
+const LoadingSpinner = styled.div`
+  width: 48px;
+  height: 48px;
+  border: 4px solid ${({ theme }) => theme.colors.border.main};
+  border-top: 4px solid ${({ theme }) => theme.colors.primary.main};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingText = styled.span`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.lg};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  color: ${({ theme }) => theme.colors.text.secondary};
+`;
+
 interface LayoutContentProps {
   children: ReactNode;
 }
@@ -127,40 +162,20 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           "모집 완료": "모집완료",
         };
 
-        // 카테고리 필터링이 있는 경우 충분한 데이터를 가져옴 (최적화: 200개로 제한)
-        const pageSize = currentCategory ? 200 : ITEMS_PER_PAGE;
-        const page = currentCategory ? 0 : currentPage - 1;
-
         const response = await searchNotices({
-          page: page,
-          size: pageSize,
+          page: currentPage - 1,
+          size: ITEMS_PER_PAGE,
           keyword: searchTerm.trim() || undefined,
           state: recruitStatus !== "전체" ? statusMap[recruitStatus] : undefined,
           filter: showOnlyQualified || undefined,
+          category: currentCategory || undefined,
         });
 
         // API 데이터를 Program 형식으로 변환
-        let programData = noticesToPrograms(response.content);
+        const programData = noticesToPrograms(response.content);
 
-        // 카테고리 필터링 (클라이언트 측)
-        if (currentCategory) {
-          programData = programData.filter(
-            (program: Program) => program.category === currentCategory
-          );
-
-          // 필터링된 결과에 대한 페이지네이션
-          const totalFiltered = programData.length;
-          const totalPagesFiltered = Math.ceil(totalFiltered / ITEMS_PER_PAGE);
-          const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-          const endIndex = startIndex + ITEMS_PER_PAGE;
-          programData = programData.slice(startIndex, endIndex);
-
-          setPrograms(programData);
-          setTotalPages(totalPagesFiltered);
-        } else {
-          setPrograms(programData);
-          setTotalPages(response.totalPages);
-        }
+        setPrograms(programData);
+        setTotalPages(response.totalPages);
       } catch (error) {
         console.error("Failed to fetch notices:", error);
         setPrograms([]);
@@ -219,21 +234,30 @@ export default function LayoutContent({ children }: LayoutContentProps) {
       </ChildrenWrapper>
 
       <ProgramListWrapper>
-        <ProgramList
-          key={isMounted ? `${currentCategory}-${currentPage}` : "default"}
-        >
-          {displayPrograms.map((program: any) => {
-            if (program.isEmpty) {
-              return <div key={program.id} style={{ visibility: "hidden" }} />;
-            }
-            return <ProgramListItem key={program.id} {...program} />;
-          })}
-        </ProgramList>
-        <PageButtons
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        {isLoading ? (
+          <LoadingWrapper>
+            <LoadingSpinner />
+            <LoadingText>데이터를 불러오는 중...</LoadingText>
+          </LoadingWrapper>
+        ) : (
+          <>
+            <ProgramList
+              key={isMounted ? `${currentCategory}-${currentPage}` : "default"}
+            >
+              {displayPrograms.map((program: any) => {
+                if (program.isEmpty) {
+                  return <div key={program.id} style={{ visibility: "hidden" }} />;
+                }
+                return <ProgramListItem key={program.id} {...program} />;
+              })}
+            </ProgramList>
+            <PageButtons
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
+        )}
       </ProgramListWrapper>
     </MainContent>
   );

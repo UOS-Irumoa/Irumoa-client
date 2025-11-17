@@ -42,6 +42,11 @@ export async function searchNotices(
     searchParams.append("state", params.state);
   }
 
+  // 카테고리 필터링
+  if (params.category) {
+    searchParams.append("category", params.category);
+  }
+
   const url = `${BASE_URL}/notices/search?${searchParams.toString()}`;
 
   try {

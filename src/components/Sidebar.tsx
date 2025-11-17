@@ -145,9 +145,9 @@ export default function Sidebar() {
         label: "특강",
       },
       {
-        href: "/extracurricular",
-        icon: "/images/sidebar/icon-lecture.svg",
-        label: "비교과",
+        href: "/visit",
+        icon: "/images/sidebar/icon-visit.svg",
+        label: "탐방",
       },
     ]);
   }, []);
