@@ -102,6 +102,7 @@ const CategoryBadge = styled.span`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.primary.main};
   white-space: nowrap;
+  flex: 1;
 `;
 
 const QualificationBadge = styled.span<{ restricted?: boolean }>`
@@ -118,6 +119,7 @@ const QualificationBadge = styled.span<{ restricted?: boolean }>`
   color: ${({ restricted, theme }) =>
     restricted ? theme.colors.status.errorLight : theme.colors.primary.main};
   white-space: nowrap;
+  flex: 1;
 `;
 
 const ProgramTitle = styled.h3`

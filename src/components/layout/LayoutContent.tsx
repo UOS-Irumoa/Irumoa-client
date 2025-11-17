@@ -7,8 +7,10 @@ import SearchBar from "@/components/layout/SearchBar";
 import FilterBar from "@/components/layout/FilterBar";
 import ProgramListItem from "@/components/layout/ProgramListItem";
 import PageButtons from "@/components/layout/PageButtons";
-import { programs } from "@/data/programs";
+import { Program } from "@/data/programs";
 import { getCategoryName } from "@/data/categories";
+import { searchNotices } from "@/services/noticeService";
+import { noticesToPrograms } from "@/utils/noticeAdapter";
 
 const MainContent = styled.div`
   display: flex;
@@ -91,6 +93,9 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   const [showOnlyQualified, setShowOnlyQualified] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isMounted, setIsMounted] = useState(false);
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const ITEMS_PER_PAGE = 6;
 
@@ -108,67 +113,71 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     return null;
   }, [pathname, isMounted]);
 
-  // 카테고리별 필터링된 프로그램
-  const filteredPrograms = useMemo(() => {
-    let filtered = programs;
+  // API에서 데이터 가져오기
+  useEffect(() => {
+    if (!isMounted) return;
 
-    // 카테고리 필터링
-    if (currentCategory) {
-      filtered = filtered.filter(
-        (program) => program.category === currentCategory
-      );
-    }
+    const fetchNotices = async () => {
+      setIsLoading(true);
+      try {
+        // 모집 상태 매핑
+        const statusMap: Record<string, string> = {
+          "모집 예정": "모집예정",
+          "모집 중": "모집중",
+          "모집 완료": "모집완료",
+        };
 
-    // 검색어 필터링
-    if (searchTerm.trim() !== "") {
-      filtered = filtered.filter((program) =>
-        program.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+        const response = await searchNotices({
+          page: currentPage - 1, // API는 0-based 페이지
+          size: ITEMS_PER_PAGE,
+          keyword: searchTerm.trim() || undefined,
+          state: recruitStatus !== "전체" ? statusMap[recruitStatus] : undefined,
+          filter: showOnlyQualified || undefined,
+        });
 
-    // 모집 상태 필터링
-    if (recruitStatus !== "전체") {
-      const statusMap: Record<string, "upcoming" | "open" | "closed"> = {
-        "모집 예정": "upcoming",
-        "모집 중": "open",
-        "모집 완료": "closed",
-      };
-      const targetStatus = statusMap[recruitStatus];
-      if (targetStatus) {
-        filtered = filtered.filter(
-          (program) => program.status === targetStatus
-        );
+        // API 데이터를 Program 형식으로 변환
+        let programData = noticesToPrograms(response.content);
+
+        // 카테고리 필터링 (클라이언트 측)
+        if (currentCategory) {
+          programData = programData.filter(
+            (program: Program) => program.category === currentCategory
+          );
+        }
+
+        setPrograms(programData);
+        setTotalPages(response.totalPages);
+      } catch (error) {
+        console.error("Failed to fetch notices:", error);
+        setPrograms([]);
+        setTotalPages(0);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
 
-    // 지원 가능 항목만 표시 (학과/학년 제한 없는 것만)
-    if (showOnlyQualified) {
-      filtered = filtered.filter(
-        (program) => !program.departmentRestricted && !program.gradeRestricted
-      );
-    }
-
-    return filtered;
-  }, [currentCategory, searchTerm, recruitStatus, showOnlyQualified]);
-
-  // 페이지네이션 계산
-  const totalPages = Math.ceil(filteredPrograms.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentPrograms = filteredPrograms.slice(startIndex, endIndex);
+    fetchNotices();
+  }, [
+    isMounted,
+    currentPage,
+    searchTerm,
+    recruitStatus,
+    showOnlyQualified,
+    currentCategory,
+  ]);
 
   // 6개로 맞추기 위한 빈 아이템 추가
   const displayPrograms = useMemo(() => {
-    const emptyCount = ITEMS_PER_PAGE - currentPrograms.length;
+    const emptyCount = ITEMS_PER_PAGE - programs.length;
     if (emptyCount > 0) {
       const emptyItems = Array.from({ length: emptyCount }, (_, i) => ({
         id: `empty-${i}`,
         isEmpty: true,
       }));
-      return [...currentPrograms, ...emptyItems];
+      return [...programs, ...emptyItems];
     }
-    return currentPrograms;
-  }, [currentPrograms]);
+    return programs;
+  }, [programs]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
