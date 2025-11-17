@@ -32,9 +32,14 @@ export async function searchNotices(
     searchParams.append("filter", params.filter.toString());
   }
 
-  // 키워드 검색
+  // 키워드 검색 (전체 검색)
   if (params.keyword) {
     searchParams.append("keyword", params.keyword);
+  }
+
+  // 제목 검색
+  if (params.title) {
+    searchParams.append("title", params.title);
   }
 
   // 모집 상태 필터링
@@ -53,14 +58,27 @@ export async function searchNotices(
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      // 에러를 던지지 않고 빈 응답 반환
+      return {
+        content: [],
+        page: 0,
+        size: params.size ?? 10,
+        totalElements: 0,
+        totalPages: 0,
+      };
     }
 
     const data: NoticeSearchResponse = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching notices:", error);
-    throw error;
+    // 에러 발생 시에도 빈 응답 반환
+    return {
+      content: [],
+      page: 0,
+      size: params.size ?? 10,
+      totalElements: 0,
+      totalPages: 0,
+    };
   }
 }
 

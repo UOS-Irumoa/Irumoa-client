@@ -124,6 +124,7 @@ interface LayoutContentProps {
 export default function LayoutContent({ children }: LayoutContentProps) {
   const pathname = usePathname();
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [recruitStatus, setRecruitStatus] = useState("전체");
   const [showOnlyQualified, setShowOnlyQualified] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -133,6 +134,15 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const ITEMS_PER_PAGE = 6;
+
+  // 검색어 디바운싱 (500ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -162,20 +172,45 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           "모집 완료": "모집완료",
         };
 
+        // 검색어가 있을 때는 충분히 많은 데이터를 가져와서 클라이언트에서 필터링
+        const searchKeyword = debouncedSearchTerm.trim();
+        const shouldClientFilter = searchKeyword.length > 0;
+
         const response = await searchNotices({
-          page: currentPage - 1,
-          size: ITEMS_PER_PAGE,
-          keyword: searchTerm.trim() || undefined,
+          page: shouldClientFilter ? 0 : currentPage - 1,
+          size: shouldClientFilter ? 1000 : ITEMS_PER_PAGE,
           state: recruitStatus !== "전체" ? statusMap[recruitStatus] : undefined,
           filter: showOnlyQualified || undefined,
           category: currentCategory || undefined,
         });
 
+        let filteredContent = response.content;
+
+        // 클라이언트 사이드 검색 필터링
+        if (searchKeyword) {
+          filteredContent = response.content.filter((notice) =>
+            notice.title.toLowerCase().includes(searchKeyword.toLowerCase())
+          );
+        }
+
+        // 페이지네이션 처리 (클라이언트 필터링 시)
+        let paginatedContent = filteredContent;
+        let calculatedTotalPages = 1;
+
+        if (searchKeyword) {
+          const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+          const endIndex = startIndex + ITEMS_PER_PAGE;
+          paginatedContent = filteredContent.slice(startIndex, endIndex);
+          calculatedTotalPages = Math.ceil(filteredContent.length / ITEMS_PER_PAGE);
+        } else {
+          calculatedTotalPages = response.totalPages;
+        }
+
         // API 데이터를 Program 형식으로 변환
-        const programData = noticesToPrograms(response.content);
+        const programData = noticesToPrograms(paginatedContent);
 
         setPrograms(programData);
-        setTotalPages(response.totalPages);
+        setTotalPages(calculatedTotalPages);
       } catch (error) {
         console.error("Failed to fetch notices:", error);
         setPrograms([]);
@@ -189,7 +224,7 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   }, [
     isMounted,
     currentPage,
-    searchTerm,
+    debouncedSearchTerm,
     recruitStatus,
     showOnlyQualified,
     currentCategory,
@@ -215,7 +250,7 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   // 필터 조건 변경 시 페이지를 1로 리셋
   useEffect(() => {
     setCurrentPage(1);
-  }, [currentCategory, searchTerm, recruitStatus, showOnlyQualified]);
+  }, [currentCategory, debouncedSearchTerm, recruitStatus, showOnlyQualified]);
 
   return (
     <MainContent>

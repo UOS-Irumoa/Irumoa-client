@@ -25,6 +25,7 @@ export interface NoticeSearchParams {
   grade?: number;
   filter?: boolean;
   keyword?: string;
+  title?: string;
   state?: string;
   category?: string;
 }
