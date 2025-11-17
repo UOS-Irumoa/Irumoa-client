@@ -89,20 +89,26 @@ export default function PageButtons({
     return pages;
   };
 
-  // 이전/다음 그룹이 있는지 확인
-  const hasPrevGroup = startPage > 1;
-  const hasNextGroup = endPage < totalPages;
-
-  // 이전 페이지 그룹의 마지막 페이지로 이동
-  const goToPrevGroup = () => {
-    const prevGroupLastPage = startPage - 1;
-    onPageChange(prevGroupLastPage);
+  // 이전 버튼 클릭 핸들러
+  const handlePrevClick = () => {
+    if (currentPage === startPage && startPage > 1) {
+      // 현재 그룹의 첫 페이지에 있고, 이전 그룹이 있으면 -> 이전 그룹의 마지막 페이지로
+      onPageChange(startPage - 1);
+    } else {
+      // 일반적인 경우 -> 이전 페이지로
+      onPageChange(currentPage - 1);
+    }
   };
 
-  // 다음 페이지 그룹의 첫 페이지로 이동
-  const goToNextGroup = () => {
-    const nextGroupFirstPage = endPage + 1;
-    onPageChange(nextGroupFirstPage);
+  // 다음 버튼 클릭 핸들러
+  const handleNextClick = () => {
+    if (currentPage === endPage && endPage < totalPages) {
+      // 현재 그룹의 마지막 페이지에 있고, 다음 그룹이 있으면 -> 다음 그룹의 첫 페이지로
+      onPageChange(endPage + 1);
+    } else {
+      // 일반적인 경우 -> 다음 페이지로
+      onPageChange(currentPage + 1);
+    }
   };
 
   // 이전/다음 페이지 버튼 표시 여부
@@ -116,20 +122,10 @@ export default function PageButtons({
         &lt;&lt;
       </NavButton>
 
-      {/* 이전 페이지 */}
-      <NavButton
-        onClick={() => onPageChange(currentPage - 1)}
-        invisible={!showPrevButton}
-      >
+      {/* 이전 페이지 / 이전 그룹 */}
+      <NavButton onClick={handlePrevClick} invisible={!showPrevButton}>
         &lt;
       </NavButton>
-
-      {/* 이전 그룹 (1-10 표시 중일 때는 숨김) */}
-      {hasPrevGroup && (
-        <NavButton onClick={goToPrevGroup}>
-          ...
-        </NavButton>
-      )}
 
       {/* 페이지 번호들 */}
       {getPageNumbers().map((page) => (
@@ -142,18 +138,8 @@ export default function PageButtons({
         </PageButton>
       ))}
 
-      {/* 다음 그룹 */}
-      {hasNextGroup && (
-        <NavButton onClick={goToNextGroup}>
-          ...
-        </NavButton>
-      )}
-
-      {/* 다음 페이지 */}
-      <NavButton
-        onClick={() => onPageChange(currentPage + 1)}
-        invisible={!showNextButton}
-      >
+      {/* 다음 페이지 / 다음 그룹 */}
+      <NavButton onClick={handleNextClick} invisible={!showNextButton}>
         &gt;
       </NavButton>
 
