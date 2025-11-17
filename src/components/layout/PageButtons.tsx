@@ -73,37 +73,65 @@ export default function PageButtons({
   totalPages,
   onPageChange,
 }: PageButtonsProps) {
+  const PAGES_PER_GROUP = 10;
+
+  // 현재 페이지가 속한 페이지 그룹 계산 (1-10, 11-20, 21-30, ...)
+  const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
+  const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
+  const endPage = Math.min(currentGroup * PAGES_PER_GROUP, totalPages);
+
+  // 표시할 페이지 번호 배열 생성
   const getPageNumbers = () => {
     const pages: number[] = [];
-    const maxVisible = 10;
-
-    if (totalPages <= maxVisible) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      for (let i = 1; i <= maxVisible; i++) {
-        pages.push(i);
-      }
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
     }
-
     return pages;
   };
 
-  const showPrevButtons = currentPage >= 2;
-  const showNextButtons = currentPage < totalPages;
+  // 이전/다음 그룹이 있는지 확인
+  const hasPrevGroup = startPage > 1;
+  const hasNextGroup = endPage < totalPages;
+
+  // 이전 페이지 그룹의 마지막 페이지로 이동
+  const goToPrevGroup = () => {
+    const prevGroupLastPage = startPage - 1;
+    onPageChange(prevGroupLastPage);
+  };
+
+  // 다음 페이지 그룹의 첫 페이지로 이동
+  const goToNextGroup = () => {
+    const nextGroupFirstPage = endPage + 1;
+    onPageChange(nextGroupFirstPage);
+  };
+
+  // 이전/다음 페이지 버튼 표시 여부
+  const showPrevButton = currentPage > 1;
+  const showNextButton = currentPage < totalPages;
 
   return (
     <PaginationWrapper>
-      <NavButton onClick={() => onPageChange(1)} invisible={!showPrevButtons}>
+      {/* 맨 처음으로 */}
+      <NavButton onClick={() => onPageChange(1)} invisible={!showPrevButton}>
         &lt;&lt;
       </NavButton>
+
+      {/* 이전 페이지 */}
       <NavButton
         onClick={() => onPageChange(currentPage - 1)}
-        invisible={!showPrevButtons}
+        invisible={!showPrevButton}
       >
         &lt;
       </NavButton>
+
+      {/* 이전 그룹 (1-10 표시 중일 때는 숨김) */}
+      {hasPrevGroup && (
+        <NavButton onClick={goToPrevGroup}>
+          ...
+        </NavButton>
+      )}
+
+      {/* 페이지 번호들 */}
       {getPageNumbers().map((page) => (
         <PageButton
           key={page}
@@ -113,15 +141,26 @@ export default function PageButtons({
           {page}
         </PageButton>
       ))}
+
+      {/* 다음 그룹 */}
+      {hasNextGroup && (
+        <NavButton onClick={goToNextGroup}>
+          ...
+        </NavButton>
+      )}
+
+      {/* 다음 페이지 */}
       <NavButton
         onClick={() => onPageChange(currentPage + 1)}
-        invisible={!showNextButtons}
+        invisible={!showNextButton}
       >
         &gt;
       </NavButton>
+
+      {/* 맨 마지막으로 */}
       <NavButton
         onClick={() => onPageChange(totalPages)}
-        invisible={!showNextButtons}
+        invisible={!showNextButton}
       >
         &gt;&gt;
       </NavButton>

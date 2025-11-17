@@ -4,6 +4,8 @@ import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { getCategories } from "@/services/noticeService";
+import { categoriesToMenuItems } from "@/utils/categoryMapper";
 
 const Nav = styled.nav`
   position: fixed;
@@ -99,39 +101,65 @@ const NavLabel = styled.span<{ isActive: boolean }>`
   }
 `;
 
-const menuItems = [
-  { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
-  {
-    href: "/contest",
-    icon: "/images/sidebar/icon-contest.svg",
-    label: "공모전",
-  },
-  {
-    href: "/mentoring",
-    icon: "/images/sidebar/icon-mentoring.svg",
-    label: "멘토링",
-  },
-  {
-    href: "/volunteer",
-    icon: "/images/sidebar/icon-volunteer.svg",
-    label: "봉사",
-  },
-  {
-    href: "/employment",
-    icon: "/images/sidebar/icon-employment.svg",
-    label: "취업",
-  },
-  { href: "/visit", icon: "/images/sidebar/icon-visit.svg", label: "탐방" },
-  { href: "/lecture", icon: "/images/sidebar/icon-lecture.svg", label: "특강" },
-];
+interface MenuItem {
+  href: string;
+  icon: string;
+  label: string;
+}
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([
+    { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
+  ]);
 
   useEffect(() => {
     setIsMounted(true);
+
+    // API에서 카테고리 목록 가져오기
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories();
+        const categoryMenuItems = categoriesToMenuItems(categories);
+
+        setMenuItems([
+          { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
+          ...categoryMenuItems,
+        ]);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+        // 에러 발생 시 기본 메뉴 사용
+        setMenuItems([
+          { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
+          {
+            href: "/contest",
+            icon: "/images/sidebar/icon-contest.svg",
+            label: "공모전",
+          },
+          {
+            href: "/mentoring",
+            icon: "/images/sidebar/icon-mentoring.svg",
+            label: "멘토링",
+          },
+          {
+            href: "/volunteer",
+            icon: "/images/sidebar/icon-volunteer.svg",
+            label: "봉사",
+          },
+          {
+            href: "/employment",
+            icon: "/images/sidebar/icon-employment.svg",
+            label: "취업",
+          },
+          { href: "/visit", icon: "/images/sidebar/icon-visit.svg", label: "탐방" },
+          { href: "/lecture", icon: "/images/sidebar/icon-lecture.svg", label: "특강" },
+        ]);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const handleNavigation = (href: string) => {
