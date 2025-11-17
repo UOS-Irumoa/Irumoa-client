@@ -12,6 +12,7 @@ export function noticeToProgram(notice: Notice): Program {
     status: getNoticeStatus(notice.appStartDate, notice.appEndDate),
     departmentRestricted: isDepartmentRestricted(notice.departments),
     gradeRestricted: isGradeRestricted(notice.grades),
+    link: notice.link,
   };
 }
 

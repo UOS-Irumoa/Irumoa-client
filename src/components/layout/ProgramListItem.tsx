@@ -143,6 +143,7 @@ interface ProgramListItemProps {
   status: "upcoming" | "open" | "closed";
   departmentRestricted: boolean;
   gradeRestricted: boolean;
+  link: string;
 }
 
 export default function ProgramListItem({
@@ -152,6 +153,7 @@ export default function ProgramListItem({
   status,
   departmentRestricted,
   gradeRestricted,
+  link,
 }: ProgramListItemProps) {
   const getStatusText = (status: "upcoming" | "open" | "closed") => {
     switch (status) {
@@ -164,8 +166,12 @@ export default function ProgramListItem({
     }
   };
 
+  const handleClick = () => {
+    window.open(link, "_blank", "noopener,noreferrer");
+  };
+
   return (
-    <ListItem>
+    <ListItem onClick={handleClick}>
       <LeftSection>
         <StatusBadge status={status}>{getStatusText(status)}</StatusBadge>
         <ProgramTitle>{title}</ProgramTitle>

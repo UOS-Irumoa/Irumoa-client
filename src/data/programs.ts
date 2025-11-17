@@ -5,6 +5,7 @@ export interface Program {
   status: "upcoming" | "open" | "closed";
   departmentRestricted: boolean;
   gradeRestricted: boolean;
+  link: string;
 }
 
 export const programs: Program[] = [
