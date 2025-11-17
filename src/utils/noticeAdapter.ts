@@ -34,28 +34,17 @@ function getNoticeStatus(
   const end = new Date(endDate);
   end.setHours(23, 59, 59, 999);
 
-  let status: "upcoming" | "open" | "closed";
-
   // 날짜 비교
   if (now < start) {
     // 현재 날짜가 시작일보다 이전 -> 모집 예정
-    status = "upcoming";
+    return "upcoming";
   } else if (now <= end) {
     // 현재 날짜가 시작일과 종료일 사이 -> 모집 중
-    status = "open";
+    return "open";
   } else {
     // 현재 날짜가 종료일 이후 -> 모집 완료
-    status = "closed";
+    return "closed";
   }
-
-  // 디버깅용 로그 (개발 중에만 사용)
-  if (process.env.NODE_ENV === "development") {
-    console.log(
-      `날짜 판단: ${startDate} ~ ${endDate} => ${status} (현재: ${now.toISOString().split("T")[0]})`
-    );
-  }
-
-  return status;
 }
 
 /**

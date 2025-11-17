@@ -8,7 +8,7 @@ import FilterBar from "@/components/layout/FilterBar";
 import ProgramListItem from "@/components/layout/ProgramListItem";
 import PageButtons from "@/components/layout/PageButtons";
 import { Program } from "@/data/programs";
-import { getCategoryName } from "@/data/categories";
+import { getCategoryNameFromSlug } from "@/utils/categoryMapper";
 import { searchNotices } from "@/services/noticeService";
 import { noticesToPrograms } from "@/utils/noticeAdapter";
 
@@ -108,7 +108,7 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     if (!isMounted) return null;
     const segments = pathname?.split("/").filter(Boolean) || [];
     if (segments.length > 0 && segments[0] !== "contents") {
-      return getCategoryName(segments[0]);
+      return getCategoryNameFromSlug(segments[0]);
     }
     return null;
   }, [pathname, isMounted]);
@@ -127,9 +127,13 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           "모집 완료": "모집완료",
         };
 
+        // 카테고리 필터링이 있는 경우 충분한 데이터를 가져옴 (최적화: 200개로 제한)
+        const pageSize = currentCategory ? 200 : ITEMS_PER_PAGE;
+        const page = currentCategory ? 0 : currentPage - 1;
+
         const response = await searchNotices({
-          page: currentPage - 1, // API는 0-based 페이지
-          size: ITEMS_PER_PAGE,
+          page: page,
+          size: pageSize,
           keyword: searchTerm.trim() || undefined,
           state: recruitStatus !== "전체" ? statusMap[recruitStatus] : undefined,
           filter: showOnlyQualified || undefined,
@@ -143,10 +147,20 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           programData = programData.filter(
             (program: Program) => program.category === currentCategory
           );
-        }
 
-        setPrograms(programData);
-        setTotalPages(response.totalPages);
+          // 필터링된 결과에 대한 페이지네이션
+          const totalFiltered = programData.length;
+          const totalPagesFiltered = Math.ceil(totalFiltered / ITEMS_PER_PAGE);
+          const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+          const endIndex = startIndex + ITEMS_PER_PAGE;
+          programData = programData.slice(startIndex, endIndex);
+
+          setPrograms(programData);
+          setTotalPages(totalPagesFiltered);
+        } else {
+          setPrograms(programData);
+          setTotalPages(response.totalPages);
+        }
       } catch (error) {
         console.error("Failed to fetch notices:", error);
         setPrograms([]);

@@ -9,8 +9,9 @@ export const categories: CategoryInfo[] = [
   { slug: "employment", name: "취업" },
   { slug: "lecture", name: "특강" },
   { slug: "mentoring", name: "멘토링" },
-  { slug: "visit", name: "방문" },
+  { slug: "exploration", name: "탐방" },
   { slug: "volunteer", name: "봉사" },
+  { slug: "extracurricular", name: "비교과" },
 ];
 
 export const categoryMap: Record<string, string> = {
@@ -18,8 +19,9 @@ export const categoryMap: Record<string, string> = {
   employment: "취업",
   lecture: "특강",
   mentoring: "멘토링",
-  visit: "방문",
+  exploration: "탐방",
   volunteer: "봉사",
+  extracurricular: "비교과",
 };
 
 export function getCategoryName(slug: string): string | undefined {

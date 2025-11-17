@@ -4,8 +4,6 @@ import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { getCategories } from "@/services/noticeService";
-import { categoriesToMenuItems } from "@/utils/categoryMapper";
 
 const Nav = styled.nav`
   position: fixed;
@@ -118,48 +116,40 @@ export default function Sidebar() {
   useEffect(() => {
     setIsMounted(true);
 
-    // API에서 카테고리 목록 가져오기
-    const fetchCategories = async () => {
-      try {
-        const categories = await getCategories();
-        const categoryMenuItems = categoriesToMenuItems(categories);
-
-        setMenuItems([
-          { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
-          ...categoryMenuItems,
-        ]);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-        // 에러 발생 시 기본 메뉴 사용
-        setMenuItems([
-          { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
-          {
-            href: "/contest",
-            icon: "/images/sidebar/icon-contest.svg",
-            label: "공모전",
-          },
-          {
-            href: "/mentoring",
-            icon: "/images/sidebar/icon-mentoring.svg",
-            label: "멘토링",
-          },
-          {
-            href: "/volunteer",
-            icon: "/images/sidebar/icon-volunteer.svg",
-            label: "봉사",
-          },
-          {
-            href: "/employment",
-            icon: "/images/sidebar/icon-employment.svg",
-            label: "취업",
-          },
-          { href: "/visit", icon: "/images/sidebar/icon-visit.svg", label: "탐방" },
-          { href: "/lecture", icon: "/images/sidebar/icon-lecture.svg", label: "특강" },
-        ]);
-      }
-    };
-
-    fetchCategories();
+    // 기본 카테고리 메뉴 사용 (API 호출 없이 빠르게 렌더링)
+    setMenuItems([
+      { href: "/", icon: "/images/sidebar/icon-all.svg", label: "전체" },
+      {
+        href: "/contest",
+        icon: "/images/sidebar/icon-contest.svg",
+        label: "공모전",
+      },
+      {
+        href: "/mentoring",
+        icon: "/images/sidebar/icon-mentoring.svg",
+        label: "멘토링",
+      },
+      {
+        href: "/volunteer",
+        icon: "/images/sidebar/icon-volunteer.svg",
+        label: "봉사",
+      },
+      {
+        href: "/employment",
+        icon: "/images/sidebar/icon-employment.svg",
+        label: "취업",
+      },
+      {
+        href: "/lecture",
+        icon: "/images/sidebar/icon-lecture.svg",
+        label: "특강",
+      },
+      {
+        href: "/extracurricular",
+        icon: "/images/sidebar/icon-lecture.svg",
+        label: "비교과",
+      },
+    ]);
   }, []);
 
   const handleNavigation = (href: string) => {
