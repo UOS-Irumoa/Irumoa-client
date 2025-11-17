@@ -8,7 +8,7 @@ export function noticeToProgram(notice: Notice): Program {
   return {
     id: notice.id,
     title: notice.title,
-    category: notice.categories[0] || "기타", // 첫 번째 카테고리 사용
+    category: notice.categories.length > 0 ? notice.categories : ["기타"], // 모든 카테고리 사용
     status: getNoticeStatus(notice.appStartDate, notice.appEndDate),
     departmentRestricted: isDepartmentRestricted(notice.departments),
     gradeRestricted: isGradeRestricted(notice.grades),

@@ -139,7 +139,7 @@ interface ProgramListItemProps {
   id: number;
   title: string;
   description?: string;
-  category: string;
+  category: string | string[];
   status: "upcoming" | "open" | "closed";
   departmentRestricted: boolean;
   gradeRestricted: boolean;
@@ -176,7 +176,11 @@ export default function ProgramListItem({
         )}
       </LeftSection>
       <BadgeContainer>
-        <CategoryBadge>{category}</CategoryBadge>
+        {Array.isArray(category)
+          ? category.map((cat, index) => (
+              <CategoryBadge key={index}>{cat}</CategoryBadge>
+            ))
+          : <CategoryBadge>{category}</CategoryBadge>}
         <QualificationBadge restricted={departmentRestricted}>
           {departmentRestricted ? "학과 제한" : "학과 무관"}
         </QualificationBadge>
