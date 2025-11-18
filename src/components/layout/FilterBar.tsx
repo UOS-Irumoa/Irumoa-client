@@ -36,7 +36,7 @@ const FilterLabel = styled.label`
 
 const SelectWrapper = styled.div`
   position: relative;
-  width: 140px;
+  width: 110px;
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 100px;
   }
@@ -47,7 +47,7 @@ const Select = styled.select`
   height: 35px;
   padding: 0 30px;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
   color: ${({ theme }) => theme.colors.text.primary};
   background: ${({ theme }) => theme.colors.background.paper};
@@ -57,6 +57,7 @@ const Select = styled.select`
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
+  direction: ltr;
 
   &:focus {
     outline: none;
@@ -66,7 +67,8 @@ const Select = styled.select`
 
   option {
     color: ${({ theme }) => theme.colors.text.primary};
-    text-align: center;
+    text-align: left;
+    direction: ltr;
   }
 `;
 
@@ -107,7 +109,6 @@ const CheckboxWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 4px;
-  margin-bottom: 4px;
 `;
 
 const Checkbox = styled.input`
