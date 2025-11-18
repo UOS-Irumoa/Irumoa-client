@@ -357,6 +357,32 @@ const BadgeCloseIcon = styled.div`
   }
 `;
 
+const Input = styled.input`
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: 13px;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  line-height: 1.18em;
+  color: ${({ theme }) => theme.colors.text.primary};
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: 6px;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.text.secondary};
+    opacity: 0.5;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary.main};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary.main}20;
+  }
+`;
+
 const ErrorMessage = styled.div`
   position: fixed;
   top: 50%;
@@ -481,6 +507,7 @@ export default function ProfilePage() {
   const [doubleDepartment, setDoubleDepartment] = useState("");
   const [grade, setGrade] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [interestFields, setInterestFields] = useState("");
   const [isExiting, setIsExiting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [initialProfile, setInitialProfile] = useState<any>(null);
@@ -525,7 +552,7 @@ export default function ProfilePage() {
   // localStorage에서 저장된 정보 불러오기
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedProfile = localStorage.getItem("userProfile");
+      const savedProfile = localStorage.getItem("userInfo");
       if (savedProfile) {
         try {
           const profile = JSON.parse(savedProfile);
@@ -533,8 +560,11 @@ export default function ProfilePage() {
           setDepartment(profile.department || "");
           setDoubleCollege(profile.doubleCollege || "");
           setDoubleDepartment(profile.doubleDepartment || "");
-          setGrade(profile.grade || "");
+          setGrade(profile.grade ? String(profile.grade) : "");
           setSelectedInterests(profile.interests || []);
+          setInterestFields(
+            profile.interest_fields ? profile.interest_fields.join(", ") : ""
+          );
 
           // 초기 프로필 저장 (취소 시 복원용)
           setInitialProfile(profile);
@@ -579,18 +609,37 @@ export default function ProfilePage() {
       return;
     }
 
+    if (!interestFields || interestFields.trim() === "") {
+      setErrorMessage("관심 키워드를 입력해주세요");
+      setTimeout(() => setErrorMessage(""), 2000);
+      return;
+    }
+
+    // 관심 키워드 파싱 (쉼표로 구분)
+    const parsedInterestFields = interestFields
+      .split(",")
+      .map((field) => field.trim())
+      .filter((field) => field.length > 0);
+
+    if (parsedInterestFields.length === 0) {
+      setErrorMessage("관심 키워드를 입력해주세요");
+      setTimeout(() => setErrorMessage(""), 2000);
+      return;
+    }
+
     const userProfile = {
       college,
       department,
       doubleCollege,
       doubleDepartment,
-      grade,
+      grade: Number(grade),
       interests: selectedInterests,
+      interest_fields: parsedInterestFields,
     };
 
     // localStorage에 저장
     if (typeof window !== "undefined") {
-      localStorage.setItem("userProfile", JSON.stringify(userProfile));
+      localStorage.setItem("userInfo", JSON.stringify(userProfile));
 
       // 커스텀 이벤트 발생시켜서 Header에서 즉시 업데이트되도록
       window.dispatchEvent(new Event("profileUpdated"));
@@ -610,8 +659,13 @@ export default function ProfilePage() {
       setDepartment(initialProfile.department || "");
       setDoubleCollege(initialProfile.doubleCollege || "");
       setDoubleDepartment(initialProfile.doubleDepartment || "");
-      setGrade(initialProfile.grade || "");
+      setGrade(initialProfile.grade ? String(initialProfile.grade) : "");
       setSelectedInterests(initialProfile.interests || []);
+      setInterestFields(
+        initialProfile.interest_fields
+          ? initialProfile.interest_fields.join(", ")
+          : ""
+      );
     } else {
       // 저장된 프로필이 없으면 모두 초기화
       setCollege("");
@@ -620,6 +674,7 @@ export default function ProfilePage() {
       setDoubleDepartment("");
       setGrade("");
       setSelectedInterests([]);
+      setInterestFields("");
     }
 
     // 애니메이션 후 나가기
@@ -777,6 +832,20 @@ export default function ProfilePage() {
                 </Badge>
               ))}
             </BadgeContainer>
+          </InterestSection>
+
+          {/* 관심 키워드 */}
+          <InterestSection>
+            <LabelRow>
+              <Label>관심 키워드</Label>
+              <RequiredBadge>*필수</RequiredBadge>
+            </LabelRow>
+            <Input
+              type="text"
+              value={interestFields}
+              onChange={(e) => setInterestFields(e.target.value)}
+              placeholder="ex) AI, 머신러닝, 네트워크"
+            />
           </InterestSection>
         </FormContainer>
       </ContentContainer>
