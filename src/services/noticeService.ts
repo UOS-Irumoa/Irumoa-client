@@ -1,6 +1,8 @@
 import {
   NoticeSearchParams,
   NoticeSearchResponse,
+  RecommendRequest,
+  RecommendResponse,
 } from "@/types/notice";
 
 const BASE_URL = "https://uoscholar-server.store/irumoa-api";
@@ -78,6 +80,38 @@ export async function searchNotices(
       size: params.size ?? 10,
       totalElements: 0,
       totalPages: 0,
+    };
+  }
+}
+
+// 추천 프로그램 조회
+export async function getRecommendedNotices(
+  request: RecommendRequest
+): Promise<RecommendResponse> {
+  const url = `${BASE_URL}/notices/recommend`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      // 에러를 던지지 않고 빈 응답 반환
+      return {
+        content: [],
+      };
+    }
+
+    const data: RecommendResponse = await response.json();
+    return data;
+  } catch (error) {
+    // 에러 발생 시에도 빈 응답 반환
+    return {
+      content: [],
     };
   }
 }

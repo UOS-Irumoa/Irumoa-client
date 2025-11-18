@@ -29,3 +29,21 @@ export interface NoticeSearchParams {
   state?: string;
   category?: string;
 }
+
+// 사용자 정보 타입
+export interface UserInfo {
+  department: string; // required
+  grade: number; // required (1-5: 학년, 6: 졸업생, 7: 대학원생)
+  interests: string[]; // required
+  interest_fields?: string[]; // optional (기본값: [])
+}
+
+// 추천 프로그램 요청 타입
+export interface RecommendRequest {
+  user: UserInfo;
+}
+
+// 추천 프로그램 응답 타입
+export interface RecommendResponse {
+  content: Notice[];
+}
