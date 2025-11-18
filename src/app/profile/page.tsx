@@ -596,8 +596,6 @@ export default function ProfilePage() {
       window.dispatchEvent(new Event("profileUpdated"));
     }
 
-    console.log("User profile saved:", userProfile);
-
     // 애니메이션 후 나가기
     setIsExiting(true);
     setTimeout(() => {

@@ -81,26 +81,3 @@ export async function searchNotices(
     };
   }
 }
-
-/**
- * 전체 공지사항에서 고유한 카테고리 목록 추출
- */
-export async function getCategories(): Promise<string[]> {
-  try {
-    // 충분히 많은 데이터를 가져와서 모든 카테고리 파악
-    const response = await searchNotices({ page: 0, size: 1000 });
-
-    const categoriesSet = new Set<string>();
-
-    response.content.forEach((notice) => {
-      notice.categories.forEach((category) => {
-        categoriesSet.add(category);
-      });
-    });
-
-    return Array.from(categoriesSet).sort();
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
-}

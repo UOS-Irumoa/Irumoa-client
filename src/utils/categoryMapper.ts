@@ -59,14 +59,3 @@ export function getCategoryIcon(categoryName: string): string {
   const mapping = categoryMappings.find((m) => m.name === categoryName);
   return mapping?.icon || "/images/sidebar/icon-all.svg";
 }
-
-/**
- * API에서 받은 카테고리 목록을 메뉴 아이템으로 변환
- */
-export function categoriesToMenuItems(categories: string[]) {
-  return categories.map((category) => ({
-    href: `/${getCategorySlug(category)}`,
-    icon: getCategoryIcon(category),
-    label: category,
-  }));
-}
