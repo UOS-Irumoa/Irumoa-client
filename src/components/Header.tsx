@@ -134,7 +134,7 @@ export default function Header() {
 
   const loadUserProfile = () => {
     if (typeof window !== "undefined") {
-      const savedProfile = localStorage.getItem("userProfile");
+      const savedProfile = localStorage.getItem("userInfo");
       if (savedProfile) {
         try {
           const profile = JSON.parse(savedProfile);
@@ -184,8 +184,10 @@ export default function Header() {
       });
     }
 
-    // 복수전공 학과 추가 (빈 문자열이 아닌 경우만)
+    // 복수전공 학과 추가 (복수전공 대학과 학과 모두 선택된 경우만)
     if (
+      userProfile.doubleCollege &&
+      userProfile.doubleCollege.trim() !== "" &&
       userProfile.doubleDepartment &&
       userProfile.doubleDepartment.trim() !== ""
     ) {

@@ -808,6 +808,9 @@ export default function ProfilePage() {
                   <option value="2">2학년</option>
                   <option value="3">3학년</option>
                   <option value="4">4학년</option>
+                  <option value="5">5학년</option>
+                  <option value="6">졸업생</option>
+                  <option value="7">대학원생</option>
                 </Select>
                 <SelectIcon />
               </SelectWrapper>
