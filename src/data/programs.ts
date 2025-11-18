@@ -6,6 +6,8 @@ export interface Program {
   departmentRestricted: boolean;
   gradeRestricted: boolean;
   link: string;
+  departments: string[];
+  grades: number[];
 }
 
 export const programs: Program[] = [

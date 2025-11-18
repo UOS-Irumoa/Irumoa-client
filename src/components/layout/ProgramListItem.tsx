@@ -144,6 +144,8 @@ interface ProgramListItemProps {
   departmentRestricted: boolean;
   gradeRestricted: boolean;
   link: string;
+  departments: string[];
+  grades: number[];
 }
 
 export default function ProgramListItem({
@@ -154,6 +156,8 @@ export default function ProgramListItem({
   departmentRestricted,
   gradeRestricted,
   link,
+  departments,
+  grades,
 }: ProgramListItemProps) {
   const getStatusText = (status: "upcoming" | "open" | "closed") => {
     switch (status) {
@@ -164,6 +168,31 @@ export default function ProgramListItem({
       case "closed":
         return "모집 완료";
     }
+  };
+
+  const getGradeText = (gradeNumbers: number[]): string => {
+    if (gradeNumbers.includes(0)) {
+      return "학년 무관";
+    }
+
+    const gradeMap: Record<number, string> = {
+      1: "1학년",
+      2: "2학년",
+      3: "3학년",
+      4: "4학년",
+      5: "5학년",
+      6: "졸업생",
+      7: "대학원",
+    };
+
+    return gradeNumbers.map((g) => gradeMap[g] || g.toString()).join(", ");
+  };
+
+  const getDepartmentText = (depts: string[]): string => {
+    if (depts.some((d) => d === "제한없음" || d.toLowerCase() === "all")) {
+      return "학과 무관";
+    }
+    return depts.join(", ");
   };
 
   const handleClick = () => {
@@ -188,10 +217,10 @@ export default function ProgramListItem({
             ))
           : <CategoryBadge>{category}</CategoryBadge>}
         <QualificationBadge restricted={departmentRestricted}>
-          {departmentRestricted ? "학과 제한" : "학과 무관"}
+          {getDepartmentText(departments)}
         </QualificationBadge>
         <QualificationBadge restricted={gradeRestricted}>
-          {gradeRestricted ? "학년 제한" : "학년 무관"}
+          {getGradeText(grades)}
         </QualificationBadge>
       </BadgeContainer>
     </ListItem>

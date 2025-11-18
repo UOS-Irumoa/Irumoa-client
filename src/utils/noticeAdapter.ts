@@ -13,6 +13,8 @@ export function noticeToProgram(notice: Notice): Program {
     departmentRestricted: isDepartmentRestricted(notice.departments),
     gradeRestricted: isGradeRestricted(notice.grades),
     link: notice.link,
+    departments: notice.departments,
+    grades: notice.grades,
   };
 }
 
