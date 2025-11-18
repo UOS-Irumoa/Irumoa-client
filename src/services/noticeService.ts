@@ -6,6 +6,7 @@ import {
 } from "@/types/notice";
 
 const BASE_URL = "https://uoscholar-server.store/irumoa-api";
+const RECOMMEND_URL = "https://uoscholar.store.com/ai/irumoa/recommend";
 
 export async function searchNotices(
   params: NoticeSearchParams = {}
@@ -88,7 +89,7 @@ export async function searchNotices(
 export async function getRecommendedNotices(
   request: RecommendRequest
 ): Promise<RecommendResponse> {
-  const url = `${BASE_URL}/notices/recommend`;
+  const url = RECOMMEND_URL;
 
   try {
     const response = await fetch(url, {
