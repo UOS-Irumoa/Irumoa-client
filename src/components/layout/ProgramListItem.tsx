@@ -175,6 +175,12 @@ export default function ProgramListItem({
       return "학년 무관";
     }
 
+    // 1~5학년과 대학원생(7)이 모두 포함되어 있으면 학년 무관
+    const hasAllUndergrad = [1, 2, 3, 4].every((g) => gradeNumbers.includes(g));
+    if (hasAllUndergrad) {
+      return "학년 무관";
+    }
+
     const gradeMap: Record<number, string> = {
       1: "1학년",
       2: "2학년",
@@ -211,11 +217,13 @@ export default function ProgramListItem({
         )}
       </LeftSection>
       <BadgeContainer>
-        {Array.isArray(category)
-          ? category.map((cat, index) => (
-              <CategoryBadge key={index}>{cat}</CategoryBadge>
-            ))
-          : <CategoryBadge>{category}</CategoryBadge>}
+        {Array.isArray(category) ? (
+          category.map((cat, index) => (
+            <CategoryBadge key={index}>{cat}</CategoryBadge>
+          ))
+        ) : (
+          <CategoryBadge>{category}</CategoryBadge>
+        )}
         <QualificationBadge restricted={departmentRestricted}>
           {getDepartmentText(departments)}
         </QualificationBadge>
