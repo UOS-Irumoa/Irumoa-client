@@ -3,10 +3,12 @@ import {
   NoticeSearchResponse,
   RecommendRequest,
   RecommendResponse,
+  HealthCheckResponse,
 } from "@/types/notice";
 
 const BASE_URL = "https://uoscholar-server.store/irumoa-api";
 const RECOMMEND_URL = "https://uoscholar.store.com/ai/irumoa/recommend";
+const HEALTH_CHECK_URL = "https://uoscholar.store.com/ai/irumoa/health";
 
 export async function searchNotices(
   params: NoticeSearchParams = {}
@@ -114,5 +116,29 @@ export async function getRecommendedNotices(
     return {
       content: [],
     };
+  }
+}
+
+// 헬스 체크
+export async function checkHealth(): Promise<HealthCheckResponse | null> {
+  const url = HEALTH_CHECK_URL;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      console.error(
+        `Health check failed: ${response.status} ${response.statusText}`
+      );
+      return null;
+    }
+
+    const data: HealthCheckResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Health check error:", error);
+    return null;
   }
 }
