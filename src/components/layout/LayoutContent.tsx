@@ -132,8 +132,57 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [userDepartments, setUserDepartments] = useState<string[]>([]);
+  const [userGrade, setUserGrade] = useState<number | undefined>(undefined);
 
   const ITEMS_PER_PAGE = 6;
+
+  // localStorage에서 사용자 프로필 정보 로드
+  useEffect(() => {
+    const loadUserProfile = () => {
+      if (typeof window !== "undefined") {
+        const savedProfile = localStorage.getItem("userProfile");
+        if (savedProfile) {
+          try {
+            const profile = JSON.parse(savedProfile);
+            const departments: string[] = [];
+
+            // 전공 학과 추가
+            if (profile.department && profile.department.trim() !== "") {
+              departments.push(profile.department);
+            }
+
+            // 복수전공 학과 추가
+            if (profile.doubleDepartment && profile.doubleDepartment.trim() !== "") {
+              departments.push(profile.doubleDepartment);
+            }
+
+            setUserDepartments(departments);
+
+            // 학년 정보 설정
+            if (profile.grade && profile.grade.trim() !== "") {
+              setUserGrade(parseInt(profile.grade, 10));
+            } else {
+              setUserGrade(undefined);
+            }
+          } catch (error) {
+            console.error("Failed to parse user profile:", error);
+            setUserDepartments([]);
+            setUserGrade(undefined);
+          }
+        } else {
+          setUserDepartments([]);
+          setUserGrade(undefined);
+        }
+      }
+    };
+
+    loadUserProfile();
+
+    // 프로필 업데이트 이벤트 리스너
+    window.addEventListener("profileUpdated", loadUserProfile);
+    return () => window.removeEventListener("profileUpdated", loadUserProfile);
+  }, []);
 
   // 검색어 디바운싱 (500ms)
   useEffect(() => {
@@ -182,6 +231,8 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           state: recruitStatus !== "전체" ? statusMap[recruitStatus] : undefined,
           filter: showOnlyQualified || undefined,
           category: currentCategory || undefined,
+          department: showOnlyQualified && userDepartments.length > 0 ? userDepartments : undefined,
+          grade: showOnlyQualified && userGrade !== undefined ? userGrade : undefined,
         });
 
         let filteredContent = response.content;
@@ -228,6 +279,8 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     recruitStatus,
     showOnlyQualified,
     currentCategory,
+    userDepartments,
+    userGrade,
   ]);
 
   // 6개로 맞추기 위한 빈 아이템 추가

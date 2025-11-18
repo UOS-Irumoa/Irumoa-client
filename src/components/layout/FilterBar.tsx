@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 
 const FilterSection = styled.div`
   display: flex;
@@ -121,6 +122,11 @@ const Checkbox = styled.input`
   &:checked {
     accent-color: ${({ theme }) => theme.colors.primary.main};
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
 const CheckboxLabel = styled.label`
@@ -156,12 +162,56 @@ interface FilterBarProps {
   onShowOnlyQualifiedChange: (checked: boolean) => void;
 }
 
+interface UserProfile {
+  college: string;
+  department: string;
+  doubleCollege: string;
+  doubleDepartment: string;
+  grade: string;
+  interests: string[];
+}
+
 export default function FilterBar({
   recruitStatus,
   onRecruitStatusChange,
   showOnlyQualified,
   onShowOnlyQualifiedChange,
 }: FilterBarProps) {
+  const [hasProfile, setHasProfile] = useState(false);
+
+  // localStorage에서 프로필 정보 확인
+  useEffect(() => {
+    const checkProfile = () => {
+      if (typeof window !== "undefined") {
+        const savedProfile = localStorage.getItem("userProfile");
+        if (savedProfile) {
+          try {
+            const profile: UserProfile = JSON.parse(savedProfile);
+            // 필수 항목이 모두 있는지 확인
+            const isValid = Boolean(
+              profile.department &&
+                profile.grade &&
+                profile.department.trim() !== "" &&
+                profile.grade.trim() !== ""
+            );
+            setHasProfile(isValid);
+          } catch (error) {
+            console.error("Failed to parse user profile:", error);
+            setHasProfile(false);
+          }
+        } else {
+          setHasProfile(false);
+        }
+      }
+    };
+
+    checkProfile();
+
+    // 프로필 업데이트 이벤트 리스너 추가
+    window.addEventListener("profileUpdated", checkProfile);
+    return () => window.removeEventListener("profileUpdated", checkProfile);
+  }, []);
+
   return (
     <FilterSection>
       <CheckboxWrapper>
@@ -176,6 +226,12 @@ export default function FilterBar({
           id="qualified-only"
           checked={showOnlyQualified}
           onChange={(e) => onShowOnlyQualifiedChange(e.target.checked)}
+          disabled={!hasProfile}
+          title={
+            !hasProfile
+              ? "프로필 정보를 먼저 입력해주세요 (학과, 학년 필수)"
+              : ""
+          }
         />
       </CheckboxWrapper>
 
