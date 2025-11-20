@@ -1,7 +1,8 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useUserStore } from "@/stores/userStore";
 
 const FilterSection = styled.div`
   display: flex;
@@ -162,15 +163,6 @@ interface FilterBarProps {
   onShowOnlyQualifiedChange: (checked: boolean) => void;
 }
 
-interface UserProfile {
-  college: string;
-  department: string;
-  doubleCollege: string;
-  doubleDepartment: string;
-  grade: string;
-  interests: string[];
-}
-
 export default function FilterBar({
   recruitStatus,
   onRecruitStatusChange,
@@ -178,39 +170,22 @@ export default function FilterBar({
   onShowOnlyQualifiedChange,
 }: FilterBarProps) {
   const [hasProfile, setHasProfile] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const hasValidProfile = useUserStore((state) => state.hasValidProfile);
 
-  // localStorage에서 프로필 정보 확인
+  // Hydration 완료 후에만 프로필 체크
   useEffect(() => {
-    const checkProfile = () => {
-      if (typeof window !== "undefined") {
-        const savedProfile = localStorage.getItem("userProfile");
-        if (savedProfile) {
-          try {
-            const profile: UserProfile = JSON.parse(savedProfile);
-            // 필수 항목이 모두 있는지 확인
-            const isValid = Boolean(
-              profile.department &&
-                profile.grade &&
-                profile.department.trim() !== "" &&
-                profile.grade.trim() !== ""
-            );
-            setHasProfile(isValid);
-          } catch (error) {
-            console.error("Failed to parse user profile:", error);
-            setHasProfile(false);
-          }
-        } else {
-          setHasProfile(false);
-        }
-      }
-    };
+    setIsHydrated(true);
+    setHasProfile(hasValidProfile());
+  }, [hasValidProfile]);
 
-    checkProfile();
-
-    // 프로필 업데이트 이벤트 리스너 추가
-    window.addEventListener("profileUpdated", checkProfile);
-    return () => window.removeEventListener("profileUpdated", checkProfile);
-  }, []);
+  // 프로필 변경 감지
+  const profile = useUserStore((state) => state.profile);
+  useEffect(() => {
+    if (isHydrated) {
+      setHasProfile(hasValidProfile());
+    }
+  }, [profile, isHydrated, hasValidProfile]);
 
   return (
     <FilterSection>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { universities, getDepartmentsByUniversity } from "@/data/universities";
+import { useUserStore } from "@/stores/userStore";
 
 const FullScreenContainer = styled.div<{ isExiting?: boolean }>`
   position: fixed;
@@ -501,6 +502,9 @@ const interests = ["공모전", "멘토링", "봉사", "취업", "탐방", "특�
 
 export default function ProfilePage() {
   const router = useRouter();
+  const profile = useUserStore((state) => state.profile);
+  const setProfile = useUserStore((state) => state.setProfile);
+
   const [college, setCollege] = useState("");
   const [department, setDepartment] = useState("");
   const [doubleCollege, setDoubleCollege] = useState("");
@@ -510,7 +514,6 @@ export default function ProfilePage() {
   const [interestFields, setInterestFields] = useState("");
   const [isExiting, setIsExiting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [initialProfile, setInitialProfile] = useState<any>(null);
 
   // 선택된 단과대학에 따른 학과 목록
   const availableDepartments = useMemo(() => {
@@ -549,31 +552,20 @@ export default function ProfilePage() {
     }
   }, [department]);
 
-  // localStorage에서 저장된 정보 불러오기
+  // Zustand 스토어에서 저장된 정보 불러오기
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedProfile = localStorage.getItem("userInfo");
-      if (savedProfile) {
-        try {
-          const profile = JSON.parse(savedProfile);
-          setCollege(profile.college || "");
-          setDepartment(profile.department || "");
-          setDoubleCollege(profile.doubleCollege || "");
-          setDoubleDepartment(profile.doubleDepartment || "");
-          setGrade(profile.grade ? String(profile.grade) : "");
-          setSelectedInterests(profile.interests || []);
-          setInterestFields(
-            profile.interest_fields ? profile.interest_fields.join(", ") : ""
-          );
-
-          // 초기 프로필 저장 (취소 시 복원용)
-          setInitialProfile(profile);
-        } catch (error) {
-          console.error("Failed to parse user profile:", error);
-        }
-      }
+    if (profile) {
+      setCollege(profile.college || "");
+      setDepartment(profile.department || "");
+      setDoubleCollege(profile.doubleCollege || "");
+      setDoubleDepartment(profile.doubleDepartment || "");
+      setGrade(profile.grade ? String(profile.grade) : "");
+      setSelectedInterests(profile.interests || []);
+      setInterestFields(
+        profile.interest_fields ? profile.interest_fields.join(", ") : ""
+      );
     }
-  }, []);
+  }, [profile]);
 
   const toggleInterest = (interest: string) => {
     setSelectedInterests((prev) =>
@@ -632,18 +624,13 @@ export default function ProfilePage() {
       department,
       doubleCollege,
       doubleDepartment,
-      grade: Number(grade),
+      grade: String(grade),
       interests: selectedInterests,
       interest_fields: parsedInterestFields,
     };
 
-    // localStorage에 저장
-    if (typeof window !== "undefined") {
-      localStorage.setItem("userInfo", JSON.stringify(userProfile));
-
-      // 커스텀 이벤트 발생시켜서 Header에서 즉시 업데이트되도록
-      window.dispatchEvent(new Event("profileUpdated"));
-    }
+    // Zustand 스토어에 저장
+    setProfile(userProfile);
 
     // 애니메이션 후 나가기
     setIsExiting(true);
@@ -654,16 +641,16 @@ export default function ProfilePage() {
 
   const handleCancel = () => {
     // 초기 프로필로 복원
-    if (initialProfile) {
-      setCollege(initialProfile.college || "");
-      setDepartment(initialProfile.department || "");
-      setDoubleCollege(initialProfile.doubleCollege || "");
-      setDoubleDepartment(initialProfile.doubleDepartment || "");
-      setGrade(initialProfile.grade ? String(initialProfile.grade) : "");
-      setSelectedInterests(initialProfile.interests || []);
+    if (profile) {
+      setCollege(profile.college || "");
+      setDepartment(profile.department || "");
+      setDoubleCollege(profile.doubleCollege || "");
+      setDoubleDepartment(profile.doubleDepartment || "");
+      setGrade(profile.grade ? String(profile.grade) : "");
+      setSelectedInterests(profile.interests || []);
       setInterestFields(
-        initialProfile.interest_fields
-          ? initialProfile.interest_fields.join(", ")
+        profile.interest_fields
+          ? profile.interest_fields.join(", ")
           : ""
       );
     } else {

@@ -1,70 +1,43 @@
-import { UserInfo } from "@/types/notice";
+/**
+ * @deprecated 이 파일은 더 이상 사용되지 않습니다.
+ * 대신 @/stores/userStore를 사용하세요.
+ *
+ * 마이그레이션 가이드:
+ * - getUserInfo() → useUserStore.getState().getUserInfo()
+ * - setUserInfo(info) → useUserStore.getState().setProfile(profile)
+ * - clearUserInfo() → useUserStore.getState().clearProfile()
+ */
 
-const USER_INFO_KEY = "userInfo";
+import { useUserStore } from "@/stores/userStore";
+import type { UserInfo } from "@/types/notice";
 
-// localStorage에서 사용자 정보 가져오기
+/**
+ * @deprecated Zustand 스토어를 사용하세요: useUserStore.getState().getUserInfo()
+ */
 export function getUserInfo(): UserInfo | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    const userInfoString = localStorage.getItem(USER_INFO_KEY);
-    if (!userInfoString) {
-      return null;
-    }
-
-    const userInfo = JSON.parse(userInfoString) as UserInfo;
-
-    // 필수 필드 검증
-    if (
-      !userInfo.department ||
-      !userInfo.grade ||
-      !userInfo.interests ||
-      !Array.isArray(userInfo.interests)
-    ) {
-      return null;
-    }
-
-    // interest_fields가 없으면 빈 배열로 설정
-    if (!userInfo.interest_fields) {
-      userInfo.interest_fields = [];
-    }
-
-    return userInfo;
-  } catch (error) {
-    console.error("Failed to parse user info from localStorage:", error);
-    return null;
-  }
+  return useUserStore.getState().getUserInfo();
 }
 
-// localStorage에 사용자 정보 저장하기
+/**
+ * @deprecated Zustand 스토어를 사용하세요: useUserStore.getState().setProfile()
+ */
 export function setUserInfo(userInfo: UserInfo): void {
-  if (typeof window === "undefined") {
-    return;
-  }
+  const currentProfile = useUserStore.getState().profile;
 
-  try {
-    // interest_fields가 없으면 빈 배열로 설정
-    if (!userInfo.interest_fields) {
-      userInfo.interest_fields = [];
-    }
-
-    localStorage.setItem(USER_INFO_KEY, JSON.stringify(userInfo));
-  } catch (error) {
-    console.error("Failed to save user info to localStorage:", error);
-  }
+  useUserStore.getState().setProfile({
+    college: currentProfile?.college || '',
+    department: userInfo.department,
+    doubleCollege: currentProfile?.doubleCollege || '',
+    doubleDepartment: currentProfile?.doubleDepartment || '',
+    grade: String(userInfo.grade),
+    interests: userInfo.interests,
+    interest_fields: userInfo.interest_fields || [],
+  });
 }
 
-// localStorage에서 사용자 정보 삭제하기
+/**
+ * @deprecated Zustand 스토어를 사용하세요: useUserStore.getState().clearProfile()
+ */
 export function clearUserInfo(): void {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  try {
-    localStorage.removeItem(USER_INFO_KEY);
-  } catch (error) {
-    console.error("Failed to clear user info from localStorage:", error);
-  }
+  useUserStore.getState().clearProfile();
 }

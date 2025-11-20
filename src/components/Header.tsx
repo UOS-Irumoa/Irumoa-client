@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useUserStore } from "@/stores/userStore";
 
 const HeaderContainer = styled.header`
   width: auto;
@@ -118,50 +119,13 @@ const UserIcon = styled.div`
   position: relative;
 `;
 
-interface UserProfile {
-  college: string;
-  department: string;
-  doubleCollege: string;
-  doubleDepartment: string;
-  grade: string;
-  interests: string[];
-}
-
 export default function Header() {
   const router = useRouter();
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const profile = useUserStore((state) => state.profile);
   const [isMounted, setIsMounted] = useState(false);
-
-  const loadUserProfile = () => {
-    if (typeof window !== "undefined") {
-      const savedProfile = localStorage.getItem("userInfo");
-      if (savedProfile) {
-        try {
-          const profile = JSON.parse(savedProfile);
-          setUserProfile(profile);
-        } catch (error) {
-          console.error("Failed to parse user profile:", error);
-        }
-      }
-    }
-  };
 
   useEffect(() => {
     setIsMounted(true);
-
-    // 초기 로드
-    loadUserProfile();
-
-    // profileUpdated 이벤트 리스너 추가
-    const handleProfileUpdate = () => {
-      loadUserProfile();
-    };
-
-    window.addEventListener("profileUpdated", handleProfileUpdate);
-
-    return () => {
-      window.removeEventListener("profileUpdated", handleProfileUpdate);
-    };
   }, []);
 
   const handleProfileClick = () => {
@@ -169,16 +133,16 @@ export default function Header() {
   };
 
   const getUserCategories = () => {
-    if (!userProfile) {
+    if (!profile) {
       return null;
     }
 
     const categories = [];
 
     // 학과 추가 (빈 문자열이 아닌 경우만)
-    if (userProfile.department && userProfile.department.trim() !== "") {
+    if (profile.department && profile.department.trim() !== "") {
       categories.push({
-        label: userProfile.department,
+        label: profile.department,
         variant: "primary" as const,
         kind: "major" as const,
       });
@@ -186,21 +150,21 @@ export default function Header() {
 
     // 복수전공 학과 추가 (복수전공 대학과 학과 모두 선택된 경우만)
     if (
-      userProfile.doubleCollege &&
-      userProfile.doubleCollege.trim() !== "" &&
-      userProfile.doubleDepartment &&
-      userProfile.doubleDepartment.trim() !== ""
+      profile.doubleCollege &&
+      profile.doubleCollege.trim() !== "" &&
+      profile.doubleDepartment &&
+      profile.doubleDepartment.trim() !== ""
     ) {
       categories.push({
-        label: userProfile.doubleDepartment,
+        label: profile.doubleDepartment,
         variant: "primary" as const,
         kind: "double" as const,
       });
     }
 
     // 관심사 추가
-    if (userProfile.interests && userProfile.interests.length > 0) {
-      userProfile.interests.forEach((interest) => {
+    if (profile.interests && profile.interests.length > 0) {
+      profile.interests.forEach((interest) => {
         if (interest && interest.trim() !== "") {
           categories.push({
             label: interest,

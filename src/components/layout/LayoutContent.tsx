@@ -11,6 +11,7 @@ import { Program } from "@/data/programs";
 import { getCategoryNameFromSlug } from "@/utils/categoryMapper";
 import { searchNotices } from "@/services/noticeService";
 import { noticesToPrograms } from "@/utils/noticeAdapter";
+import { useUserStore } from "@/stores/userStore";
 
 const MainContent = styled.div`
   display: flex;
@@ -132,57 +133,26 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [userDepartments, setUserDepartments] = useState<string[]>([]);
-  const [userGrade, setUserGrade] = useState<number | undefined>(undefined);
+
+  // Zustand 스토어에서 사용자 정보 가져오기 (안정적인 참조를 위해 개별 필드 선택)
+  const department = useUserStore((state) => state.profile?.department);
+  const doubleDepartment = useUserStore((state) => state.profile?.doubleDepartment);
+  const grade = useUserStore((state) => state.profile?.grade);
+
+  // 학과 목록과 학년 계산 (메모이제이션)
+  const userDepartments = useMemo(() => {
+    const departments: string[] = [];
+    if (department?.trim()) departments.push(department);
+    if (doubleDepartment?.trim()) departments.push(doubleDepartment);
+    return departments;
+  }, [department, doubleDepartment]);
+
+  const userGrade = useMemo(() => {
+    if (!grade?.trim()) return undefined;
+    return Number(grade);
+  }, [grade]);
 
   const ITEMS_PER_PAGE = 6;
-
-  // localStorage에서 사용자 프로필 정보 로드
-  useEffect(() => {
-    const loadUserProfile = () => {
-      if (typeof window !== "undefined") {
-        const savedProfile = localStorage.getItem("userProfile");
-        if (savedProfile) {
-          try {
-            const profile = JSON.parse(savedProfile);
-            const departments: string[] = [];
-
-            // 전공 학과 추가
-            if (profile.department && profile.department.trim() !== "") {
-              departments.push(profile.department);
-            }
-
-            // 복수전공 학과 추가
-            if (profile.doubleDepartment && profile.doubleDepartment.trim() !== "") {
-              departments.push(profile.doubleDepartment);
-            }
-
-            setUserDepartments(departments);
-
-            // 학년 정보 설정
-            if (profile.grade && profile.grade.trim() !== "") {
-              setUserGrade(parseInt(profile.grade, 10));
-            } else {
-              setUserGrade(undefined);
-            }
-          } catch (error) {
-            console.error("Failed to parse user profile:", error);
-            setUserDepartments([]);
-            setUserGrade(undefined);
-          }
-        } else {
-          setUserDepartments([]);
-          setUserGrade(undefined);
-        }
-      }
-    };
-
-    loadUserProfile();
-
-    // 프로필 업데이트 이벤트 리스너
-    window.addEventListener("profileUpdated", loadUserProfile);
-    return () => window.removeEventListener("profileUpdated", loadUserProfile);
-  }, []);
 
   // 검색어 디바운싱 (500ms)
   useEffect(() => {
@@ -279,8 +249,9 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     recruitStatus,
     showOnlyQualified,
     currentCategory,
-    userDepartments,
-    userGrade,
+    department,
+    doubleDepartment,
+    grade,
   ]);
 
   // 6개로 맞추기 위한 빈 아이템 추가
