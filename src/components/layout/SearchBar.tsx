@@ -2,7 +2,8 @@
 
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useUIStore } from "@/stores/uiStore";
 
 const SearchWrapper = styled.div`
   display: flex;
@@ -62,13 +63,11 @@ const SearchIconButton = styled.button`
   }
 `;
 
-interface SearchBarProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-export default function SearchBar({ value, onChange }: SearchBarProps) {
-  const [isTablet, setIsTablet] = useState(false);
+export default function SearchBar() {
+  const searchTerm = useUIStore((state) => state.searchTerm);
+  const setSearchTerm = useUIStore((state) => state.setSearchTerm);
+  const isTablet = useUIStore((state) => state.isTablet);
+  const setIsTablet = useUIStore((state) => state.setIsTablet);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
@@ -86,7 +85,7 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
     return () => {
       mediaQuery.removeEventListener("change", handleResize);
     };
-  }, []);
+  }, [setIsTablet]);
 
   return (
     <SearchWrapper>
@@ -97,8 +96,8 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
             ? "프로그램 검색..."
             : "프로그램 이름이나 내용 키워드로 검색..."
         }
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
       <SearchIconButton>
         <Image

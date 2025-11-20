@@ -12,6 +12,7 @@ import { getCategoryNameFromSlug } from "@/utils/categoryMapper";
 import { searchNotices } from "@/services/noticeService";
 import { noticesToPrograms } from "@/utils/noticeAdapter";
 import { useUserStore } from "@/stores/userStore";
+import { useUIStore } from "@/stores/uiStore";
 
 const MainContent = styled.div`
   display: flex;
@@ -124,11 +125,16 @@ interface LayoutContentProps {
 
 export default function LayoutContent({ children }: LayoutContentProps) {
   const pathname = usePathname();
-  const [searchTerm, setSearchTerm] = useState("");
+
+  // Zustand UI 스토어에서 전역 상태 가져오기
+  const searchTerm = useUIStore((state) => state.searchTerm);
+  const recruitStatus = useUIStore((state) => state.recruitStatus);
+  const showOnlyQualified = useUIStore((state) => state.showOnlyQualified);
+  const currentPage = useUIStore((state) => state.currentPage);
+  const setCurrentPage = useUIStore((state) => state.setCurrentPage);
+
+  // 로컬 상태 (컴포넌트 전용)
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [recruitStatus, setRecruitStatus] = useState("전체");
-  const [showOnlyQualified, setShowOnlyQualified] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isMounted, setIsMounted] = useState(false);
   const [programs, setPrograms] = useState<Program[]>([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -274,18 +280,13 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   // 필터 조건 변경 시 페이지를 1로 리셋
   useEffect(() => {
     setCurrentPage(1);
-  }, [currentCategory, debouncedSearchTerm, recruitStatus, showOnlyQualified]);
+  }, [currentCategory, debouncedSearchTerm, recruitStatus, showOnlyQualified, setCurrentPage]);
 
   return (
     <MainContent>
       <SearchSection>
-        <SearchBar value={searchTerm} onChange={setSearchTerm} />
-        <FilterBar
-          recruitStatus={recruitStatus}
-          onRecruitStatusChange={setRecruitStatus}
-          showOnlyQualified={showOnlyQualified}
-          onShowOnlyQualifiedChange={setShowOnlyQualified}
-        />
+        <SearchBar />
+        <FilterBar />
       </SearchSection>
 
       <ChildrenWrapper key={isMounted ? pathname : "default"}>

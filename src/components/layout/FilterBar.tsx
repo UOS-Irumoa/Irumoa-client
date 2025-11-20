@@ -3,6 +3,7 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useUserStore } from "@/stores/userStore";
+import { useUIStore } from "@/stores/uiStore";
 
 const FilterSection = styled.div`
   display: flex;
@@ -156,19 +157,13 @@ const CheckboxLabelTablet = styled(CheckboxLabel)`
   }
 `;
 
-interface FilterBarProps {
-  recruitStatus: string;
-  onRecruitStatusChange: (value: string) => void;
-  showOnlyQualified: boolean;
-  onShowOnlyQualifiedChange: (checked: boolean) => void;
-}
+export default function FilterBar() {
+  // Zustand UI 스토어에서 필터 상태 가져오기
+  const recruitStatus = useUIStore((state) => state.recruitStatus);
+  const setRecruitStatus = useUIStore((state) => state.setRecruitStatus);
+  const showOnlyQualified = useUIStore((state) => state.showOnlyQualified);
+  const setShowOnlyQualified = useUIStore((state) => state.setShowOnlyQualified);
 
-export default function FilterBar({
-  recruitStatus,
-  onRecruitStatusChange,
-  showOnlyQualified,
-  onShowOnlyQualifiedChange,
-}: FilterBarProps) {
   const [hasProfile, setHasProfile] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const hasValidProfile = useUserStore((state) => state.hasValidProfile);
@@ -200,7 +195,7 @@ export default function FilterBar({
           type="checkbox"
           id="qualified-only"
           checked={showOnlyQualified}
-          onChange={(e) => onShowOnlyQualifiedChange(e.target.checked)}
+          onChange={(e) => setShowOnlyQualified(e.target.checked)}
           disabled={!hasProfile}
           title={
             !hasProfile
@@ -215,7 +210,7 @@ export default function FilterBar({
         <SelectWrapper>
           <Select
             value={recruitStatus}
-            onChange={(e) => onRecruitStatusChange(e.target.value)}
+            onChange={(e) => setRecruitStatus(e.target.value)}
           >
             <option value="전체">전체</option>
             <option value="모집 예정">모집 예정</option>
