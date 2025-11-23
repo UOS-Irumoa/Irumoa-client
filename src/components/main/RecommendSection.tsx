@@ -7,6 +7,12 @@ import RecommendCard from "./RecommendCard";
 import { Notice } from "@/types/notice";
 import { getRecommendedNotices } from "@/services/noticeService";
 import { useUserStore } from "@/stores/userStore";
+import {
+  generateProfileHash,
+  shouldRefetchRecommendations,
+  getCachedRecommendations,
+  setCachedRecommendations,
+} from "@/utils/recommendCache";
 
 const Section = styled.section`
   display: flex;
@@ -140,8 +146,30 @@ export default function RecommendSection() {
       }
 
       try {
-        // API 호출
+        // 프로필 해시 생성
+        const profileHash = generateProfileHash(userInfo);
+
+        // 캐시를 사용할 수 있는지 확인
+        if (!shouldRefetchRecommendations(profileHash)) {
+          // 캐시된 데이터 사용
+          const cached = getCachedRecommendations();
+          if (cached) {
+            console.log("Using cached recommendations");
+            const convertedPrograms = cached.data.map((notice) =>
+              noticeToProgram(notice)
+            );
+            setPrograms(convertedPrograms);
+            setIsLoading(false);
+            return;
+          }
+        }
+
+        // 캐시를 사용할 수 없으면 API 호출
+        console.log("Fetching fresh recommendations from API");
         const response = await getRecommendedNotices({ user: userInfo });
+
+        // 응답 데이터를 캐시에 저장
+        setCachedRecommendations(response.content, profileHash);
 
         // Notice를 Program으로 변환
         const convertedPrograms = response.content.map((notice) =>

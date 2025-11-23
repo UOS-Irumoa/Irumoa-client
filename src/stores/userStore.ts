@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { clearRecommendCache } from '@/utils/recommendCache';
 
 // 사용자 프로필 타입 (확장된 버전)
 export interface UserProfile {
@@ -59,6 +60,9 @@ export const useUserStore = create<UserState>()(
           interest_fields: profile.interest_fields || [],
         };
         set({ profile: normalizedProfile });
+
+        // 프로필이 변경되면 추천 캐시 무효화
+        clearRecommendCache();
 
         // 커스텀 이벤트 발생 (기존 코드와의 호환성)
         if (typeof window !== 'undefined') {
