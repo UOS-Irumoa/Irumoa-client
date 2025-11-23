@@ -25,8 +25,15 @@ const Section = styled.section`
 const SectionHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 14px;
   padding: 4px 0;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
 `;
 
 const IconWrapper = styled.div`
@@ -49,8 +56,59 @@ const SectionTitle = styled.h2`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-  line-height: 1;
-  padding-bottom: 4px;
+  line-height: 24px;
+`;
+
+const RefreshButton = styled.button<{ isRefreshing?: boolean }>`
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.primary.gradient};
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.sm};
+
+    svg {
+      fill: ${({ theme }) => theme.colors.white};
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: ${({ theme }) => theme.colors.text.secondary};
+    transition: all 0.2s ease;
+    animation: ${({ isRefreshing }) =>
+      isRefreshing ? "spin 1s linear infinite" : "none"};
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 const CardContainer = styled.div`
@@ -129,77 +187,100 @@ export default function RecommendSection() {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const getUserInfo = useUserStore((state) => state.getUserInfo);
 
-  useEffect(() => {
-    async function fetchRecommendations() {
-      setIsLoading(true);
-      setError(null);
+  const fetchRecommendations = async (forceRefresh = false) => {
+    setIsLoading(true);
+    setError(null);
 
-      // localStorage에서 사용자 정보 가져오기
-      const userInfo = getUserInfo();
+    // localStorage에서 사용자 정보 가져오기
+    const userInfo = getUserInfo();
 
-      if (!userInfo) {
-        // 사용자 정보가 없으면 프로필 설정 페이지로 자동 리다이렉트
-        window.location.href = "/profile";
-        return;
-      }
-
-      try {
-        // 프로필 해시 생성
-        const profileHash = generateProfileHash(userInfo);
-
-        // 캐시를 사용할 수 있는지 확인
-        if (!shouldRefetchRecommendations(profileHash)) {
-          // 캐시된 데이터 사용
-          const cached = getCachedRecommendations();
-          if (cached) {
-            console.log("Using cached recommendations");
-            const convertedPrograms = cached.data.map((notice) =>
-              noticeToProgram(notice)
-            );
-            setPrograms(convertedPrograms);
-            setIsLoading(false);
-            return;
-          }
-        }
-
-        // 캐시를 사용할 수 없으면 API 호출
-        console.log("Fetching fresh recommendations from API");
-        const response = await getRecommendedNotices({ user: userInfo });
-
-        // 응답 데이터를 캐시에 저장
-        setCachedRecommendations(response.content, profileHash);
-
-        // Notice를 Program으로 변환
-        const convertedPrograms = response.content.map((notice) =>
-          noticeToProgram(notice)
-        );
-
-        setPrograms(convertedPrograms);
-      } catch (err) {
-        setError("추천 프로그램을 불러오는 중 오류가 발생했습니다.");
-        console.error("Failed to fetch recommendations:", err);
-      } finally {
-        setIsLoading(false);
-      }
+    if (!userInfo) {
+      // 사용자 정보가 없으면 프로필 설정 페이지로 자동 리다이렉트
+      window.location.href = "/profile";
+      return;
     }
 
+    try {
+      // 프로필 해시 생성
+      const profileHash = generateProfileHash(userInfo);
+
+      // 강제 새로고침이 아니면 캐시 확인
+      if (!forceRefresh && !shouldRefetchRecommendations(profileHash)) {
+        // 캐시된 데이터 사용
+        const cached = getCachedRecommendations();
+        if (cached) {
+          console.log("Using cached recommendations");
+          const convertedPrograms = cached.data.map((notice) =>
+            noticeToProgram(notice)
+          );
+          setPrograms(convertedPrograms);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // 캐시를 사용할 수 없으면 API 호출
+      console.log("Fetching fresh recommendations from API");
+      const response = await getRecommendedNotices({ user: userInfo });
+
+      // 응답 데이터를 캐시에 저장
+      setCachedRecommendations(response.content, profileHash);
+
+      // Notice를 Program으로 변환
+      const convertedPrograms = response.content.map((notice) =>
+        noticeToProgram(notice)
+      );
+
+      setPrograms(convertedPrograms);
+    } catch (err) {
+      setError("추천 프로그램을 불러오는 중 오류가 발생했습니다.");
+      console.error("Failed to fetch recommendations:", err);
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    fetchRecommendations(true); // 강제 새로고침
+  };
+
+  useEffect(() => {
     fetchRecommendations();
   }, [getUserInfo]);
 
   return (
     <Section>
       <SectionHeader>
-        <IconWrapper>
-          <Image
-            src="/images/main/recommend.svg"
-            alt="추천"
-            width={24}
-            height={24}
-          />
-        </IconWrapper>
-        <SectionTitle>당신을 위한 추천 프로그램</SectionTitle>
+        <TitleWrapper>
+          <IconWrapper>
+            <Image
+              src="/images/main/recommend.svg"
+              alt="추천"
+              width={24}
+              height={24}
+            />
+          </IconWrapper>
+          <SectionTitle>당신을 위한 추천 프로그램</SectionTitle>
+        </TitleWrapper>
+        <RefreshButton
+          onClick={handleRefresh}
+          disabled={isLoading || isRefreshing}
+          isRefreshing={isRefreshing}
+          aria-label="추천 프로그램 새로고침"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+          </svg>
+        </RefreshButton>
       </SectionHeader>
       <CardContainer>
         {isLoading ? (
