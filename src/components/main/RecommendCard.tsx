@@ -1,6 +1,8 @@
 "use client";
 
 import styled from "@emotion/styled";
+import { logNoticeClick } from "@/services/noticeService";
+import { useUserStore } from "@/stores/userStore";
 
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.background.paper};
@@ -144,12 +146,15 @@ interface RecommendCardProps {
 }
 
 export default function RecommendCard({
+  id,
   title,
   category,
   status,
   departmentRestricted,
   link,
 }: RecommendCardProps) {
+  const getUserInfo = useUserStore((state) => state.getUserInfo);
+
   const getStatusText = (status: "upcoming" | "open" | "closed") => {
     switch (status) {
       case "upcoming":
@@ -161,7 +166,23 @@ export default function RecommendCard({
     }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    // 사용자 정보 가져오기
+    const userInfo = getUserInfo();
+
+    if (userInfo) {
+      // 클릭 로그 전송 (비동기, 실패해도 링크는 열림)
+      logNoticeClick({
+        id,
+        department: userInfo.departments,
+        grade: userInfo.grade,
+        interests: userInfo.interests,
+      }).catch((error) => {
+        console.error("Failed to log notice click:", error);
+      });
+    }
+
+    // 링크 열기
     window.open(link, "_blank", "noopener,noreferrer");
   };
 

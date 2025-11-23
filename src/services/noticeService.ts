@@ -4,6 +4,7 @@ import {
   RecommendRequest,
   RecommendResponse,
   HealthCheckResponse,
+  NoticeClickRequest,
 } from "@/types/notice";
 
 const BASE_URL = "https://uoscholar-server.store/irumoa-api";
@@ -140,5 +141,35 @@ export async function checkHealth(): Promise<HealthCheckResponse | null> {
   } catch (error) {
     console.error("Health check error:", error);
     return null;
+  }
+}
+
+// 공지사항 클릭 로그
+export async function logNoticeClick(
+  request: NoticeClickRequest
+): Promise<boolean> {
+  const url = `${BASE_URL}/notices/click`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
+
+    // 201 Created 또는 200 OK면 성공
+    if (response.ok) {
+      return true;
+    }
+
+    console.error(
+      `Failed to log notice click: ${response.status} ${response.statusText}`
+    );
+    return false;
+  } catch (error) {
+    console.error("Notice click logging error:", error);
+    return false;
   }
 }

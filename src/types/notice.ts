@@ -54,3 +54,11 @@ export interface HealthCheckResponse {
   version: string;
   timestamp: string;
 }
+
+// 공지사항 클릭 로그 요청 타입
+export interface NoticeClickRequest {
+  id: number;
+  department: string[];
+  grade: number;
+  interests: string[];
+}
