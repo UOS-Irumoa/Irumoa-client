@@ -7,7 +7,7 @@ import {
 } from "@/types/notice";
 
 const BASE_URL = "https://uoscholar-server.store/irumoa-api";
-const RECOMMEND_URL = "https://uoscholar.store.com/ai/irumoa/recommend";
+const RECOMMEND_URL = "http://uoscholar-server.store/irumoa-ai";
 const HEALTH_CHECK_URL = "https://uoscholar.store.com/ai/irumoa/health";
 
 export async function searchNotices(
