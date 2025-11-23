@@ -8,7 +8,7 @@ import {
 
 const BASE_URL = "https://uoscholar-server.store/irumoa-api";
 const RECOMMEND_URL = "https://uoscholar-server.store/irumoa-ai/recommend";
-const HEALTH_CHECK_URL = "https://uoscholar.store.com/irumoa-ai/health";
+const HEALTH_CHECK_URL = "https://uoscholar-server.store/irumoa-ai/health";
 
 export async function searchNotices(
   params: NoticeSearchParams = {}

@@ -14,7 +14,7 @@ export interface UserProfile {
 
 // 사용자 정보 타입 (API 요청용 - 간소화된 버전)
 export interface UserInfo {
-  department: string;
+  departments: string[]; // 배열로 변경
   grade: number;
   interests: string[];
   interest_fields?: string[];
@@ -101,8 +101,14 @@ export const useUserStore = create<UserState>()(
           return null;
         }
 
+        // departments 배열 생성 (전공 + 복수전공)
+        const departments: string[] = [profile.department];
+        if (profile.doubleDepartment && profile.doubleDepartment.trim() !== '') {
+          departments.push(profile.doubleDepartment);
+        }
+
         return {
-          department: profile.department,
+          departments,
           grade: Number(profile.grade),
           interests: profile.interests,
           interest_fields: profile.interest_fields || [],
@@ -190,7 +196,8 @@ export const setUserInfo = (userInfo: UserInfo): void => {
 
   useUserStore.getState().setProfile({
     ...currentProfile,
-    department: userInfo.department,
+    department: userInfo.departments[0] || '', // 첫 번째 학과를 메인 학과로
+    doubleDepartment: userInfo.departments[1] || '', // 두 번째 학과를 복수전공으로
     grade: String(userInfo.grade),
     interests: userInfo.interests,
     interest_fields: userInfo.interest_fields || [],

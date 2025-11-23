@@ -26,9 +26,9 @@ export function setUserInfo(userInfo: UserInfo): void {
 
   useUserStore.getState().setProfile({
     college: currentProfile?.college || '',
-    department: userInfo.department,
+    department: userInfo.departments[0] || '', // 첫 번째 학과를 메인 학과로
     doubleCollege: currentProfile?.doubleCollege || '',
-    doubleDepartment: currentProfile?.doubleDepartment || '',
+    doubleDepartment: userInfo.departments[1] || '', // 두 번째 학과를 복수전공으로
     grade: String(userInfo.grade),
     interests: userInfo.interests,
     interest_fields: userInfo.interest_fields || [],

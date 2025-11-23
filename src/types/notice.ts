@@ -30,9 +30,9 @@ export interface NoticeSearchParams {
   category?: string;
 }
 
-// 사용자 정보 타입
+// 사용자 정보 타입 (API 요청용)
 export interface UserInfo {
-  department: string; // required
+  departments: string[]; // required - 배열로 변경 (전공 + 복수전공)
   grade: number; // required (1-5: 학년, 6: 졸업생, 7: 대학원생)
   interests: string[]; // required
   interest_fields?: string[]; // optional (기본값: [])

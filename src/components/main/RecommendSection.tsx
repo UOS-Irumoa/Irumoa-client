@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import RecommendCard from "./RecommendCard";
 import { Notice } from "@/types/notice";
 import { getRecommendedNotices } from "@/services/noticeService";
-import { getUserInfo } from "@/utils/userStorage";
+import { useUserStore } from "@/stores/userStore";
 
 const Section = styled.section`
   display: flex;
@@ -121,6 +121,7 @@ export default function RecommendSection() {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const getUserInfo = useUserStore((state) => state.getUserInfo);
 
   useEffect(() => {
     async function fetchRecommendations() {
@@ -131,8 +132,8 @@ export default function RecommendSection() {
       const userInfo = getUserInfo();
 
       if (!userInfo) {
-        setError("사용자 정보를 찾을 수 없습니다. 설정에서 정보를 입력해주세요.");
-        setIsLoading(false);
+        // 사용자 정보가 없으면 프로필 설정 페이지로 자동 리다이렉트
+        window.location.href = "/profile";
         return;
       }
 
@@ -155,7 +156,7 @@ export default function RecommendSection() {
     }
 
     fetchRecommendations();
-  }, []);
+  }, [getUserInfo]);
 
   return (
     <Section>
