@@ -140,6 +140,7 @@ interface RecommendCardProps {
   category: string;
   status: "upcoming" | "open" | "closed";
   departmentRestricted: boolean;
+  link: string;
 }
 
 export default function RecommendCard({
@@ -147,6 +148,7 @@ export default function RecommendCard({
   category,
   status,
   departmentRestricted,
+  link,
 }: RecommendCardProps) {
   const getStatusText = (status: "upcoming" | "open" | "closed") => {
     switch (status) {
@@ -159,8 +161,12 @@ export default function RecommendCard({
     }
   };
 
+  const handleClick = () => {
+    window.open(link, "_blank", "noopener,noreferrer");
+  };
+
   return (
-    <Card>
+    <Card onClick={handleClick}>
       <CardHeader>
         <StatusWrapper>
           <StatusDot status={status} />

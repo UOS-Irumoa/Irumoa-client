@@ -66,6 +66,7 @@ interface Program {
   category: string;
   status: "upcoming" | "open" | "closed";
   departmentRestricted: boolean;
+  link: string;
 }
 
 // Notice를 Program으로 변환하는 어댑터 함수
@@ -96,6 +97,7 @@ function noticeToProgram(notice: Notice): Program {
     category: notice.categories[0] || "기타",
     status,
     departmentRestricted: hasDepartmentRestriction,
+    link: notice.link,
   };
 }
 
