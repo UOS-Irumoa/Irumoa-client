@@ -123,25 +123,28 @@ export default function Header() {
   const router = useRouter();
   const profile = useUserStore((state) => state.profile);
   const [isMounted, setIsMounted] = useState(false);
+  const [categories, setCategories] = useState<Array<{
+    label: string;
+    variant: "primary" | "secondary";
+    kind: "major" | "double" | "interest";
+  }> | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const handleProfileClick = () => {
-    router.push("/profile");
-  };
-
-  const getUserCategories = () => {
+  // profile 변경 시 카테고리 다시 계산
+  useEffect(() => {
     if (!profile) {
-      return null;
+      setCategories(null);
+      return;
     }
 
-    const categories = [];
+    const newCategories = [];
 
     // 학과 추가 (빈 문자열이 아닌 경우만)
     if (profile.department && profile.department.trim() !== "") {
-      categories.push({
+      newCategories.push({
         label: profile.department,
         variant: "primary" as const,
         kind: "major" as const,
@@ -155,7 +158,7 @@ export default function Header() {
       profile.doubleDepartment &&
       profile.doubleDepartment.trim() !== ""
     ) {
-      categories.push({
+      newCategories.push({
         label: profile.doubleDepartment,
         variant: "primary" as const,
         kind: "double" as const,
@@ -166,7 +169,7 @@ export default function Header() {
     if (profile.interests && profile.interests.length > 0) {
       profile.interests.forEach((interest) => {
         if (interest && interest.trim() !== "") {
-          categories.push({
+          newCategories.push({
             label: interest,
             variant: "secondary" as const,
             kind: "interest" as const,
@@ -175,10 +178,12 @@ export default function Header() {
       });
     }
 
-    return categories.length > 0 ? categories : null;
-  };
+    setCategories(newCategories.length > 0 ? newCategories : null);
+  }, [profile]);
 
-  const categories = getUserCategories();
+  const handleProfileClick = () => {
+    router.push("/profile");
+  };
 
   // 서버/클라이언트 일치를 위해 마운트 전에는 로딩 상태 표시
   if (!isMounted) {

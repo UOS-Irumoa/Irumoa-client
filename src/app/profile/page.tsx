@@ -632,10 +632,10 @@ export default function ProfilePage() {
     // Zustand 스토어에 저장
     setProfile(userProfile);
 
-    // 애니메이션 후 나가기
+    // 애니메이션 후 메인 페이지로 이동 (router.back() 대신 명시적으로 이동)
     setIsExiting(true);
     setTimeout(() => {
-      router.back();
+      router.push('/');
     }, 300);
   };
 
@@ -664,10 +664,10 @@ export default function ProfilePage() {
       setInterestFields("");
     }
 
-    // 애니메이션 후 나가기
+    // 애니메이션 후 메인 페이지로 이동
     setIsExiting(true);
     setTimeout(() => {
-      router.back();
+      router.push('/');
     }, 300);
   };
 
