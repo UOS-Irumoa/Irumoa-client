@@ -176,8 +176,7 @@ const NavButton = styled.button<{ direction: "left" | "right" }>`
   }
 
   &:disabled {
-    opacity: 0 !important;
-    cursor: not-allowed;
+    display: none;
   }
 
   svg {
