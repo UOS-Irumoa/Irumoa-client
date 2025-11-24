@@ -49,10 +49,18 @@ const NavButton = styled.button<{ isActive: boolean }>`
     transform: translateY(-2px);
     box-shadow: ${({ theme, isActive }) =>
       isActive ? "0px 6px 16px 0px rgba(64, 140, 255, 0.4)" : theme.shadows.md};
+    ${({ isActive }) =>
+      isActive
+        ? `filter: brightness(0.95);`
+        : `background: rgba(0, 0, 0, 0.02);`}
   }
 
   &:active {
     transform: translateY(0);
+    ${({ isActive }) =>
+      isActive
+        ? `filter: brightness(0.9);`
+        : `background: rgba(0, 0, 0, 0.04);`}
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {

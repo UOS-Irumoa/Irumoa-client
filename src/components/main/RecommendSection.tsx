@@ -77,6 +77,7 @@ const RefreshButton = styled.button<{ isRefreshing?: boolean }>`
     border-color: transparent;
     transform: translateY(-2px);
     box-shadow: ${({ theme }) => theme.shadows.sm};
+    filter: brightness(0.95);
 
     svg {
       fill: ${({ theme }) => theme.colors.white};
@@ -85,6 +86,7 @@ const RefreshButton = styled.button<{ isRefreshing?: boolean }>`
 
   &:active:not(:disabled) {
     transform: translateY(0);
+    filter: brightness(0.9);
   }
 
   &:disabled {
@@ -166,10 +168,10 @@ export default function RecommendSection() {
     // 모집 상태 계산 (end date가 현재 날짜보다 뒤에 있으면 모집 중)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const startDate = new Date(notice.appStartDate);
     startDate.setHours(0, 0, 0, 0);
-    
+
     const endDate = new Date(notice.appEndDate);
     endDate.setHours(0, 0, 0, 0);
 

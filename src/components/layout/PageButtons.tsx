@@ -28,7 +28,14 @@ const PageButton = styled.button<{ active?: boolean }>`
 
   &:hover:not(:disabled) {
     background: ${({ active, theme }) =>
-      active ? "rgba(64, 140, 255, 0.2)" : "rgba(0, 0, 0, 0.05)"};
+      active ? "rgba(64, 140, 255, 0.25)" : "rgba(0, 0, 0, 0.08)"};
+    transform: scale(1.1);
+  }
+
+  &:active:not(:disabled) {
+    background: ${({ active, theme }) =>
+      active ? "rgba(64, 140, 255, 0.3)" : "rgba(0, 0, 0, 0.12)"};
+    transform: scale(0.95);
   }
 
   &:disabled {
@@ -53,7 +60,13 @@ const NavButton = styled.button<{ invisible?: boolean }>`
   visibility: ${({ invisible }) => (invisible ? "hidden" : "visible")};
 
   &:hover:not(:disabled) {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.08);
+    transform: scale(1.1);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(0, 0, 0, 0.12);
+    transform: scale(0.95);
   }
 
   &:disabled {

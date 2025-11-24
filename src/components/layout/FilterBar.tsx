@@ -65,10 +65,22 @@ const Select = styled.select`
   text-align: center;
   direction: ltr;
 
+  &:hover {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: ${({ theme }) => theme.colors.primary.main};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary.main}15;
+  }
+
   &:focus {
     outline: none;
+    background: rgba(0, 0, 0, 0.02);
     border-color: ${({ theme }) => theme.colors.primary.main};
     box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary.main}20;
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.04);
+    transform: scale(0.98);
   }
 
   option {
@@ -123,6 +135,15 @@ const Checkbox = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.white};
   border-radius: 3px;
   cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.1);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
 
   &:checked {
     accent-color: ${({ theme }) => theme.colors.primary.main};
@@ -144,6 +165,15 @@ const CheckboxLabel = styled.label`
   flex-shrink: 10;
   white-space: nowrap;
   text-overflow: ellipsis;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary.main};
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 `;
 
 const CheckboxLabelDesktop = styled(CheckboxLabel)`

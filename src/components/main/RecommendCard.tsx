@@ -19,8 +19,15 @@ const Card = styled.div`
   min-width: 180px;
 
   &:hover {
+    background: rgba(0, 0, 0, 0.02);
     transform: translateY(-4px);
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.04);
+    transform: translateY(-2px);
+    box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.08);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {

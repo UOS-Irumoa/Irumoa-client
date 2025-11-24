@@ -226,10 +226,22 @@ const Select = styled.select`
     color: ${({ theme }) => theme.colors.text.secondary};
   }
 
+  &:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: ${({ theme }) => theme.colors.primary.main};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary.main}15;
+  }
+
   &:focus {
     outline: none;
+    background: rgba(0, 0, 0, 0.02);
     border-color: ${({ theme }) => theme.colors.primary.main};
     box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary.main}20;
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(0, 0, 0, 0.04);
+    transform: scale(0.98);
   }
 
   &:disabled {
@@ -325,10 +337,18 @@ const Badge = styled.button<{ selected: boolean }>`
     transform: translateY(-1px);
     box-shadow: ${({ theme, selected }) =>
       selected ? theme.shadows.buttonActive : theme.shadows.sm};
+    ${({ selected }) =>
+      selected
+        ? `filter: brightness(0.95);`
+        : `background: rgba(0, 0, 0, 0.02);`}
   }
 
   &:active {
     transform: translateY(0);
+    ${({ selected }) =>
+      selected
+        ? `filter: brightness(0.9);`
+        : `background: rgba(0, 0, 0, 0.04);`}
   }
 `;
 
@@ -487,10 +507,18 @@ const Button = styled.button<{ variant?: "primary" | "secondary" }>`
     transform: translateY(-2px);
     box-shadow: ${({ theme, variant }) =>
       variant === "primary" ? theme.shadows.buttonActive : theme.shadows.sm};
+    ${({ variant }) =>
+      variant === "primary"
+        ? `filter: brightness(0.95);`
+        : `background: rgba(0, 0, 0, 0.02);`}
   }
 
   &:active {
     transform: translateY(0);
+    ${({ variant }) =>
+      variant === "primary"
+        ? `filter: brightness(0.9);`
+        : `background: rgba(0, 0, 0, 0.04);`}
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -635,7 +663,7 @@ export default function ProfilePage() {
     // 애니메이션 후 메인 페이지로 이동 (router.back() 대신 명시적으로 이동)
     setIsExiting(true);
     setTimeout(() => {
-      router.push('/');
+      router.push("/");
     }, 300);
   };
 
@@ -649,9 +677,7 @@ export default function ProfilePage() {
       setGrade(profile.grade ? String(profile.grade) : "");
       setSelectedInterests(profile.interests || []);
       setInterestFields(
-        profile.interest_fields
-          ? profile.interest_fields.join(", ")
-          : ""
+        profile.interest_fields ? profile.interest_fields.join(", ") : ""
       );
     } else {
       // 저장된 프로필이 없으면 모두 초기화
@@ -667,7 +693,7 @@ export default function ProfilePage() {
     // 애니메이션 후 메인 페이지로 이동
     setIsExiting(true);
     setTimeout(() => {
-      router.push('/');
+      router.push("/");
     }, 300);
   };
 

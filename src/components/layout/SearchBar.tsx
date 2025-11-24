@@ -53,13 +53,18 @@ const SearchIconButton = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  box-shadow: 0px 2px 8px 0px rgba(64, 140, 255, 0.25);
 
   &:hover {
     transform: scale(1.05);
+    box-shadow: 0px 4px 12px 0px rgba(64, 140, 255, 0.35);
+    filter: brightness(0.95);
   }
 
   &:active {
     transform: scale(0.95);
+    box-shadow: 0px 1px 4px 0px rgba(64, 140, 255, 0.2);
+    filter: brightness(0.9);
   }
 `;
 
@@ -87,6 +92,21 @@ export default function SearchBar() {
     };
   }, [setIsTablet]);
 
+  const handleSearch = () => {
+    // 검색어가 있으면 검색 실행 (이미 상태가 업데이트되므로 자동으로 필터링됨)
+    // 추가적인 검색 액션이 필요하면 여기에 구현
+    if (searchTerm.trim()) {
+      // 검색 실행 (상태 업데이트로 자동 처리됨)
+      console.log("Searching for:", searchTerm);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <SearchWrapper>
       <SearchInput
@@ -98,8 +118,9 @@ export default function SearchBar() {
         }
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyPress={handleKeyPress}
       />
-      <SearchIconButton>
+      <SearchIconButton onClick={handleSearch} aria-label="검색">
         <Image
           src="/images/main/search-icon.svg"
           alt="Search"
