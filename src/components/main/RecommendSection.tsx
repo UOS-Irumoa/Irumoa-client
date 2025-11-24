@@ -26,14 +26,14 @@ const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 14px;
+  gap: 10px;
   padding: 4px 0;
 `;
 
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 `;
 
 const IconWrapper = styled.div`
@@ -75,7 +75,7 @@ const RefreshButton = styled.button<{ isRefreshing?: boolean }>`
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primary.gradient};
     border-color: transparent;
-    transform: translateY(-2px);
+    transform: scale(1.1);
     box-shadow: ${({ theme }) => theme.shadows.sm};
     filter: brightness(0.95);
 
@@ -85,7 +85,7 @@ const RefreshButton = styled.button<{ isRefreshing?: boolean }>`
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0);
+    transform: scale(0.95);
     filter: brightness(0.9);
   }
 
@@ -268,14 +268,6 @@ export default function RecommendSection() {
     <Section>
       <SectionHeader>
         <TitleWrapper>
-          <IconWrapper>
-            <Image
-              src="/images/main/recommend.svg"
-              alt="추천"
-              width={24}
-              height={24}
-            />
-          </IconWrapper>
           <SectionTitle>당신을 위한 추천 프로그램</SectionTitle>
         </TitleWrapper>
         <RefreshButton

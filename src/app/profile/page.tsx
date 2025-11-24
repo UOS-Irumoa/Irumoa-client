@@ -334,7 +334,7 @@ const Badge = styled.button<{ selected: boolean }>`
     selected ? theme.shadows.buttonActive : "none"};
 
   &:hover {
-    transform: translateY(-1px);
+    transform: scale(1.05);
     box-shadow: ${({ theme, selected }) =>
       selected ? theme.shadows.buttonActive : theme.shadows.sm};
     ${({ selected }) =>
@@ -344,7 +344,7 @@ const Badge = styled.button<{ selected: boolean }>`
   }
 
   &:active {
-    transform: translateY(0);
+    transform: scale(0.98);
     ${({ selected }) =>
       selected
         ? `filter: brightness(0.9);`
@@ -504,7 +504,7 @@ const Button = styled.button<{ variant?: "primary" | "secondary" }>`
   `}
 
   &:hover {
-    transform: translateY(-2px);
+    transform: scale(1.05);
     box-shadow: ${({ theme, variant }) =>
       variant === "primary" ? theme.shadows.buttonActive : theme.shadows.sm};
     ${({ variant }) =>
@@ -514,7 +514,7 @@ const Button = styled.button<{ variant?: "primary" | "secondary" }>`
   }
 
   &:active {
-    transform: translateY(0);
+    transform: scale(0.98);
     ${({ variant }) =>
       variant === "primary"
         ? `filter: brightness(0.9);`

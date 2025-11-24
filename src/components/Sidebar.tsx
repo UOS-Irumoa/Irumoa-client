@@ -46,7 +46,7 @@ const NavButton = styled.button<{ isActive: boolean }>`
   transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: scale(1.05);
     box-shadow: ${({ theme, isActive }) =>
       isActive ? "0px 6px 16px 0px rgba(64, 140, 255, 0.4)" : theme.shadows.md};
     ${({ isActive }) =>
@@ -56,7 +56,7 @@ const NavButton = styled.button<{ isActive: boolean }>`
   }
 
   &:active {
-    transform: translateY(0);
+    transform: scale(0.98);
     ${({ isActive }) =>
       isActive
         ? `filter: brightness(0.9);`

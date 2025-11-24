@@ -46,14 +46,14 @@ const ActionButton = styled.button`
 
   &:hover {
     opacity: 0.85;
-    transform: translateY(-1px);
+    transform: scale(1.05);
     box-shadow: 0px 4px 12px 0px rgba(64, 140, 255, 0.35);
     filter: brightness(0.95);
   }
 
   &:active {
     opacity: 0.8;
-    transform: translateY(0);
+    transform: scale(0.98);
     box-shadow: 0px 1px 4px 0px rgba(64, 140, 255, 0.2);
     filter: brightness(0.9);
   }
