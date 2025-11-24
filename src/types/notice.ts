@@ -48,13 +48,6 @@ export interface RecommendResponse {
   content: Notice[];
 }
 
-// 헬스 체크 응답 타입
-export interface HealthCheckResponse {
-  status: string;
-  version: string;
-  timestamp: string;
-}
-
 // 공지사항 클릭 로그 요청 타입
 export interface NoticeClickRequest {
   id: number;

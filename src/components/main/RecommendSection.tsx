@@ -133,38 +133,6 @@ interface Program {
   link: string;
 }
 
-// Notice를 Program으로 변환하는 어댑터 함수
-function noticeToProgram(notice: Notice): Program {
-  // 모집 상태 계산
-  const today = new Date();
-  const startDate = new Date(notice.appStartDate);
-  const endDate = new Date(notice.appEndDate);
-
-  let status: "upcoming" | "open" | "closed";
-  if (today < startDate) {
-    status = "upcoming";
-  } else if (today <= endDate) {
-    status = "open";
-  } else {
-    status = "closed";
-  }
-
-  // 학과 제한 여부 확인
-  const hasDepartmentRestriction =
-    notice.departments.length > 0 &&
-    !notice.departments.includes("제한없음") &&
-    !notice.departments.includes("전체");
-
-  return {
-    id: notice.id,
-    title: notice.title,
-    category: notice.categories[0] || "기타",
-    status,
-    departmentRestricted: hasDepartmentRestriction,
-    link: notice.link,
-  };
-}
-
 const LoadingText = styled.p`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 14px;
@@ -191,6 +159,38 @@ export default function RecommendSection() {
   const getUserInfo = useUserStore((state) => state.getUserInfo);
   const profile = useUserStore((state) => state.profile);
 
+  // Notice를 Program으로 변환하는 함수 (클라이언트에서만 실행)
+  const convertNoticeToProgram = (notice: Notice): Program => {
+    // 모집 상태 계산
+    const today = new Date();
+    const startDate = new Date(notice.appStartDate);
+    const endDate = new Date(notice.appEndDate);
+
+    let status: "upcoming" | "open" | "closed";
+    if (today < startDate) {
+      status = "upcoming";
+    } else if (today <= endDate) {
+      status = "open";
+    } else {
+      status = "closed";
+    }
+
+    // 학과 제한 여부 확인
+    const hasDepartmentRestriction =
+      notice.departments.length > 0 &&
+      !notice.departments.includes("제한없음") &&
+      !notice.departments.includes("전체");
+
+    return {
+      id: notice.id,
+      title: notice.title,
+      category: notice.categories[0] || "기타",
+      status,
+      departmentRestricted: hasDepartmentRestriction,
+      link: notice.link,
+    };
+  };
+
   const fetchRecommendations = async (forceRefresh = false) => {
     setIsLoading(true);
     setError(null);
@@ -215,7 +215,7 @@ export default function RecommendSection() {
         if (cached) {
           console.log("Using cached recommendations");
           const convertedPrograms = cached.data.map((notice) =>
-            noticeToProgram(notice)
+            convertNoticeToProgram(notice)
           );
           setPrograms(convertedPrograms);
           setIsLoading(false);
@@ -232,7 +232,7 @@ export default function RecommendSection() {
 
       // Notice를 Program으로 변환
       const convertedPrograms = response.content.map((notice) =>
-        noticeToProgram(notice)
+        convertNoticeToProgram(notice)
       );
 
       setPrograms(convertedPrograms);
