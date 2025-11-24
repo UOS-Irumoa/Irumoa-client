@@ -75,8 +75,8 @@ const ContentWrapper = styled.div`
 
 const ProgramTitle = styled.h3`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 15px;
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  font-size: 14px;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   color: ${({ theme }) => theme.colors.text.primary};
   line-height: 1.3;
   margin: auto 0 auto 20px;
