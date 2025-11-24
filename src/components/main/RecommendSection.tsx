@@ -163,15 +163,21 @@ export default function RecommendSection() {
 
   // Notice를 Program으로 변환하는 함수 (클라이언트에서만 실행)
   const convertNoticeToProgram = (notice: Notice): Program => {
-    // 모집 상태 계산
+    // 모집 상태 계산 (end date가 현재 날짜보다 뒤에 있으면 모집 중)
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     const startDate = new Date(notice.appStartDate);
+    startDate.setHours(0, 0, 0, 0);
+    
     const endDate = new Date(notice.appEndDate);
+    endDate.setHours(0, 0, 0, 0);
 
     let status: "upcoming" | "open" | "closed";
     if (today < startDate) {
       status = "upcoming";
     } else if (today <= endDate) {
+      // 현재 날짜가 종료일 이하 (종료일이 현재 날짜보다 뒤 또는 같음) -> 모집 중
       status = "open";
     } else {
       status = "closed";
