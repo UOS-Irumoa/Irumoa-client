@@ -113,10 +113,12 @@ const RefreshButton = styled.button<{ isRefreshing?: boolean }>`
 
 const CardContainer = styled.div`
   margin-top: 4px;
+  padding: 4px 0 8px 0;
   display: flex;
   flex-direction: row;
   gap: 10px;
   overflow-x: auto;
+  overflow-y: visible;
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {

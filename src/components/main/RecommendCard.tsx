@@ -15,7 +15,7 @@ const Card = styled.div`
   flex-direction: column;
   gap: 5px;
   flex-shrink: 0;
-  width: calc((100% - 40px) / 5); /* 5개 카드, gap 10px × 4 = 40px */
+  width: calc((100% - 40px) / 4); /* 5개 카드, gap 10px × 4 = 40px */
   min-width: 180px;
 
   &:hover {
@@ -24,18 +24,13 @@ const Card = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    width: calc((100% - 30px) / 4); /* 4개 카드 */
+    width: calc((100% - 30px) / 3); /* 4개 카드 */
     min-width: 160px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: calc((100% - 20px) / 3); /* 3개 카드 */
+    width: calc((100% - 20px) / 2); /* 3개 카드 */
     min-width: 140px;
-  }
-
-  @media (max-width: 640px) {
-    width: calc((100% - 10px) / 2); /* 2개 카드 */
-    min-width: 120px;
   }
 `;
 
@@ -126,7 +121,7 @@ const QualificationBadge = styled.span<{ restricted?: boolean }>`
 
 const ProgramTitle = styled.h3`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-size: 14px;
+  font-size: 13px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0;
