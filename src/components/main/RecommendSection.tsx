@@ -36,17 +36,6 @@ const TitleWrapper = styled.div`
   gap: 10px;
 `;
 
-const IconWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.primary.gradient};
-  flex-shrink: 0;
-`;
-
 const SectionTitle = styled.h2`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 16px;
@@ -113,18 +102,89 @@ const RefreshButton = styled.button<{ isRefreshing?: boolean }>`
   }
 `;
 
-const CardContainer = styled.div`
+const CardContainerWrapper = styled.div`
+  position: relative;
   margin-top: 4px;
   padding: 4px 0 8px 0;
+  overflow: hidden;
+
+  &:hover .nav-button {
+    opacity: 1;
+  }
+`;
+
+const CardContainer = styled.div<{ $currentPage: number }>`
   display: flex;
-  flex-direction: row;
   gap: 10px;
-  overflow-x: auto;
-  overflow-y: visible;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(
+    calc(
+      -${({ $currentPage }) => $currentPage * 100}% - ${({ $currentPage }) => $currentPage * 10}px
+    )
+  );
+
+  > * {
+    flex: 0 0 calc(25% - 7.5px);
+    min-width: 0;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    > * {
+      flex: 0 0 calc(33.333% - 6.667px);
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    > * {
+      flex: 0 0 calc(50% - 5px);
+    }
+  }
+`;
+
+const NavButton = styled.button<{ direction: "left" | "right" }>`
+  position: absolute;
+  top: 50%;
+  ${({ direction }) => (direction === "left" ? "left: 8px;" : "right: 8px;")}
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.background.paper};
+  border: 1px solid ${({ theme }) => theme.colors.border.main};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.primary.gradient};
+    border-color: transparent;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: ${({ theme }) => theme.shadows.md};
+
+    svg {
+      fill: ${({ theme }) => theme.colors.white};
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0 !important;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: ${({ theme }) => theme.colors.text.secondary};
+    transition: fill 0.2s ease;
   }
 `;
 
@@ -160,8 +220,12 @@ export default function RecommendSection() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const getUserInfo = useUserStore((state) => state.getUserInfo);
   const profile = useUserStore((state) => state.profile);
+
+  // 한 페이지에 표시할 카드 개수 (그리드 기준)
+  const CARDS_PER_PAGE = 4;
 
   // Notice를 Program으로 변환하는 함수 (클라이언트에서만 실행)
   const convertNoticeToProgram = (notice: Notice): Program => {
@@ -257,12 +321,36 @@ export default function RecommendSection() {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
+    setCurrentPage(0); // 페이지를 처음으로 리셋
     fetchRecommendations(true); // 강제 새로고침
   };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    const maxPage = Math.ceil(programs.length / CARDS_PER_PAGE) - 1;
+    if (currentPage < maxPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  // 좌우 버튼 활성화 여부
+  const canGoPrev = currentPage > 0;
+  const maxPage = Math.ceil(programs.length / CARDS_PER_PAGE) - 1;
+  const canGoNext = currentPage < maxPage;
 
   useEffect(() => {
     fetchRecommendations();
   }, [profile]); // profile 변경 시 추천 프로그램 다시 불러오기
+
+  // programs가 변경되면 currentPage를 리셋 (새로운 데이터를 불러왔을 때)
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [programs.length]);
 
   return (
     <Section>
@@ -285,7 +373,41 @@ export default function RecommendSection() {
           </svg>
         </RefreshButton>
       </SectionHeader>
-      <CardContainer>
+      <CardContainerWrapper>
+        {!isLoading && !error && programs.length > 0 && (
+          <>
+            <NavButton
+              direction="left"
+              onClick={handlePrevPage}
+              disabled={!canGoPrev}
+              className="nav-button"
+              aria-label="이전 추천 프로그램"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+              </svg>
+            </NavButton>
+            <NavButton
+              direction="right"
+              onClick={handleNextPage}
+              disabled={!canGoNext}
+              className="nav-button"
+              aria-label="다음 추천 프로그램"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+              </svg>
+            </NavButton>
+          </>
+        )}
         {isLoading ? (
           <LoadingText>추천 프로그램을 불러오는 중...</LoadingText>
         ) : error ? (
@@ -293,11 +415,13 @@ export default function RecommendSection() {
         ) : programs.length === 0 ? (
           <EmptyText>추천할 프로그램이 없습니다.</EmptyText>
         ) : (
-          programs.map((program) => (
-            <RecommendCard key={program.id} {...program} />
-          ))
+          <CardContainer $currentPage={currentPage}>
+            {programs.map((program) => (
+              <RecommendCard key={program.id} {...program} />
+            ))}
+          </CardContainer>
         )}
-      </CardContainer>
+      </CardContainerWrapper>
     </Section>
   );
 }

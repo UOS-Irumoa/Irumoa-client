@@ -3,7 +3,6 @@
 import styled from "@emotion/styled";
 import { useState, useMemo, useEffect, ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import SearchBar from "@/components/layout/SearchBar";
 import FilterBar from "@/components/layout/FilterBar";
 import ProgramListItem from "@/components/layout/ProgramListItem";
@@ -151,6 +150,13 @@ const EmptyStateIcon = styled.div`
   justify-content: center;
   margin-bottom: ${({ theme }) => theme.spacing.sm};
   position: relative;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: ${({ theme }) => theme.colors.text.disabled};
+    opacity: 0.5;
+  }
 `;
 
 const EmptyStateTitle = styled.h3`
@@ -377,13 +383,9 @@ export default function LayoutContent({ children }: LayoutContentProps) {
         ) : !hasPrograms ? (
           <EmptyStateWrapper>
             <EmptyStateIcon>
-              <Image
-                src="/images/irumae/no.png"
-                alt="프로그램 없음"
-                width={120}
-                height={120}
-                style={{ objectFit: "contain" }}
-              />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+              </svg>
             </EmptyStateIcon>
             <EmptyStateTitle>프로그램을 찾을 수 없습니다</EmptyStateTitle>
             <EmptyStateMessage>

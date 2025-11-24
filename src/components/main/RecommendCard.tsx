@@ -14,30 +14,19 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  flex-shrink: 0;
-  width: calc((100% - 40px) / 4); /* 5개 카드, gap 10px × 4 = 40px */
-  min-width: 180px;
+  width: 100%;
+  min-height: 80px;
+  max-width: 100%;
+  overflow: hidden;
 
   &:hover {
     background: rgba(0, 0, 0, 0.02);
-    transform: translateY(-4px);
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
   }
 
   &:active {
     background: rgba(0, 0, 0, 0.04);
-    transform: translateY(-2px);
     box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.08);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    width: calc((100% - 30px) / 3); /* 4개 카드 */
-    min-width: 160px;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: calc((100% - 20px) / 2); /* 3개 카드 */
-    min-width: 140px;
   }
 `;
 
@@ -46,6 +35,8 @@ const CardHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  width: 100%;
+  min-width: 0;
 `;
 
 const StatusWrapper = styled.div`
@@ -53,6 +44,7 @@ const StatusWrapper = styled.div`
   align-items: center;
   gap: 3px;
   white-space: nowrap;
+  flex-shrink: 0;
 `;
 
 const StatusDot = styled.div<{ status: "upcoming" | "open" | "closed" }>`
@@ -94,6 +86,8 @@ const BadgeContainer = styled.div`
   display: flex;
   overflow: hidden;
   gap: 6px;
+  flex-shrink: 1;
+  min-width: 0;
 `;
 
 const CategoryBadge = styled.span`
@@ -106,7 +100,10 @@ const CategoryBadge = styled.span`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.primary.main};
   white-space: nowrap;
-  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
 `;
 
 const QualificationBadge = styled.span<{ restricted?: boolean }>`
@@ -123,7 +120,7 @@ const QualificationBadge = styled.span<{ restricted?: boolean }>`
   color: ${({ restricted, theme }) =>
     restricted ? theme.colors.status.errorLight : theme.colors.primary.main};
   white-space: nowrap;
-  flex: 1;
+  flex-shrink: 0;
 `;
 
 const ProgramTitle = styled.h3`
@@ -136,6 +133,8 @@ const ProgramTitle = styled.h3`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+  max-width: 100%;
 `;
 
 interface RecommendCardProps {
