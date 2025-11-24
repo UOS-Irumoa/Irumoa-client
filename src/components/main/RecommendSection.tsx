@@ -189,6 +189,7 @@ export default function RecommendSection() {
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const getUserInfo = useUserStore((state) => state.getUserInfo);
+  const profile = useUserStore((state) => state.profile);
 
   const fetchRecommendations = async (forceRefresh = false) => {
     setIsLoading(true);
@@ -251,7 +252,7 @@ export default function RecommendSection() {
 
   useEffect(() => {
     fetchRecommendations();
-  }, [getUserInfo]);
+  }, [profile]); // profile 변경 시 추천 프로그램 다시 불러오기
 
   return (
     <Section>
