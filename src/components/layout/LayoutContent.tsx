@@ -3,6 +3,7 @@
 import styled from "@emotion/styled";
 import { useState, useMemo, useEffect, ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import SearchBar from "@/components/layout/SearchBar";
 import FilterBar from "@/components/layout/FilterBar";
 import ProgramListItem from "@/components/layout/ProgramListItem";
@@ -119,6 +120,59 @@ const LoadingText = styled.span`
   color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
+const EmptyStateWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 400px;
+  gap: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.padding.xl};
+  animation: fadeIn 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+const EmptyStateIcon = styled.div`
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+  position: relative;
+`;
+
+const EmptyStateTitle = styled.h3`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.xl};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.text.primary};
+  margin: 0;
+  text-align: center;
+`;
+
+const EmptyStateMessage = styled.p`
+  font-family: ${({ theme }) => theme.typography.fontFamily.primary};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
+  white-space: pre-line;
+`;
+
 interface LayoutContentProps {
   children: ReactNode;
 }
@@ -142,7 +196,9 @@ export default function LayoutContent({ children }: LayoutContentProps) {
 
   // Zustand 스토어에서 사용자 정보 가져오기 (안정적인 참조를 위해 개별 필드 선택)
   const department = useUserStore((state) => state.profile?.department);
-  const doubleDepartment = useUserStore((state) => state.profile?.doubleDepartment);
+  const doubleDepartment = useUserStore(
+    (state) => state.profile?.doubleDepartment
+  );
   const grade = useUserStore((state) => state.profile?.grade);
 
   // 학과 목록과 학년 계산 (메모이제이션)
@@ -204,11 +260,18 @@ export default function LayoutContent({ children }: LayoutContentProps) {
         const response = await searchNotices({
           page: shouldClientFilter ? 0 : currentPage - 1,
           size: shouldClientFilter ? 1000 : ITEMS_PER_PAGE,
-          state: recruitStatus !== "전체" ? statusMap[recruitStatus] : undefined,
+          state:
+            recruitStatus !== "전체" ? statusMap[recruitStatus] : undefined,
           filter: showOnlyQualified || undefined,
           category: currentCategory || undefined,
-          department: showOnlyQualified && userDepartments.length > 0 ? userDepartments : undefined,
-          grade: showOnlyQualified && userGrade !== undefined ? userGrade : undefined,
+          department:
+            showOnlyQualified && userDepartments.length > 0
+              ? userDepartments
+              : undefined,
+          grade:
+            showOnlyQualified && userGrade !== undefined
+              ? userGrade
+              : undefined,
         });
 
         let filteredContent = response.content;
@@ -228,7 +291,9 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
           const endIndex = startIndex + ITEMS_PER_PAGE;
           paginatedContent = filteredContent.slice(startIndex, endIndex);
-          calculatedTotalPages = Math.ceil(filteredContent.length / ITEMS_PER_PAGE);
+          calculatedTotalPages = Math.ceil(
+            filteredContent.length / ITEMS_PER_PAGE
+          );
         } else {
           calculatedTotalPages = response.totalPages;
         }
@@ -260,8 +325,12 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     grade,
   ]);
 
+  // 실제 프로그램이 있는지 확인 (빈 아이템 제외)
+  const hasPrograms = programs.length > 0;
+
   // 6개로 맞추기 위한 빈 아이템 추가
   const displayPrograms = useMemo(() => {
+    if (!hasPrograms) return [];
     const emptyCount = ITEMS_PER_PAGE - programs.length;
     if (emptyCount > 0) {
       const emptyItems = Array.from({ length: emptyCount }, (_, i) => ({
@@ -271,7 +340,7 @@ export default function LayoutContent({ children }: LayoutContentProps) {
       return [...programs, ...emptyItems];
     }
     return programs;
-  }, [programs]);
+  }, [programs, hasPrograms]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -280,7 +349,13 @@ export default function LayoutContent({ children }: LayoutContentProps) {
   // 필터 조건 변경 시 페이지를 1로 리셋
   useEffect(() => {
     setCurrentPage(1);
-  }, [currentCategory, debouncedSearchTerm, recruitStatus, showOnlyQualified, setCurrentPage]);
+  }, [
+    currentCategory,
+    debouncedSearchTerm,
+    recruitStatus,
+    showOnlyQualified,
+    setCurrentPage,
+  ]);
 
   return (
     <MainContent>
@@ -299,6 +374,24 @@ export default function LayoutContent({ children }: LayoutContentProps) {
             <LoadingSpinner />
             <LoadingText>데이터를 불러오는 중...</LoadingText>
           </LoadingWrapper>
+        ) : !hasPrograms ? (
+          <EmptyStateWrapper>
+            <EmptyStateIcon>
+              <Image
+                src="/images/irumae/no.png"
+                alt="프로그램 없음"
+                width={120}
+                height={120}
+                style={{ objectFit: "contain" }}
+              />
+            </EmptyStateIcon>
+            <EmptyStateTitle>프로그램을 찾을 수 없습니다</EmptyStateTitle>
+            <EmptyStateMessage>
+              {debouncedSearchTerm.trim()
+                ? `"${debouncedSearchTerm}"에 대한 검색 결과가 없습니다.\n다른 검색어를 시도해보세요.`
+                : "현재 조건에 맞는 프로그램이 없습니다."}
+            </EmptyStateMessage>
+          </EmptyStateWrapper>
         ) : (
           <>
             <ProgramList
@@ -306,7 +399,9 @@ export default function LayoutContent({ children }: LayoutContentProps) {
             >
               {displayPrograms.map((program: any) => {
                 if (program.isEmpty) {
-                  return <div key={program.id} style={{ visibility: "hidden" }} />;
+                  return (
+                    <div key={program.id} style={{ visibility: "hidden" }} />
+                  );
                 }
                 return <ProgramListItem key={program.id} {...program} />;
               })}
