@@ -39,6 +39,8 @@ const FilterLabel = styled.label`
 
 const SelectWrapper = styled.div`
   position: relative;
+  display: flex;
+  justify-content: flex-end;
   width: 110px;
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 100px;
@@ -48,7 +50,8 @@ const SelectWrapper = styled.div`
 const Select = styled.select`
   width: 100%;
   height: 35px;
-  padding: 0 30px;
+  padding: 0 32px 0 12px;
+  align-self: center;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: 14px;
   font-weight: ${({ theme }) => theme.typography.fontWeight.normal};
@@ -162,7 +165,9 @@ export default function FilterBar() {
   const recruitStatus = useUIStore((state) => state.recruitStatus);
   const setRecruitStatus = useUIStore((state) => state.setRecruitStatus);
   const showOnlyQualified = useUIStore((state) => state.showOnlyQualified);
-  const setShowOnlyQualified = useUIStore((state) => state.setShowOnlyQualified);
+  const setShowOnlyQualified = useUIStore(
+    (state) => state.setShowOnlyQualified
+  );
 
   const [hasProfile, setHasProfile] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);

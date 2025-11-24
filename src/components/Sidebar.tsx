@@ -85,10 +85,7 @@ const NavIconWrapper = styled.div<{ isActive: boolean }>`
 const NavLabel = styled.span<{ isActive: boolean }>`
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
   font-size: ${({ theme }) => theme.typography.fontSize.base};
-  font-weight: ${({ theme, isActive }) =>
-    isActive
-      ? theme.typography.fontWeight.bold
-      : theme.typography.fontWeight.medium};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   color: ${({ theme, isActive }) =>
     isActive ? theme.colors.text.white : theme.colors.text.primary};
   letter-spacing: ${({ theme }) => theme.typography.letterSpacing.tight};
@@ -142,7 +139,9 @@ export default function Sidebar() {
               height={32}
               style={{
                 filter:
-                  currentPath === item.href ? "brightness(0) invert(1)" : "none",
+                  currentPath === item.href
+                    ? "brightness(0) invert(1)"
+                    : "none",
               }}
             />
           </NavIconWrapper>
