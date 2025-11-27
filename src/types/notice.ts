@@ -4,7 +4,7 @@ export interface Notice {
   link: string;
   content: string;
   appStartDate: string;
-  appEndDate: string;
+  appEndDate: string | null;
   categories: string[];
   departments: string[];
   grades: number[];

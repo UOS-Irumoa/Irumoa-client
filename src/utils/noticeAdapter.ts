@@ -20,11 +20,11 @@ export function noticeToProgram(notice: Notice): Program {
 
 /**
  * 공지사항 날짜를 기준으로 모집 상태 결정
- * end date가 현재 날짜보다 뒤(미래)에 있으면 모집 중으로 표시
+ * end date가 NULL이거나 현재 날짜보다 뒤(미래)에 있으면 모집 중으로 표시
  */
 function getNoticeStatus(
   startDate: string,
-  endDate: string
+  endDate: string | null
 ): "upcoming" | "open" | "closed" {
   // 현재 날짜 (시간 제거, 날짜만 비교)
   const now = new Date();
@@ -34,15 +34,27 @@ function getNoticeStatus(
   const start = new Date(startDate);
   start.setHours(0, 0, 0, 0);
 
-  // 종료일 (00:00:00으로 설정하여 날짜만 비교)
-  const end = new Date(endDate);
-  end.setHours(0, 0, 0, 0);
-
   // 날짜 비교
   if (now < start) {
     // 현재 날짜가 시작일보다 이전 -> 모집 예정
     return "upcoming";
-  } else if (now <= end) {
+  }
+
+  // endDate가 NULL이거나 유효하지 않으면 모집 중으로 처리
+  if (!endDate || endDate === null) {
+    return "open";
+  }
+
+  // 종료일 (00:00:00으로 설정하여 날짜만 비교)
+  const end = new Date(endDate);
+  end.setHours(0, 0, 0, 0);
+
+  // 종료일이 유효하지 않은 경우 (Invalid Date) 모집 중으로 처리
+  if (isNaN(end.getTime())) {
+    return "open";
+  }
+
+  if (now <= end) {
     // 현재 날짜가 종료일 이하 (종료일이 현재 날짜보다 뒤 또는 같음) -> 모집 중
     return "open";
   } else {

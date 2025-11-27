@@ -228,24 +228,32 @@ export default function RecommendSection() {
 
   // Notice를 Program으로 변환하는 함수 (클라이언트에서만 실행)
   const convertNoticeToProgram = (notice: Notice): Program => {
-    // 모집 상태 계산 (end date가 현재 날짜보다 뒤에 있으면 모집 중)
+    // 모집 상태 계산 (end date가 NULL이거나 현재 날짜보다 뒤에 있으면 모집 중)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const startDate = new Date(notice.appStartDate);
     startDate.setHours(0, 0, 0, 0);
 
-    const endDate = new Date(notice.appEndDate);
-    endDate.setHours(0, 0, 0, 0);
-
     let status: "upcoming" | "open" | "closed";
     if (today < startDate) {
       status = "upcoming";
-    } else if (today <= endDate) {
-      // 현재 날짜가 종료일 이하 (종료일이 현재 날짜보다 뒤 또는 같음) -> 모집 중
+    } else if (!notice.appEndDate || notice.appEndDate === null) {
+      // endDate가 NULL이면 모집 중으로 처리
       status = "open";
     } else {
-      status = "closed";
+      const endDate = new Date(notice.appEndDate);
+      endDate.setHours(0, 0, 0, 0);
+
+      // 종료일이 유효하지 않은 경우 (Invalid Date) 모집 중으로 처리
+      if (isNaN(endDate.getTime())) {
+        status = "open";
+      } else if (today <= endDate) {
+        // 현재 날짜가 종료일 이하 (종료일이 현재 날짜보다 뒤 또는 같음) -> 모집 중
+        status = "open";
+      } else {
+        status = "closed";
+      }
     }
 
     // 학과 제한 여부 확인
@@ -416,7 +424,7 @@ export default function RecommendSection() {
         ) : (
           <CardContainer $currentPage={currentPage}>
             {programs.map((program) => (
-              <RecommendCard key={program.id} {...program} />
+            <RecommendCard key={program.id} {...program} />
             ))}
           </CardContainer>
         )}
