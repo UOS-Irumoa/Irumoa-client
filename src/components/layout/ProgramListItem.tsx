@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "@emotion/styled";
+import { universities } from "@/data/universities";
 
 const ListItem = styled.div`
   background: ${({ theme }) => theme.colors.white};
@@ -206,7 +207,34 @@ export default function ProgramListItem({
     if (depts.some((d) => d === "제한없음" || d.toLowerCase() === "all")) {
       return "학과 무관";
     }
-    return depts.join(", ");
+
+    // 단과대학별로 그룹화
+    const collegeGroups: string[] = [];
+    const remainingDepts = [...depts];
+
+    // 각 단과대학을 순회하며 모든 학과가 포함되어 있는지 확인
+    for (const college of universities) {
+      const collegeDepts = college.departments;
+      const hasAllDepts = collegeDepts.every((dept) =>
+        remainingDepts.includes(dept)
+      );
+
+      if (hasAllDepts) {
+        // 해당 단과대학의 모든 학과가 포함되어 있으면 단과대학 이름 추가
+        collegeGroups.push(college.university);
+        // 처리된 학과들을 remainingDepts에서 제거
+        collegeDepts.forEach((dept) => {
+          const index = remainingDepts.indexOf(dept);
+          if (index > -1) {
+            remainingDepts.splice(index, 1);
+          }
+        });
+      }
+    }
+
+    // 단과대학으로 묶인 것들과 나머지 학과들을 합쳐서 반환
+    const result = [...collegeGroups, ...remainingDepts];
+    return result.join(", ");
   };
 
   const handleClick = () => {
