@@ -21,7 +21,7 @@ const defaultMenuItems: MenuItem[] = [
   { href: '/employment', icon: '/images/sidebar/icon-employment.svg', label: '취업' },
   { href: '/lecture', icon: '/images/sidebar/icon-lecture.svg', label: '특강' },
   { href: '/visit', icon: '/images/sidebar/icon-visit.svg', label: '탐방' },
-  { href: '/extracurricular', icon: '/images/sidebar/icon-extracurricular.svg', label: '비교과' },
+  { href: '/extracurricular', icon: '/images/sidebar/icon-extracurricular.svg', label: '기타' },
 ];
 
 export const useNavigationStore = create<NavigationState>((set) => ({

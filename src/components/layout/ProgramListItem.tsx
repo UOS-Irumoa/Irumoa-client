@@ -241,11 +241,24 @@ export default function ProgramListItem({
     window.open(link, "_blank", "noopener,noreferrer");
   };
 
+  // 카테고리 텍스트 변환 (비교과 -> 기타)
+  const getCategoryText = (cat: string): string => {
+    return cat === "비교과" ? "기타" : cat;
+  };
+
+  // 타이틀 truncate 처리 (70자 이상)
+  const getTruncatedTitle = (text: string): string => {
+    if (text.length > 80) {
+      return text.substring(0, 80) + "...";
+    }
+    return text;
+  };
+
   return (
     <ListItem onClick={handleClick}>
       <LeftSection>
         <StatusBadge status={status}>{getStatusText(status)}</StatusBadge>
-        <ProgramTitle>{title}</ProgramTitle>
+        <ProgramTitle>{getTruncatedTitle(title)}</ProgramTitle>
         {description && (
           <ContentWrapper>
             <ProgramDescription>{description}</ProgramDescription>
@@ -255,10 +268,10 @@ export default function ProgramListItem({
       <BadgeContainer>
         {Array.isArray(category) ? (
           category.map((cat, index) => (
-            <CategoryBadge key={index}>{cat}</CategoryBadge>
+            <CategoryBadge key={index}>{getCategoryText(cat)}</CategoryBadge>
           ))
         ) : (
-          <CategoryBadge>{category}</CategoryBadge>
+          <CategoryBadge>{getCategoryText(category)}</CategoryBadge>
         )}
         <QualificationBadge restricted={departmentRestricted}>
           {getDepartmentText(departments)}

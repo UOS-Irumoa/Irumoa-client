@@ -248,11 +248,11 @@ export default function RecommendSection() {
       // 종료일이 유효하지 않은 경우 (Invalid Date) 모집 중으로 처리
       if (isNaN(endDate.getTime())) {
         status = "open";
-      } else if (today <= endDate) {
-        // 현재 날짜가 종료일 이하 (종료일이 현재 날짜보다 뒤 또는 같음) -> 모집 중
-        status = "open";
-      } else {
-        status = "closed";
+    } else if (today <= endDate) {
+      // 현재 날짜가 종료일 이하 (종료일이 현재 날짜보다 뒤 또는 같음) -> 모집 중
+      status = "open";
+    } else {
+      status = "closed";
       }
     }
 
