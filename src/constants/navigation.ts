@@ -1,19 +1,10 @@
-import { create } from 'zustand';
-
-interface MenuItem {
+export interface MenuItem {
   href: string;
   icon: string;
   label: string;
 }
 
-interface NavigationState {
-  menuItems: MenuItem[];
-  setMenuItems: (items: MenuItem[]) => void;
-  isSidebarMounted: boolean;
-  setIsSidebarMounted: (mounted: boolean) => void;
-}
-
-const defaultMenuItems: MenuItem[] = [
+export const MENU_ITEMS: MenuItem[] = [
   { href: '/', icon: '/images/sidebar/icon-all.svg', label: '전체' },
   { href: '/contest', icon: '/images/sidebar/icon-contest.svg', label: '공모전' },
   { href: '/mentoring', icon: '/images/sidebar/icon-mentoring.svg', label: '멘토링' },
@@ -24,9 +15,3 @@ const defaultMenuItems: MenuItem[] = [
   { href: '/extracurricular', icon: '/images/sidebar/icon-extracurricular.svg', label: '기타' },
 ];
 
-export const useNavigationStore = create<NavigationState>((set) => ({
-  menuItems: defaultMenuItems,
-  setMenuItems: (items) => set({ menuItems: items }),
-  isSidebarMounted: false,
-  setIsSidebarMounted: (mounted) => set({ isSidebarMounted: mounted }),
-}));

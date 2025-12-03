@@ -2,9 +2,9 @@
 
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useNavigationStore } from "@/stores/navigationStore";
+import { MENU_ITEMS } from "@/constants/navigation";
 
 const Nav = styled.nav`
   position: fixed;
@@ -105,24 +105,14 @@ const NavLabel = styled.span<{ isActive: boolean }>`
   }
 `;
 
-interface MenuItem {
-  href: string;
-  icon: string;
-  label: string;
-}
-
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const menuItems = useNavigationStore((state) => state.menuItems);
-  const isMounted = useNavigationStore((state) => state.isSidebarMounted);
-  const setIsSidebarMounted = useNavigationStore(
-    (state) => state.setIsSidebarMounted
-  );
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsSidebarMounted(true);
-  }, [setIsSidebarMounted]);
+    setIsMounted(true);
+  }, []);
 
   const handleNavigation = (href: string) => {
     router.push(href);
@@ -133,7 +123,7 @@ export default function Sidebar() {
 
   return (
     <Nav>
-      {menuItems.map((item) => (
+      {MENU_ITEMS.map((item) => (
         <NavButton
           key={item.href}
           isActive={currentPath === item.href}

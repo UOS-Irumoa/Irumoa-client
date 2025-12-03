@@ -3,7 +3,6 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { useEffect } from "react";
-import { useUIStore } from "@/stores/uiStore";
 
 const SearchWrapper = styled.div`
   display: flex;
@@ -68,11 +67,19 @@ const SearchIconButton = styled.button`
   }
 `;
 
-export default function SearchBar() {
-  const searchTerm = useUIStore((state) => state.searchTerm);
-  const setSearchTerm = useUIStore((state) => state.setSearchTerm);
-  const isTablet = useUIStore((state) => state.isTablet);
-  const setIsTablet = useUIStore((state) => state.setIsTablet);
+interface SearchBarProps {
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  isTablet: boolean;
+  setIsTablet: (isTablet: boolean) => void;
+}
+
+export default function SearchBar({
+  searchTerm,
+  setSearchTerm,
+  isTablet,
+  setIsTablet,
+}: SearchBarProps) {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");

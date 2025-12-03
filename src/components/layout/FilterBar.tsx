@@ -3,7 +3,6 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useUserStore } from "@/stores/userStore";
-import { useUIStore } from "@/stores/uiStore";
 
 const FilterSection = styled.div`
   display: flex;
@@ -190,14 +189,19 @@ const CheckboxLabelTablet = styled(CheckboxLabel)`
   }
 `;
 
-export default function FilterBar() {
-  // Zustand UI 스토어에서 필터 상태 가져오기
-  const recruitStatus = useUIStore((state) => state.recruitStatus);
-  const setRecruitStatus = useUIStore((state) => state.setRecruitStatus);
-  const showOnlyQualified = useUIStore((state) => state.showOnlyQualified);
-  const setShowOnlyQualified = useUIStore(
-    (state) => state.setShowOnlyQualified
-  );
+interface FilterBarProps {
+  recruitStatus: string;
+  setRecruitStatus: (status: string) => void;
+  showOnlyQualified: boolean;
+  setShowOnlyQualified: (show: boolean) => void;
+}
+
+export default function FilterBar({
+  recruitStatus,
+  setRecruitStatus,
+  showOnlyQualified,
+  setShowOnlyQualified,
+}: FilterBarProps) {
 
   const [hasProfile, setHasProfile] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);

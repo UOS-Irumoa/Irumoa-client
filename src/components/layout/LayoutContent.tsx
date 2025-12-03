@@ -13,7 +13,6 @@ import { getCategoryNameFromSlug } from "@/utils/categoryMapper";
 import { searchNotices } from "@/services/noticeService";
 import { noticesToPrograms } from "@/utils/noticeAdapter";
 import { useUserStore } from "@/stores/userStore";
-import { useUIStore } from "@/stores/uiStore";
 
 const MainContent = styled.div`
   display: flex;
@@ -180,14 +179,14 @@ interface LayoutContentProps {
 export default function LayoutContent({ children }: LayoutContentProps) {
   const pathname = usePathname();
 
-  // Zustand UI 스토어에서 전역 상태 가져오기
-  const searchTerm = useUIStore((state) => state.searchTerm);
-  const recruitStatus = useUIStore((state) => state.recruitStatus);
-  const showOnlyQualified = useUIStore((state) => state.showOnlyQualified);
-  const currentPage = useUIStore((state) => state.currentPage);
-  const setCurrentPage = useUIStore((state) => state.setCurrentPage);
+  // UI 상태 (로컬 상태로 관리)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [recruitStatus, setRecruitStatus] = useState("전체");
+  const [showOnlyQualified, setShowOnlyQualified] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isTablet, setIsTablet] = useState(false);
 
-  // 로컬 상태 (컴포넌트 전용)
+  // 기타 로컬 상태
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [isMounted, setIsMounted] = useState(false);
   const [programs, setPrograms] = useState<Program[]>([]);
@@ -354,14 +353,23 @@ export default function LayoutContent({ children }: LayoutContentProps) {
     debouncedSearchTerm,
     recruitStatus,
     showOnlyQualified,
-    setCurrentPage,
   ]);
 
   return (
     <MainContent>
       <SearchSection>
-        <SearchBar />
-        <FilterBar />
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          isTablet={isTablet}
+          setIsTablet={setIsTablet}
+        />
+        <FilterBar
+          recruitStatus={recruitStatus}
+          setRecruitStatus={setRecruitStatus}
+          showOnlyQualified={showOnlyQualified}
+          setShowOnlyQualified={setShowOnlyQualified}
+        />
       </SearchSection>
 
       <ChildrenWrapper key={isMounted ? pathname : "default"}>
